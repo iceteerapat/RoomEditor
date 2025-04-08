@@ -1,16 +1,17 @@
 import { createApp } from 'vue';
+import { RouterLink } from 'vue-router';
 
 import Toast from "vue-toastification";
 import PrimeVue from 'primevue/config'
 import ConfirmationService from 'primevue/confirmationservice';
 import DialogService from 'primevue/dialogservice';
 import App from './App.vue';
-import router from './router';
+
 
 const app = createApp(App);
 
 app.use(PrimeVue);
-app.use(router);
+app.use(RouterLink);
 app.use(Toast);
 app.use(ConfirmationService);
 app.use(DialogService);
