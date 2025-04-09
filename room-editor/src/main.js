@@ -1,20 +1,22 @@
 import { createApp } from 'vue';
-import { RouterLink } from 'vue-router';
+import { createPinia } from 'pinia';
 
 import Toast from "vue-toastification";
 import PrimeVue from 'primevue/config'
 import ConfirmationService from 'primevue/confirmationservice';
 import DialogService from 'primevue/dialogservice';
 import App from './App.vue';
+import Router from './router';
 
-
+const pinia = createPinia();
 const app = createApp(App);
 
-app.use(PrimeVue);
-app.use(RouterLink);
+app.use(pinia);
+app.use(Router);
 app.use(Toast);
 app.use(ConfirmationService);
 app.use(DialogService);
+app.use(PrimeVue);
 
 app.config.globalProperties.$filters = {
     formatDateTime(value) {
