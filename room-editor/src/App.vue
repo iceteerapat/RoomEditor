@@ -7,10 +7,10 @@ import DynamicDialog from 'primevue/dynamicdialog';
 
 <template>
   <ConfirmDialog />
-   <DynamicDialog />
+  <DynamicDialog />
   <RouterView />
 </template>
 
 <style>
-@import './assets/css/style.css';
+@import './assets/css/room-visuallizer-theme.css';
 </style>
