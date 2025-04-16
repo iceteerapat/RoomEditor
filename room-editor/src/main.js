@@ -7,6 +7,7 @@ import ConfirmationService from 'primevue/confirmationservice';
 import DialogService from 'primevue/dialogservice';
 import App from './App.vue';
 import Router from './router';
+import Aura from '@primeuix/themes/aura';
 
 const pinia = createPinia();
 const app = createApp(App);
@@ -16,7 +17,11 @@ app.use(Router);
 app.use(Toast);
 app.use(ConfirmationService);
 app.use(DialogService);
-app.use(PrimeVue);
+app.use(PrimeVue, {
+  theme: {
+      preset: Aura
+  }
+});
 
 app.config.globalProperties.$filters = {
     formatDateTime(value) {

@@ -13,23 +13,23 @@ import Button from 'primevue/button';
                 </div>
                 <ul class="nav-links">
                     <RouterLink to="/home">Home</RouterLink>
+                    <RouterLink to="/service">Create Room</RouterLink>
                     <RouterLink to="/price">Pricing</RouterLink>
-                    <RouterLink to="/service">Service</RouterLink>
                     <Button asChild v-slot="slotProps">
                         <RouterLink to="/login" :class="slotProps.class">Login</RouterLink>
                     </Button>
                 </ul>
             </nav>
         </header>
-        <mian>
+        <main>
             <section class="homepage">
                 <h1>Room Visualizer</h1>
-                <h2>Make your idea be cleared</h2>
+                <h2>Turn your imagination into reality with our simple room visualizer.</h2>
                 <Button asChild v-slot="slotProps">
-                    <RouterLink to="/login" :class="slotProps.class">Get Start</RouterLink>
+                    <RouterLink to="/login" :class="slotProps.class">Get Started</RouterLink>
                 </Button>
             </section>
-        </mian>
+        </main>
         <footer>
 
         </footer>

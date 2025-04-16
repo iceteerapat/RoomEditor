@@ -1,5 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router';
+
+import Button from 'primevue/button';
 </script>
 
 <template>
@@ -11,14 +13,21 @@ import { RouterLink } from 'vue-router';
                 </div>
                 <ul class="nav-links">
                     <RouterLink to="/home">Home</RouterLink>
+                    <RouterLink to="/service">Create Room</RouterLink>
                     <RouterLink to="/price">Pricing</RouterLink>
-                    <RouterLink to="/service">Service</RouterLink>
-                    <RouterLink to="/login">Login</RouterLink>
+                    <Button asChild v-slot="slotProps">
+                        <RouterLink to="/login" :class="slotProps.class">Login</RouterLink>
+                    </Button>
                 </ul>
             </nav>
-            <h1>
-                Service Page
-            </h1>
         </header>
+        <main>
+            <section>
+
+            </section>
+        </main>
+        <footer>
+
+        </footer>
     </div>
 </template>
