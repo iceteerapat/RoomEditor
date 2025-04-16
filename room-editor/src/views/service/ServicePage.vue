@@ -10,7 +10,7 @@ import { RouterLink } from 'vue-router';
                     Room Visualizer
                 </div>
                 <ul class="nav-links">
-                    <RouterLInk to="/home">Home</RouterLInk>
+                    <RouterLink to="/home">Home</RouterLink>
                     <RouterLink to="/price">Pricing</RouterLink>
                     <RouterLink to="/service">Service</RouterLink>
                     <RouterLink to="/login">Login</RouterLink>
