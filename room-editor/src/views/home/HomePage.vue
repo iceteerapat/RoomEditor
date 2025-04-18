@@ -27,7 +27,7 @@ onMounted(() => {
       left: scrollAmount,
       behavior: 'smooth',
     });
-  }, 7500);
+  }, 6000);
 });
 </script>
 
@@ -57,6 +57,24 @@ onMounted(() => {
                 </Button>
             </section>
             <section class="homepage-section2">
+                <div class="features-container">
+                    <h1>Why Choose Room Visualizer?</h1>
+                    <div class="feature-card">
+                    <!-- <img src="/src/assets/icons/idea.png" alt="Idea icon" /> -->
+                    <h3>Easy to Use</h3>
+                    <p>No experience needed — start designing in seconds.</p>
+                    </div>
+                    <div class="feature-card">
+                    <!-- <img src="/src/assets/icons/3d.png" alt="3D icon" /> -->
+                    <h3>Realistic Previews</h3>
+                    <p>Visualize your room in stunning detail and 3D.</p>
+                    </div>
+                    <div class="feature-card">
+                    <!-- <img src="/src/assets/icons/save.png" alt="Save icon" /> -->
+                    <h3>Save & Share</h3>
+                    <p>Download and share your room designs easily.</p>
+                    </div>
+                </div>
                 <div class="slider-container" ref="slider">
                     <img v-for="(img, index) in images" :key="index" :src="img" class="slider-image" />
                 </div>
