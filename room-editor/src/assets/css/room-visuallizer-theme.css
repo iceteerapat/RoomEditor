@@ -85,21 +85,18 @@ h2 {
   flex-direction: column;
   padding-right: 50px;
 }
-
 .feature-card {
   background: white;
-  margin: 0px 50px;
+  margin: 10px 50px;
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   max-width: 300px;
   transition: transform 0.3s;
 }
-
 .feature-card:hover {
   transform: translateY(-10px);
 }
-
 .feature-card img {
   width: 60px;
   height: 60px;
@@ -112,8 +109,7 @@ h2 {
     width: 90%;;
     height: 640px;
     object-fit: cover;
-  }
-  
+}
 .slider-image {
     flex-shrink: 0;
     object-fit: cover;
@@ -121,3 +117,14 @@ h2 {
     height: 640px;
     object-fit: cover;
 }
+.homepage-section3 {
+    margin-left: 150px;
+    margin-right: 150px;
+    margin-top: 25px;
+    padding: 15px 100px;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: flex-end; 
+}
+

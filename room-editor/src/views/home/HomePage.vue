@@ -79,6 +79,9 @@ onMounted(() => {
                     <img v-for="(img, index) in images" :key="index" :src="img" class="slider-image" />
                 </div>
             </section>
+            <section class="homepage-section3">
+                <h1>How Does It Works?</h1>
+            </section>
         </main>
         <footer>
 
