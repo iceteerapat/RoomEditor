@@ -60,17 +60,14 @@ onMounted(() => {
                 <div class="features-container">
                     <h1>Why Choose Room Visualizer?</h1>
                     <div class="feature-card">
-                    <!-- <img src="/src/assets/icons/idea.png" alt="Idea icon" /> -->
                     <h3>Easy to Use</h3>
-                    <p>No experience needed — start designing in seconds.</p>
+                    <p>No experience needed & start designing in seconds.</p>
                     </div>
                     <div class="feature-card">
-                    <!-- <img src="/src/assets/icons/3d.png" alt="3D icon" /> -->
                     <h3>Realistic Previews</h3>
                     <p>Visualize your room in stunning detail and 3D.</p>
                     </div>
                     <div class="feature-card">
-                    <!-- <img src="/src/assets/icons/save.png" alt="Save icon" /> -->
                     <h3>Save & Share</h3>
                     <p>Download and share your room designs easily.</p>
                     </div>
@@ -81,6 +78,43 @@ onMounted(() => {
             </section>
             <section class="homepage-section3">
                 <h1>How Does It Works?</h1>
+                <div class="how-steps">
+                    <div class="how-step">
+                    <!-- <span class="step-number">1</span> -->
+                    <h3>Upload Your Room</h3>
+                    <p>Take a photo or upload a floor plan to get started.</p>
+                    </div>
+                    <div class="how-step">
+                    <!-- <span class="step-number">2</span> -->
+                    <h3>Customize Style</h3>
+                    <p>Try different furniture, wall colors, and layouts.</p>
+                    </div>
+                    <div class="how-step">
+                    <!-- <span class="step-number">3</span> -->
+                    <h3>Visualize & Save</h3>
+                    <p>Preview your new room and save or share your design.</p>
+                    </div>
+                </div>
+            </section>
+            <section class="homepage-section4">
+                <h1>Who It's For</h1>
+                <div class="use-cases-grid">
+                    <div class="use-case-card">
+                    <!-- <img src="/src/assets/icons/homeowner.png" alt="Homeowners Icon" /> -->
+                    <h3>Homeowners</h3>
+                    <p>Visualize your renovation ideas before spending a dime.</p>
+                    </div>
+                    <div class="use-case-card">
+                    <!-- <img src="/src/assets/icons/interior-designer.png" alt="Interior Designers Icon" /> -->
+                    <h3>Interior Designers</h3>
+                    <p>Create mockups quickly to present your vision to clients.</p>
+                    </div>
+                    <div class="use-case-card">
+                    <!-- <img src="/src/assets/icons/real-estate.png" alt="Real Estate Agents Icon" /> -->
+                    <h3>Real Estate Agents</h3>
+                    <p>Help clients see the potential of a space with interactive visuals.</p>
+                    </div>
+                </div>
             </section>
         </main>
         <footer>

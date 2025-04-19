@@ -65,6 +65,14 @@ h2 {
     font-size: 20px;
     font-weight: 100;
     color: gray;
+    font-size: 20px;
+}
+h3 {
+    font-size: 25px;
+    padding-bottom: 10px;
+}
+p {
+    font-size: 20px;
 }
 .homepage-section2 {
     margin-left: 150px;
@@ -127,4 +135,82 @@ h2 {
     justify-content: center; 
     align-items: flex-end; 
 }
+.how-steps {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: column;
+    gap: 40px;
+    margin: 25px 0px;
+    padding: 15px 0px;
+}
+.how-step {
+    background-color: #f4f4f4;
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 300px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+/* .how-step:hover {
+transform: translateY(-10px);
+} */
+.step-number {
+    background-color: #1f7aed;
+    color: white;
+    font-weight: bold;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+.homepage-section4 {
+    margin-left: 150px;
+    margin-right: 150px;
+    margin-top: 25px;
+    padding: 15px 100px;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center
+}
+.use-cases-grid {
+    margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+  flex-wrap: wrap;
+}
 
+.use-case-card {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  max-width: 350px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.use-case-card:hover {
+  transform: translateY(-5px);
+}
+
+.use-case-card img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 20px;
+}
+
+.use-case-card {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.use-case-card {
+  font-size: 14px;
+  color: #000000;
+}
