@@ -100,25 +100,43 @@ onMounted(() => {
                 <h1>Who It's For</h1>
                 <div class="use-cases-grid">
                     <div class="use-case-card">
-                    <!-- <img src="/src/assets/icons/homeowner.png" alt="Homeowners Icon" /> -->
+                    <img src="/src/assets/picture/homeowner.jpg" alt="Homeowners Icon" />
                     <h3>Homeowners</h3>
                     <p>Visualize your renovation ideas before spending a dime.</p>
                     </div>
                     <div class="use-case-card">
-                    <!-- <img src="/src/assets/icons/interior-designer.png" alt="Interior Designers Icon" /> -->
+                    <img src="/src/assets/picture/interior-designer.jpg" alt="Interior Designers Icon" />
                     <h3>Interior Designers</h3>
                     <p>Create mockups quickly to present your vision to clients.</p>
                     </div>
                     <div class="use-case-card">
-                    <!-- <img src="/src/assets/icons/real-estate.png" alt="Real Estate Agents Icon" /> -->
+                    <img src="/src/assets/picture/real-estate.jpg" alt="Real Estate Agents Icon" />
                     <h3>Real Estate Agents</h3>
                     <p>Help clients see the potential of a space with interactive visuals.</p>
                     </div>
                 </div>
             </section>
+            <section class="homepage-section5">
+                <h1>Ready to Design Your Dream Room?</h1>
+                <div class="homepage-section5-button">
+                    <Button asChild v-slot="slotProps" severity="danger">
+                        <RouterLink to="/login" :class="slotProps.class">Try Now!</RouterLink>
+                    </Button>
+                </div>
+            </section>
         </main>
-        <footer>
-
+        <footer class="footerpage">
+            <div class="footerpage-container">
+                <h3>Room Visualizer</h3>
+                <div class="footerpage-column">
+                    <RouterLink to="/home">Home</RouterLink>
+                    <RouterLink to="/service">Create Room</RouterLink>
+                    <RouterLink to="/price">Pricing</RouterLink>
+                </div>
+                <div class="footerpage-legal">
+                    <p>© 2025 Room Visualizer. All rights reserved.</p>
+                </div>
+            </div>
         </footer>
     </div>
 </template>

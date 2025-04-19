@@ -46,7 +46,7 @@ a {
 .nav-links a:hover {
     text-decoration: solid;
 }
-.login-button {
+.nav-links .login-button {
     margin-left: 20px;
 }
 .homepage-section1 {
@@ -152,9 +152,9 @@ p {
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease;
 }
-/* .how-step:hover {
+.how-step:hover {
 transform: translateY(-10px);
-} */
+}
 .step-number {
     background-color: #1f7aed;
     color: white;
@@ -178,13 +178,12 @@ transform: translateY(-10px);
     align-items: center
 }
 .use-cases-grid {
-    margin-top: 25px;
+  margin-top: 50px;
   display: flex;
   justify-content: center;
   gap: 100px;
   flex-wrap: wrap;
 }
-
 .use-case-card {
   background-color: white;
   padding: 30px;
@@ -194,23 +193,76 @@ transform: translateY(-10px);
   text-align: center;
   transition: transform 0.3s ease;
 }
-
 .use-case-card:hover {
   transform: translateY(-5px);
 }
-
 .use-case-card img {
-  width: 60px;
-  height: 60px;
-  margin-bottom: 20px;
+  width: 300px;
+  height: 300px;
+  margin-bottom: 50px;
 }
-
 .use-case-card {
   font-size: 20px;
   margin-bottom: 10px;
 }
-
 .use-case-card {
   font-size: 14px;
   color: #000000;
+}
+.homepage-section5 {
+  margin-left: 150px;
+  margin-right: 150px;
+  margin-top: 25px;
+  padding: 15px 100px;
+  display: flex;
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center
+}
+.homepage-section5 h1 {
+  margin-top: 50px;
+}
+.homepage-section5-button {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+.homepage-section5-button a {
+  font-size: 30px;
+  color: white;
+}
+.footerpage {
+  background-color: #10b981;
+  max-width: 100%;
+}
+.footerpage-container {
+  margin-left: 150px;
+  margin-right: 150px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  padding: 15px 150px;
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+}
+.footerpage-container h3 {
+  color: white;
+}
+.footerpage-column {
+  display: flex;
+  flex-direction: row; 
+  justify-content: center;
+  gap: 100px;
+}
+.footerpage-column a {
+  color: white;
+}
+.footerpage-legal {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 15px;
+  color: white;
+}
+.footerpage-legal p {
+  font-size: 13px;
 }
