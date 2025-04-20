@@ -4,7 +4,6 @@ import { onMounted, ref } from 'vue';
 
 import Button from 'primevue/button';
 
-
 const slider = ref(null);
 const images = [
   '/src/assets/picture/one.jpeg',
