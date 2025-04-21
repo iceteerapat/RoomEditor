@@ -267,3 +267,39 @@ transform: translateY(-10px);
 .footerpage-legal p {
   font-size: 13px;
 }
+.pricepage {
+  min-height: 65vh;
+  margin-left: 150px;
+  margin-right: 150px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  padding: 15px 150px;
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+}
+.loginpage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f5f5f5;
+}
+
+.loginform {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  text-align: center;
+}
+.loginform h1 {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+.formusername {
+  margin-bottom: 10px;
+}
+.formpassword {
+  margin-bottom: 20px;
+}

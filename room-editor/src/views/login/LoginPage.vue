@@ -1,43 +1,37 @@
 <script setup>
-import { RouterLink } from 'vue-router';
+import { ref } from 'vue'
+import InputText from 'primevue/inputtext'
+import Button from 'primevue/button'
+import IftaLabel from 'primevue/iftalabel';
 
-import Button from 'primevue/button';
+const username = ref('')
+const password = ref('')
+
+const handleSubmit = () => {
+  console.log('Username:', username.value)
+  console.log('Password:', password.value)
+}
 </script>
 
 <template>
-    <div class="wrapper">
-        <header>
-            <nav class="navbar">
-                <div class="logo">
-                    Room Visualizer
-                </div>
-                <ul class="nav-links">
-                    <RouterLink to="/home">Home</RouterLink>
-                    <RouterLink to="/service">Create Room</RouterLink>
-                    <RouterLink to="/price">Pricing</RouterLink>
-                    <Button asChild v-slot="slotProps">
-                        <RouterLink to="/login" :class="`${slotProps.class} login-button`">Login</RouterLink>
-                    </Button>
-                </ul>
-            </nav>
-        </header>
-        <main>
-            <section>
+  <div class="wrapper">
+    <section class="loginpage">
+      <div class="loginform">
+        <h1>Login</h1>
+        <form @submit.prevent="handleSubmit">
+          <IftaLabel class="formusername">
+            <InputText id="username" v-model="username" :invalid="!value"/>
+            <label for="username">Username</label>
+          </IftaLabel>
 
-            </section>
-        </main>
-        <footer class="footerpage">
-            <div class="footerpage-container">
-                <h3>Room Visualizer</h3>
-                <div class="footerpage-column">
-                    <RouterLink to="/home">Home</RouterLink>
-                    <RouterLink to="/service">Create Room</RouterLink>
-                    <RouterLink to="/price">Pricing</RouterLink>
-                </div>
-                <div class="footerpage-legal">
-                    <p>© 2025 Room Visualizer. All rights reserved.</p>
-                </div>
-            </div>
-        </footer>
-    </div>
+          <IftaLabel class="formpassword">
+            <InputText id="password" type="password" v-model="password" :invalid="!value"/>
+            <label for="password">Password</label>
+          </IftaLabel>
+
+          <Button type="submit" label="Log in" severity="primary" />
+        </form>
+      </div>
+    </section>
+  </div>
 </template>

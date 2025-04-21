@@ -22,7 +22,7 @@ import Button from 'primevue/button';
             </nav>
         </header>
         <main>
-            <section>
+            <section class="pricepage">
 
             </section>
         </main>
