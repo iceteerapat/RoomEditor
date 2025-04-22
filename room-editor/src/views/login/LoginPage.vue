@@ -33,9 +33,11 @@ const handleSubmit = () => {
           </div>
           <Button type="submit" label="Log in" severity="primary" />
         </form>
-        <div class="signup">
-            Don't have an account? <RouterLink to="/singup">Create account</RouterLink>
-        </div>
+        <ul>
+          <div class="signup">
+            Don't have an account? <RouterLink to="/sign-up">Create account</RouterLink>
+          </div>
+        </ul>
       </div>
     </section>
   </div>
