@@ -19,13 +19,25 @@ const handleSubmit = () => {
 <template>
     <div class="wrapper">
         <section class="createaccountpage">
-            <div class="createaccoutnform">
+            <div class="createaccountform">
                 <h1>Create an account to visualize dream rooms</h1>
                 <form @submit.prevent="handleSubmit">
                   <IftaLabel class="formusername">
                     <InputText id="email" v-model="email" :invalid="!value"/>
                     <label for="email">Email:</label>
                   </IftaLabel>
+                  <IftaLabel class="formusername">
+                    <InputText id="username" v-model="username" :invalid="!value"/>
+                    <label for="username">Username:</label>
+                  </IftaLabel>
+                  <IftaLabel class="formpassword">
+                    <InputText id="password" v-model="password" :invalid="!value"/>
+                    <label for="password">Password:</label>
+                  </IftaLabel>
+                  <Button type="submit" label="Log in" severity="primary" />
+                  <div class="checkaccount">
+                    Aleady have an account? <RouterLink to="/login">Log in</RouterLink>
+                  </div>
                 </form>
             </div>
         </section>
