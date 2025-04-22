@@ -1,14 +1,15 @@
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
+import { RouterLink } from 'vue-router';
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import IftaLabel from 'primevue/iftalabel';
 
-const username = ref('')
+const email = ref('')
 const password = ref('')
 
 const handleSubmit = () => {
-  console.log('Username:', username.value)
+  console.log('Email:', email.value)
   console.log('Password:', password.value)
 }
 </script>
@@ -20,17 +21,21 @@ const handleSubmit = () => {
         <h1>Login</h1>
         <form @submit.prevent="handleSubmit">
           <IftaLabel class="formusername">
-            <InputText id="username" v-model="username" :invalid="!value"/>
-            <label for="username">Username</label>
+            <InputText id="email" v-model="email" :invalid="!value"/>
+            <label for="email">Email:</label>
           </IftaLabel>
-
           <IftaLabel class="formpassword">
             <InputText id="password" type="password" v-model="password" :invalid="!value"/>
-            <label for="password">Password</label>
+            <label for="password">Password:</label>
           </IftaLabel>
-
+          <div class="forgetpassword"> 
+              <RouterLink to="/forgetpassword">Forget password?</RouterLink>
+          </div>
           <Button type="submit" label="Log in" severity="primary" />
         </form>
+        <div class="signup">
+            Don't have an account? <RouterLink to="/singup">Create account</RouterLink>
+        </div>
       </div>
     </section>
   </div>
