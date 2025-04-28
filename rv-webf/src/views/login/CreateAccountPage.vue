@@ -11,16 +11,16 @@ import axios from 'axios';
 const username = ref('')
 const email = ref('')
 const password = ref('')
+const phone = ref('')
+const privacy = ref(false)
 const visible = ref(false);
-
-function createAccount() {
-  axios.post('/sign-up/create_acct')
-}
 
 const handleSubmit = () => {
   console.log('Username: ', username.value)
   console.log('Email: ', email.value)
   console.log('Password: ', password.value)
+  console.log('Phone: ', phone.value)
+  console.log('Privacy: ', privacy.value)
 }
 </script>
 
@@ -41,6 +41,10 @@ const handleSubmit = () => {
                   <IftaLabel class="formpassword">
                     <InputText id="password" v-model="password" :invalid="!value"/>
                     <label for="password">Password:</label>
+                  </IftaLabel>
+                  <IftaLabel class="formpassword">
+                    <InputText id="phone" v-model="phone" :invalid="!value"/>
+                    <label for="phone">Phone:</label>
                   </IftaLabel>
 
                   <Button type="submit" label="Create Account" @click="visible = true" severity="primary" />

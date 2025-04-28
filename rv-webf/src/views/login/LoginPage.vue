@@ -37,7 +37,7 @@ const handleSubmit = () => {
         </form>
         <ul>
           <div class="signup">
-            Don't have an account? <RouterLink to="/sign-up">Create account</RouterLink>
+            Don't have an account? <RouterLink to="/createAccount">Create account</RouterLink>
           </div>
         </ul>
       </div>

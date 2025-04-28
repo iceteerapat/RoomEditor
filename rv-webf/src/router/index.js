@@ -5,15 +5,15 @@ import LoginPage from "../views/login/LoginPage.vue";
 import PricePage from "../views/price/PricePage.vue";
 import ServicePage from "../views/service/ServicePage.vue";
 import ForgotPassword from "../views/login/ForgotPassword.vue";
-import SignUpPage from "../views/login/SignUpPage.vue";
+import CreateAccountPage from "../views/login/CreateAccountPage.vue";
 
 const routes = [
     {path: '/login', component: LoginPage},
     {path: '/home', component: HomePage},
     {path: '/price', component: PricePage},
     {path: '/service', component: ServicePage},
-    {path: '/sign-up', component: SignUpPage},
-    {path: '/forgetpassword', component: ForgotPassword}
+    {path: '/createAccount', component: CreateAccountPage},
+    {path: '/forgetPassword', component: ForgotPassword}
 ]
 
 const router = createRouter({
