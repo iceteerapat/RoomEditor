@@ -6,11 +6,16 @@ import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import IftaLabel from 'primevue/iftalabel';
+import axios from 'axios';
 
 const username = ref('')
 const email = ref('')
 const password = ref('')
 const visible = ref(false);
+
+function createAccount() {
+  axios.post('/sign-up/create_acct')
+}
 
 const handleSubmit = () => {
   console.log('Username: ', username.value)
