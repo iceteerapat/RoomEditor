@@ -10,23 +10,24 @@ import Checkbox from 'primevue/checkbox';
 import Password from 'primevue/password';
 import axios from 'axios';
 
-
-const username = ref('')
-const email = ref('')
-const password = ref('')
-const verifyPassword = ref('')
-const phone = ref('')
-const privacyFlag = ref(false)
-const dialogSuccess = ref(false);
-const dialogPrivacyPolicy = ref(false)
+const items = ref({
+  username: '',
+  email: '',
+  password: '',
+  verifyPassword: '',
+  phone: '',
+  privacyFlag: '',
+  dialogSuccess: false,
+  dialogPrivacyPolicy: false
+})
 
 const handleSubmit = () => {
-  console.log('Username: ', username.value)
-  console.log('Email: ', email.value)
-  console.log('Password: ', password.value)
-  console.log('Password: ', verifyPassword.value)
-  console.log('Phone: ', phone.value)
-  console.log('Privacy: ', privacyFlag.value)
+  console.log('Username: ', items.value.username);
+  console.log('Email: ', items.value.email);
+  console.log('Password: ', items.value.password);
+  console.log('Verify Password: ', items.value.verifyPassword);
+  console.log('Phone: ', items.value.phone);
+  console.log('Privacy Flag: ', items.value.privacyFlag);
 }
 
 function submit() {
@@ -42,31 +43,31 @@ function submit() {
                 <form @submit.prevent="handleSubmit">
 
                   <IftaLabel class="formusername">
-                    <InputText id="email" v-model="value" :invalid="!value"/>
+                    <InputText id="email" v-model="items.email" :invalid="!items.email"/>
                     <label for="email">Email:</label>
                   </IftaLabel>
                   <IftaLabel class="formusername">
-                    <InputText id="username" v-model="username" :invalid="!value"/>
+                    <InputText id="username" v-model="items.username" :invalid="!items.username"/>
                     <label for="username">Username:</label>
                   </IftaLabel>
                   <IftaLabel class="formpassword">
-                    <Password v-model="password" inputId="password" variant="filled" :invalid="!value" toggleMask/>
+                    <Password v-model="items.password" inputId="password" variant="filled" :invalid="!items.password" toggleMask/>
                     <label for="password">Password</label>
                   </IftaLabel>
                   <IftaLabel class="formpassword">
-                    <Password v-model="verifyPassword" inputId="verifyPassword" variant="filled" :invalid="!value" toggleMask/>
+                    <Password v-model="items.verifyPassword" inputId="verifyPassword" variant="filled" :invalid="!items.verifyPassword" toggleMask/>
                     <label for="verifyPassword">Verify Password</label>
                   </IftaLabel>
                   <IftaLabel class="formpassword">
-                    <InputText id="phone" v-model="phone" :invalid="!value"/>
+                    <InputText id="phone" v-model="items.phone" :invalid="!items.phone"/>
                     <label for="phone">Phone:</label>
                   </IftaLabel>
 
                   <div class="permissionFlag">
-                    <Checkbox v-model="privacyFlag" :invalid="!privacyFlag"  binary />
+                    <Checkbox v-model="items.privacyFlag" :invalid="!items.privacyFlag" binary />
                     <p>I accept with this</p>
-                    <label @click="dialogPrivacyPolicy = true">Privacy Terms</label>
-                    <Dialog v-model:visible="dialogPrivacyPolicy" modal header="Privacy Policy for Room Visualizer" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+                    <label @click="items.dialogPrivacyPolicy = true">Privacy Terms</label>
+                    <Dialog v-model:visible="items.dialogPrivacyPolicy" modal header="Privacy Policy for Room Visualizer" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
                       <p style="font-size: 18px; padding-bottom: 10px;">Effective Date: 1 May 2025</p>
                       <p style="font-size: 18px; padding-bottom: 3px;">1. Introduction</p>
                       <p style="font-size: 15px; padding-bottom: 10px; padding-left: 20px;">
@@ -152,8 +153,8 @@ function submit() {
                     </Dialog>
                   </div>
                   
-                  <Button type="submit" label="Create Account" @click="dialogSuccess = true" severity="primary" />
-                  <Dialog v-model:visible="dialogSuccess" modal header="Success" :style="{ width: '770px' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+                  <Button type="submit" label="Create Account" @click="items.dialogSuccess = true" severity="primary" />
+                  <Dialog v-model:visible="items.dialogSuccess" modal header="Success" :style="{ width: '770px' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
                     <p class="m-0">
                         Congratulations🎉🎉🎉 You have create account successfully. Please try login!
                     </p>
