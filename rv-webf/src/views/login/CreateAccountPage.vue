@@ -55,39 +55,59 @@ const handleSubmit = () => {
                   <div class="permissionFlag">
                     <Checkbox v-model="privacyFlag" :invalid="!privacyFlag"  binary />
                     <p>I accept with this</p>
-                    <label @click="dialogPrivacyPolicy = true">Privacy Policy</label>
-                    <Dialog v-model:visible="dialogPrivacyPolicy" modal header="Privacy Policy" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+                    <label @click="dialogPrivacyPolicy = true">Privacy Terms</label>
+                    <Dialog v-model:visible="dialogPrivacyPolicy" modal header="Privacy Policy for Room Visualizer" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+                      <p>Effective Date: 1 May 2025</p>
                       <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        1. Introduction
+                        Room Visualizer ("we," "our," or "us") is committed to protecting the privacy of our users. 
+                        This Privacy Policy outlines how we collect, use, disclose, and safeguard your information when you use our services. 
+                        By accessing or using our services, you agree to the terms of this Privacy Policy.
                       </p>
                       <p>
-                          "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
-                          ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                          adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid
-                          ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+                        2. Information We Collect
+                        We may collect personal information that you voluntarily provide to us when registering for our services, such as:
+                          Personal Identification Information: Name, email address, phone number, and other contact details.
+                          Account Information: Username, password, and other credentials.
+                          Usage Data: Information about how you use our services, including access times, pages viewed, and other diagnostic data.
                       </p>
                       <p>
-                          At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-                          qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod
-                          maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae
-                          non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
+                        3. Use of Information
+                        We use the collected information for various purposes, including:
+                        Providing and Maintaining Services: To create and manage your account, provide customer support, and deliver requested services.
+                        Marketing Analysis: To analyze user behavior and preferences to improve our services and develop targeted marketing strategies.
+                        Communication: To send you updates, promotional materials, and other information related to our services.
                       </p>
                       <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        4. Sharing of Information
+                        We may share your information in the following circumstances:
+                        With Parent and Affiliated Companies: We may share your information with our parent company and affiliates for purposes consistent with this Privacy Policy, including marketing analysis and service improvements.
+                        Service Providers: We may engage third-party companies to perform services on our behalf, such as data analysis, marketing, and customer service. These third parties are obligated to maintain the confidentiality of your information.
+                        Legal Requirements: We may disclose your information if required to do so by law or in response to valid requests by public authorities.
                       </p>
                       <p>
-                          "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
-                          ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                          adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid
-                          ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+                        5. Data Security
+                        We implement appropriate technical and organizational measures to protect your personal information from unauthorized access, use, or disclosure. 
+                        However, no method of transmission over the internet or electronic storage is completely secure.
                       </p>
                       <p>
-                          At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-                          qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod
-                          maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae
-                          non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
+                        6. Your Rights and Choices
+                        Depending on your location, you may have certain rights regarding your personal information, including:
+                        Access and Correction: You may request access to or correction of your personal information.
+                        Opt-Out: You may opt-out of receiving promotional communications from us by following the unsubscribe link in our emails.
+                      </p>
+                      <p>
+                        7. International Transfers
+                        Your information may be transferred to and maintained on servers located outside of your jurisdiction, where data protection laws may differ. 
+                        We take steps to ensure that your data is treated securely and in accordance with this Privacy Policy.
+                      </p>
+                      <p>
+                        8. Changes to This Privacy Policy
+                        We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on our website and updating the "Effective Date" at the top.
+                      </p>
+                      <p>
+                        9. Contact Us
+                        If you have any questions or concerns about this Privacy Policy, please contact us at:
                       </p>
                     </Dialog>
                   </div>
