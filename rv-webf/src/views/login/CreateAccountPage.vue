@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
+import { Form } from '@primevue/forms';
 
 import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext'
@@ -8,7 +9,6 @@ import Button from 'primevue/button'
 import IftaLabel from 'primevue/iftalabel';
 import Checkbox from 'primevue/checkbox';
 import Password from 'primevue/password';
-import axios from 'axios';
 
 const items = ref({
   username: '',
@@ -30,7 +30,7 @@ const handleSubmit = () => {
   console.log('Privacy Flag: ', items.value.privacyFlag);
 }
 
-function submit() {
+function onSubmit() {
 
 }
 </script>
@@ -40,26 +40,26 @@ function submit() {
         <section class="createaccountpage">
             <div class="createaccountform">
                 <h1>Create an account to visualize dream rooms</h1>
-                <form @submit.prevent="handleSubmit">
+                <form @submit.prevent="handleSubmit" method="POST">
 
                   <IftaLabel class="formusername">
-                    <InputText id="email" v-model="items.email" :invalid="!items.email"/>
+                    <InputText id="email" v-model="items.email" :invalid="items.email === ''"/>
                     <label for="email">Email:</label>
                   </IftaLabel>
                   <IftaLabel class="formusername">
-                    <InputText id="username" v-model="items.username" :invalid="!items.username"/>
+                    <InputText id="username" v-model="items.username" :invalid="items.username === ''"/>
                     <label for="username">Username:</label>
                   </IftaLabel>
                   <IftaLabel class="formpassword">
-                    <Password v-model="items.password" inputId="password" variant="filled" :invalid="!items.password" toggleMask/>
+                    <Password v-model="items.password" inputId="password" variant="filled" :invalid="items.password === ''" toggleMask/>
                     <label for="password">Password</label>
                   </IftaLabel>
                   <IftaLabel class="formpassword">
-                    <Password v-model="items.verifyPassword" inputId="verifyPassword" variant="filled" :invalid="!items.verifyPassword" toggleMask/>
+                    <Password v-model="items.verifyPassword" inputId="verifyPassword" variant="filled" :invalid="items.verifyPassword === ''" toggleMask/>
                     <label for="verifyPassword">Verify Password</label>
                   </IftaLabel>
                   <IftaLabel class="formpassword">
-                    <InputText id="phone" v-model="items.phone" :invalid="!items.phone"/>
+                    <InputText id="phone" v-model="items.phone" :invalid="items.phone === ''"/>
                     <label for="phone">Phone:</label>
                   </IftaLabel>
 
