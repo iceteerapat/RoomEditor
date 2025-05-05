@@ -1,7 +1,9 @@
 import express from 'express';
 
-const route = express();
+import { createAccount } from '../controllers/CreateAccountController';
 
-route.post('/createAccount/create', (req, res) =>{
-    
-})
+const route = express();    
+
+route.post('/createAccount/create', createAccount);
+
+export default route;

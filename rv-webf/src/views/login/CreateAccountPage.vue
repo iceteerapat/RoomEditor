@@ -10,15 +10,18 @@ import IftaLabel from 'primevue/iftalabel';
 import Checkbox from 'primevue/checkbox';
 import Password from 'primevue/password';
 
+import RepositoriesFactory from '../../apis/repositories/RepositoriesFactory';
+const respository = RepositoriesFactory.get('CreateAccountRepository');
+
+const dialogPrivacyPolicy = ref(false);
+
 const items = ref({
   username: '',
   email: '',
   password: '',
   verifyPassword: '',
   phone: '',
-  privacyFlag: '',
-  dialogSuccess: false,
-  dialogPrivacyPolicy: false
+  privacyFlag: ''
 })
 
 const handleSubmit = () => {
@@ -32,6 +35,21 @@ const handleSubmit = () => {
 
 function onSubmit() {
 
+  async () => {
+    const request = {};
+    for (const i of Object.keys(items)) { 
+      request[i] = items[i];
+    }
+    if (Button==true) {
+      respository.create(request)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(res => {
+        console.log(res);
+      })
+    }
+  }
 }
 </script>
 
@@ -66,8 +84,8 @@ function onSubmit() {
                   <div class="permissionFlag">
                     <Checkbox v-model="items.privacyFlag" :invalid="!items.privacyFlag" binary />
                     <p>I accept with this</p>
-                    <label @click="items.dialogPrivacyPolicy = true">Privacy Terms</label>
-                    <Dialog v-model:visible="items.dialogPrivacyPolicy" modal header="Privacy Policy for Room Visualizer" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+                    <label @click="dialogPrivacyPolicy = true">Privacy Terms</label>
+                    <Dialog v-model:visible="dialogPrivacyPolicy" modal header="Privacy Policy for Room Visualizer" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
                       <p style="font-size: 18px; padding-bottom: 10px;">Effective Date: 1 May 2025</p>
                       <p style="font-size: 18px; padding-bottom: 3px;">1. Introduction</p>
                       <p style="font-size: 15px; padding-bottom: 10px; padding-left: 20px;">
@@ -153,12 +171,12 @@ function onSubmit() {
                     </Dialog>
                   </div>
                   
-                  <Button type="submit" label="Create Account" @click="items.dialogSuccess = true" severity="primary" />
-                  <Dialog v-model:visible="items.dialogSuccess" modal header="Success" :style="{ width: '770px' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+                  <Button type="submit" label="Create Account" @click="onSubmit()" severity="primary" />
+                  <!-- <Dialog v-model:visible="items.dialogSuccess" modal header="Success" :style="{ width: '770px' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
                     <p class="m-0">
                         Congratulations🎉🎉🎉 You have create account successfully. Please try login!
                     </p>
-                  </Dialog>
+                  </Dialog> -->
                   <div class="checkaccount">
                     Aleady have an account? <RouterLink to="/login">Log in</RouterLink>
                   </div>
