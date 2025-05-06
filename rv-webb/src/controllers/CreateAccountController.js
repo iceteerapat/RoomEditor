@@ -1,19 +1,20 @@
-import rv_customer_acct from "../models/rv_customer_acct";
+import CustomerAccount from "../models/rv_customer_acct.js";
 
 export const createAccount = async(req, res) => {
     try {
-        const { username, email, password } = req.body;
-    
-        // Basic validation (you can add more)
-        if (!username || !email || !password) {
+        const { username, email, password, verify_password, phone, privacy_flag } = req.body;
+
+        if (!username || !email || !password || !verify_password || !phone || !privacy_flag) {
           return res.status(400).json({ message: 'Missing required fields' });
         }
-    
-        // Create new account
-        const newAccount = await rv_customer_acct.create({
+
+        const newAccount = await CustomerAccount.create({
           username,
           email,
-          password // ideally hash this before storing
+          password,
+          verify_password,
+          phone,
+          privacy_flag
         });
     
         return res.status(201).json({

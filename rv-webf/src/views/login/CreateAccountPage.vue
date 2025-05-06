@@ -14,41 +14,40 @@ import RepositoriesFactory from '../../apis/repositories/RepositoriesFactory';
 const respository = RepositoriesFactory.get('CreateAccountRepository');
 
 const dialogPrivacyPolicy = ref(false);
+const dialogSuccess = ref(false);
 
 const items = ref({
   username: '',
   email: '',
   password: '',
-  verifyPassword: '',
+  verify_password: '',
   phone: '',
-  privacyFlag: ''
+  privacy_flag: ''
 })
 
-const handleSubmit = () => {
+const logSubmit = () => {
   console.log('Username: ', items.value.username);
   console.log('Email: ', items.value.email);
   console.log('Password: ', items.value.password);
-  console.log('Verify Password: ', items.value.verifyPassword);
+  console.log('Verify Password: ', items.value.verify_password);
   console.log('Phone: ', items.value.phone);
-  console.log('Privacy Flag: ', items.value.privacyFlag);
+  console.log('Privacy Flag: ', items.value.privacy_flag);
 }
 
-function onSubmit() {
-
-  async () => {
-    const request = {};
-    for (const i of Object.keys(items)) { 
-      request[i] = items[i];
-    }
-    if (Button==true) {
-      respository.create(request)
-      .then(response => {
-        console.log(response);
-      })
-      .catch(res => {
-        console.log(res);
-      })
-    }
+async function onSubmit() {
+  if(items.value.privacy_flag == true){
+    items.value.privacy_flag = 'Y';
+  } else {
+    items.value.privacy_flag = 'N';
+  }
+  console.log('Form is submitting...');
+  const request = {...items.value};
+  console.log('Sending:', JSON.stringify(request));
+  try {
+    const response = await respository.create(request);
+    console.log(response);
+  } catch (error) {
+    console.error(error);
   }
 }
 </script>
@@ -58,7 +57,7 @@ function onSubmit() {
         <section class="createaccountpage">
             <div class="createaccountform">
                 <h1>Create an account to visualize dream rooms</h1>
-                <form @submit.prevent="handleSubmit" method="POST">
+                <form  method="POST" @submit.prevent="onSubmit">
 
                   <IftaLabel class="formusername">
                     <InputText id="email" v-model="items.email" :invalid="items.email === ''"/>
@@ -73,8 +72,8 @@ function onSubmit() {
                     <label for="password">Password</label>
                   </IftaLabel>
                   <IftaLabel class="formpassword">
-                    <Password v-model="items.verifyPassword" inputId="verifyPassword" variant="filled" :invalid="items.verifyPassword === ''" toggleMask/>
-                    <label for="verifyPassword">Verify Password</label>
+                    <Password v-model="items.verify_password" inputId="verify_password" variant="filled" :invalid="items.verify_password === ''" toggleMask/>
+                    <label for="verify_password">Verify Password</label>
                   </IftaLabel>
                   <IftaLabel class="formpassword">
                     <InputText id="phone" v-model="items.phone" :invalid="items.phone === ''"/>
@@ -82,7 +81,7 @@ function onSubmit() {
                   </IftaLabel>
 
                   <div class="permissionFlag">
-                    <Checkbox v-model="items.privacyFlag" :invalid="!items.privacyFlag" binary />
+                    <Checkbox v-model="items.privacy_flag" :invalid="!items.privacy_flag" binary />
                     <p>I accept with this</p>
                     <label @click="dialogPrivacyPolicy = true">Privacy Terms</label>
                     <Dialog v-model:visible="dialogPrivacyPolicy" modal header="Privacy Policy for Room Visualizer" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
@@ -171,12 +170,12 @@ function onSubmit() {
                     </Dialog>
                   </div>
                   
-                  <Button type="submit" label="Create Account" @click="onSubmit()" severity="primary" />
-                  <!-- <Dialog v-model:visible="items.dialogSuccess" modal header="Success" :style="{ width: '770px' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+                  <Button type="submit" label="Create Account" @click="logSubmit, dialogSuccess=true" severity="primary" />
+                  <Dialog v-model:visible="dialogSuccess" modal header="Success" :style="{ width: '770px' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
                     <p class="m-0">
                         Congratulations🎉🎉🎉 You have create account successfully. Please try login!
                     </p>
-                  </Dialog> -->
+                  </Dialog>
                   <div class="checkaccount">
                     Aleady have an account? <RouterLink to="/login">Log in</RouterLink>
                   </div>

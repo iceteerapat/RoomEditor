@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { createAccount } from '../controllers/CreateAccountController';
+import { createAccount } from '../controllers/CreateAccountController.js';
 
 const route = express();    
 

@@ -1,19 +1,40 @@
 import { createWebHistory, createRouter } from "vue-router";
 
-import HomePage from "../views/home/HomePage.vue";
-import LoginPage from "../views/login/LoginPage.vue";
-import PricePage from "../views/price/PricePage.vue";
-import ServicePage from "../views/service/ServicePage.vue";
-import ForgotPassword from "../views/login/ForgotPassword.vue";
-import CreateAccountPage from "../views/login/CreateAccountPage.vue";
-
 const routes = [
-    {path: '/login', component: LoginPage},
-    {path: '/home', component: HomePage},
-    {path: '/price', component: PricePage},
-    {path: '/service', component: ServicePage},
-    {path: '/createAccount', component: CreateAccountPage},
-    {path: '/forgetPassword', component: ForgotPassword}
+    {
+        path: '/', 
+        redirect: '/home'
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: () => import('../views/login/LoginPage.vue')
+    },
+    {
+        path: '/createAccount', 
+        name: 'createAccount',
+        component: () => import('../views/login/CreateAccountPage.vue')
+    },
+    {
+        path: '/forgetPassword', 
+        name: 'forgetPassword',
+        component: () => import('../views/login/ForgotPassword.vue')
+    },
+    {
+        path: '/home', 
+        name: 'home',
+        component: () => import('../views/home/HomePage.vue')
+    },
+    {
+        path: '/price',
+        name: 'price',
+        component: () => import('../views/price/PricePage.vue')
+    },
+    {
+        path: '/service', 
+        name: 'service',
+        component: () => import('../views/service/ServicePage.vue')
+    }
 ]
 
 const router = createRouter({
