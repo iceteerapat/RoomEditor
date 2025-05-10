@@ -313,11 +313,21 @@ transform: translateY(-10px);
 .formusername input {
   width: 370px;
 }
+.formusername .p-message-text{
+  font-size: 11px !important;
+  padding-left: 5px !important;
+  padding-top: 2px !important;
+}
 .formpassword {
   margin-bottom: 10px;
 }
 .formpassword input{
   width: 370px;
+}
+.formpassword .p-message-text{
+  font-size: 11px !important;
+  padding-left: 5px !important;
+  padding-top: 2px !important;
 }
 .forgetpassword{
   display: flex;
@@ -365,7 +375,7 @@ transform: translateY(-10px);
   box-shadow: 0 0 15px rgba(0,0,0,0.1);
   text-align: center;
   width: 450px;
-  height: 650px;
+   min-height: 650px;
 }
 .createaccountform h1 {
   font-size: 30px;

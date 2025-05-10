@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-dotenv.config(); // Load .env file
+dotenv.config();
 
 import { Sequelize } from 'sequelize';
 

@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import route from './src/routes/apis.js';
 import sequelize from './sequelize-instance.js';
 

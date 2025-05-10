@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import { Form } from '@primevue/forms';
 
@@ -9,6 +9,7 @@ import Button from 'primevue/button'
 import IftaLabel from 'primevue/iftalabel';
 import Checkbox from 'primevue/checkbox';
 import Password from 'primevue/password';
+import Message from 'primevue/message';
 
 import RepositoriesFactory from '../../apis/repositories/RepositoriesFactory';
 const respository = RepositoriesFactory.get('CreateAccountRepository');
@@ -16,38 +17,69 @@ const respository = RepositoriesFactory.get('CreateAccountRepository');
 const dialogPrivacyPolicy = ref(false);
 const dialogSuccess = ref(false);
 
-const items = ref({
+const items = reactive({
   username: '',
   email: '',
   password: '',
-  verify_password: '',
+  verifyPassword: '',
   phone: '',
-  privacy_flag: ''
+  privacyFlag: ''
 })
 
 const logSubmit = () => {
-  console.log('Username: ', items.value.username);
-  console.log('Email: ', items.value.email);
-  console.log('Password: ', items.value.password);
-  console.log('Verify Password: ', items.value.verify_password);
-  console.log('Phone: ', items.value.phone);
-  console.log('Privacy Flag: ', items.value.privacy_flag);
+
 }
 
-async function onSubmit() {
-  if(items.value.privacy_flag == true){
-    items.value.privacy_flag = 'Y';
-  } else {
-    items.value.privacy_flag = 'N';
+const resolver = ({ values }) => {
+    const errors = {};
+
+    if (!values.email) {
+        errors.email = [{ message: 'Email is required.' }];
+    }
+    if (!values.username) {
+        errors.username = [{ message: 'Username is required.' }];
+    }
+    if (!values.password) {
+        errors.password = [{ message: 'Password is required.' }];
+    }
+    if (!values.verifyPassword) {
+        errors.verifyPassword = [{ message: 'Verify Password is required.' }];
+    }
+    if (!values.phone) {
+        errors.phone = [{ message: 'Phone is required.' }];
+    }
+    return {
+        values, 
+        errors
+    };
+};
+
+async function onSubmit({ valid }) {
+  if (!valid) {
+    return;
   }
-  console.log('Form is submitting...');
-  const request = {...items.value};
-  console.log('Sending:', JSON.stringify(request));
+  
+  if(items.privacyFlag == true){
+    items.privacyFlag = 'Y';
+  } else {
+    items.privacyFlag = 'N';
+  }
+  console.log('Username: ', items.username);
+  console.log('Email: ', items.email);
+  console.log('Password: ', items.password);
+  console.log('Verify Password: ', items.verifyPassword);
+  console.log('Phone: ', items.phone);
+  console.log('Privacy Flag: ', items.privacyFlag);
+  const request = {items};
+  console.log('Request: ', JSON.stringify(request));
   try {
     const response = await respository.create(request);
-    console.log(response);
+    console.log("Response: " + response);
+    if(response.status === '201'){
+      dialogSuccess.value === true;
+    }
   } catch (error) {
-    console.error(error);
+    console.error("Error: "+ error);
   }
 }
 </script>
@@ -57,31 +89,30 @@ async function onSubmit() {
         <section class="createaccountpage">
             <div class="createaccountform">
                 <h1>Create an account to visualize dream rooms</h1>
-                <form  method="POST" @submit.prevent="onSubmit">
-
+                <Form v-slot="$form" :value="items" :resolver="resolver" method="POST" @submit="onSubmit">
                   <IftaLabel class="formusername">
-                    <InputText id="email" v-model="items.email" :invalid="items.email === ''"/>
-                    <label for="email">Email:</label>
+                    <InputText id="email" name="email" v-model="items.email"/><label for="email">Email:</label>
+                    <Message class="p-message-text" v-if="$form.email?.invalid" severity="error" variant="simple">{{ $form.email.error.message }}</Message>
                   </IftaLabel>
                   <IftaLabel class="formusername">
-                    <InputText id="username" v-model="items.username" :invalid="items.username === ''"/>
-                    <label for="username">Username:</label>
+                    <InputText id="username" name="username" v-model="items.username"/><label for="username">Username:</label>
+                    <Message class="p-message-text" v-if="$form.username?.invalid" severity="error" variant="simple">{{ $form.username.error.message }}</Message>
                   </IftaLabel>
                   <IftaLabel class="formpassword">
-                    <Password v-model="items.password" inputId="password" variant="filled" :invalid="items.password === ''" toggleMask/>
-                    <label for="password">Password</label>
+                    <Password v-model="items.password" name="password" inputId="password" variant="filled" toggleMask/><label for="password">Password</label>
+                    <Message class="p-message-text" v-if="$form.password?.invalid" severity="error" variant="simple">{{ $form.password.error.message }}</Message>
                   </IftaLabel>
                   <IftaLabel class="formpassword">
-                    <Password v-model="items.verify_password" inputId="verify_password" variant="filled" :invalid="items.verify_password === ''" toggleMask/>
-                    <label for="verify_password">Verify Password</label>
+                    <Password v-model="items.verifyPassword" name="verifyPassword" inputId="verifyPassword" variant="filled" toggleMask/><label for="verifyPassword">Verify Password</label>
+                    <Message class="p-message-text" v-if="$form.verifyPassword?.invalid" severity="error" variant="simple">{{ $form.verifyPassword.error.message }}</Message>
                   </IftaLabel>
                   <IftaLabel class="formpassword">
-                    <InputText id="phone" v-model="items.phone" :invalid="items.phone === ''"/>
-                    <label for="phone">Phone:</label>
+                    <InputText id="phone" name="phone" v-model="items.phone"/><label for="phone">Phone:</label>
+                    <Message class="p-message-text" v-if="$form.phone?.invalid" severity="error" variant="simple">{{ $form.phone.error.message }}</Message>
                   </IftaLabel>
 
                   <div class="permissionFlag">
-                    <Checkbox v-model="items.privacy_flag" :invalid="!items.privacy_flag" binary />
+                    <Checkbox v-model="items.privacyFlag" :invalid="!items.privacyFlag" binary />
                     <p>I accept with this</p>
                     <label @click="dialogPrivacyPolicy = true">Privacy Terms</label>
                     <Dialog v-model:visible="dialogPrivacyPolicy" modal header="Privacy Policy for Room Visualizer" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
@@ -169,8 +200,8 @@ async function onSubmit() {
                       <p style="font-size: 15px; font-weight: 600; padding-right: 40px; padding-bottom: 10px; display: flex; justify-content: flex-end;">Room Visualizer Creater</p>
                     </Dialog>
                   </div>
-                  
-                  <Button type="submit" label="Create Account" @click="logSubmit, dialogSuccess=true" severity="primary" />
+
+                  <Button type="submit" label="Create Account" severity="primary" />
                   <Dialog v-model:visible="dialogSuccess" modal header="Success" :style="{ width: '770px' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
                     <p class="m-0">
                         Congratulations🎉🎉🎉 You have create account successfully. Please try login!
@@ -179,7 +210,7 @@ async function onSubmit() {
                   <div class="checkaccount">
                     Aleady have an account? <RouterLink to="/login">Log in</RouterLink>
                   </div>
-                </form>
+                </Form>
             </div>
         </section>
     </div>
