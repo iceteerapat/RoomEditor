@@ -2,9 +2,10 @@ import CustomerAccount from "../models/rv_customer_acct.js";
 
 export const createAccount = async(req, res) => {
     try {
-        const { username, email, password, verify_password, phone, privacy_flag } = req.body;
+        const { username, email, password, verifyPassword, phone, privacyFlag } = req.body;
 
-        if (!username || !email || !password || !verify_password || !phone || !privacy_flag) {
+        if (!username || !email || !password || !verifyPassword || !phone || !privacyFlag) {
+          console.error('Missing required fields:', error);
           return res.status(400).json({ message: 'Missing required fields' });
         }
 
@@ -12,9 +13,9 @@ export const createAccount = async(req, res) => {
           username,
           email,
           password,
-          verify_password,
+          verifyPassword,
           phone,
-          privacy_flag
+          privacyFlag
         });
     
         return res.status(201).json({

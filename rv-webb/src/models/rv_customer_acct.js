@@ -16,7 +16,7 @@ const CustomerAccount = sequelize.define('rv_customer_acct', {
     type: DataTypes.STRING(20),
     allowNull: false
   },
-  verify_password: {
+  verifyPassword: {
     type: DataTypes.STRING(20),
     allowNull: false
   },
@@ -28,7 +28,7 @@ const CustomerAccount = sequelize.define('rv_customer_acct', {
     type: DataTypes.STRING(20),
     allowNull: false
   },
-  privacy_flag: {
+  privacyFlag: {
     type: DataTypes.STRING(1),
     allowNull: false
   }
