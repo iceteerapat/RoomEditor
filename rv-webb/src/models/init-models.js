@@ -1,12 +1,12 @@
 var DataTypes = require("sequelize").DataTypes;
-var _rv_customer_acct = require("./rv_customer_acct");
+var _rv_account_login = require("./rvAccountLogin");
 
 function initModels(sequelize) {
-  var rv_customer_acct = _rv_customer_acct(sequelize, DataTypes);
+  var rv_account_login = _rv_account_login(sequelize, DataTypes);
 
 
   return {
-    rv_customer_acct,
+    rv_account_login,
   };
 }
 module.exports = initModels;

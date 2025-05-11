@@ -1,21 +1,29 @@
-import CustomerAccount from "../models/rv_customer_acct.js";
+import AccountLogin from "../models/rvAccountLogin.js";
 
 export const createAccount = async(req, res) => {
     try {
-        const { username, email, password, verifyPassword, phone, privacyFlag } = req.body;
+        const { items } = req.body;
 
-        if (!username || !email || !password || !verifyPassword || !phone || !privacyFlag) {
-          console.error('Missing required fields:', error);
+        if (!items.username || !items.email || !items.password || !items.verifyPassword || !items.phone || !items.privacyFlag) {
+          console.error('Missing required fields');
           return res.status(400).json({ message: 'Missing required fields' });
         }
+        if(items.verifyPassword !== items.password){
+          console.error('Password and Verify Password is not the same');
+          return res.status(401).json({ message: 'Password and Verify Password is not the same' });
+        }
 
-        const newAccount = await CustomerAccount.create({
+        const { username, email, password, verifyPassword, phone, privacyFlag } = items;
+        const createDate = new Date();
+
+        const newAccount = await AccountLogin.create({
           username,
           email,
           password,
           verifyPassword,
           phone,
-          privacyFlag
+          privacyFlag,
+          createDate
         });
     
         return res.status(201).json({

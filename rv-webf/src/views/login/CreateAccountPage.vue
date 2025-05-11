@@ -56,7 +56,7 @@ const resolver = ({ values }) => {
 
 async function onSubmit({ valid }) {
   if (!valid) {
-    return;
+    return console.log("Please fill required fields");
   }
   
   if(items.privacyFlag == true){
@@ -74,9 +74,9 @@ async function onSubmit({ valid }) {
   console.log('Request: ', JSON.stringify(request));
   try {
     const response = await respository.create(request);
-    console.log("Response: " + response);
-    if(response.status === '201'){
-      dialogSuccess.value === true;
+    console.log("Response: ", response);
+    if(response.status === 201){
+      dialogSuccess.value = true;
     }
   } catch (error) {
     console.error("Error: "+ error);
