@@ -26,10 +26,6 @@ const items = reactive({
   privacyFlag: ''
 })
 
-const logSubmit = () => {
-
-}
-
 const resolver = ({ values }) => {
     const errors = {};
 

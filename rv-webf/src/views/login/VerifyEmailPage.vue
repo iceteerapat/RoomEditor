@@ -2,23 +2,22 @@
 import { RouterLink, useRoute, useRouter } from 'vue-router';
 import { onMounted } from 'vue';
 
-import Client from '../../apis/AxiosClient/Axios';
 import Button from 'primevue/button';
+import RepositoriesFactory from '../../apis/repositories/RepositoriesFactory';
 
+const respository = RepositoriesFactory.get('CreateAccountRepository');
 const route = useRoute(); 
-const router = useRouter();
 
 onMounted(async () => {
-    
+
   const token = route.params.token;
+
   try {
-    const response = await Client.get(`/verify-email/${token}`);
-    alert(response.data.message); 
-    router.push('/login'); 
+    await respository.verify(token);
   } catch (error) {
-    alert('Verification failed or expired. Please try again.');
     console.error(error);
   }
+
 });
 
 </script>
@@ -41,8 +40,8 @@ onMounted(async () => {
             </nav>
         </header>
         <main>
-            <section>
-                <h2>Verification Email Success!! Please try login</h2>
+            <section class="verify-page">
+                <h2 style="color: black;">Verification Email Success!! Please try login</h2>
             </section>
         </main>
         <footer class="footerpage">

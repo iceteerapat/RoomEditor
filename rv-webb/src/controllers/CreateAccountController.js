@@ -1,6 +1,9 @@
 import AccountLogin from "../models/rvAccountLogin.js";
+import jwt from "jsonwebtoken";
+
 import { validator } from "sequelize/lib/utils/validator-extras";
 import {emailVerification} from "../services/EmailService.js"
+
 
 export const create = async(req, res) => {
     try {
@@ -88,10 +91,10 @@ export const verify = async(req, res) => {
     account.verifyEmail = 'Y';
     account.active = 'Y';
     await account.save();
-
     return res.status(200).json({ message: 'Email verified successfully' });
 
    } catch (error) {
-
+      console.error('Verification email error:', error);
+      return res.status(500).json({ message: 'Verification email error' });
    }
 }
