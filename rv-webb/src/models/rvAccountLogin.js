@@ -38,11 +38,20 @@ const AccountLogin = sequelize.define('rv_account_login', {
       type: DataTypes.DATE,
       allowNull: false,
       field: 'create_date'
+    },
+    verifyEmail:{
+      type: DataTypes.STRING(1),
+      allowNull: false,
+      field: 'verify_email'
+    },
+    active:{
+      type: DataTypes.STRING(1),
+      allowNull: false
     }
   }, {
     sequelize,
     tableName: 'rv_account_login',
-    schema: 'mock',
+    schema: 'public',
     timestamps: false,
     indexes: [
       {

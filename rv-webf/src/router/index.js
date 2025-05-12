@@ -21,6 +21,11 @@ const routes = [
         component: () => import('../views/login/ForgotPassword.vue')
     },
     {
+        path: '/verify-email/:token',
+        name: 'verifyEmail',
+        component: () => import('../views/login/VerifyEmailPage.vue')
+    },
+    {
         path: '/home', 
         name: 'home',
         component: () => import('../views/home/HomePage.vue')

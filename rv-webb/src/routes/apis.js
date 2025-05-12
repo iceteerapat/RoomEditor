@@ -1,9 +1,9 @@
 import express from 'express';
 
-import { createAccount } from '../controllers/CreateAccountController.js';
+import { create, verify } from '../controllers/CreateAccountController.js';
 
 const route = express();    
 
-route.post('/createAccount/create', createAccount);
-
+route.post('/createAccount/create', create);
+route.get('/verify-email/:token', verify)
 export default route;

@@ -70,13 +70,13 @@ async function onSubmit({ valid }) {
   console.log('Verify Password: ', items.verifyPassword);
   console.log('Phone: ', items.phone);
   console.log('Privacy Flag: ', items.privacyFlag);
-  const request = {items};
-  console.log('Request: ', JSON.stringify(request));
+  console.log('Request: ', JSON.stringify(items));
   try {
-    const response = await respository.create(request);
+    const response = await respository.create(items);
     console.log("Response: ", response);
-    if(response.status === 201){
+    if(response.status === 200){
       dialogSuccess.value = true;
+
     }
   } catch (error) {
     console.error("Error: "+ error);
@@ -204,7 +204,7 @@ async function onSubmit({ valid }) {
                   <Button type="submit" label="Create Account" severity="primary" />
                   <Dialog v-model:visible="dialogSuccess" modal header="Success" :style="{ width: '770px' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
                     <p class="m-0">
-                        Congratulations🎉🎉🎉 You have create account successfully. Please try login!
+                        Congratulations🎉🎉🎉 You have create account successfully. Please verify your email and get Start!!!
                     </p>
                   </Dialog>
                   <div class="checkaccount">
