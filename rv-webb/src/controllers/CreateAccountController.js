@@ -1,5 +1,6 @@
 import AccountLogin from "../models/rvAccountLogin.js";
 import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt';
 
 import { validator } from "sequelize/lib/utils/validator-extras";
 import {emailVerification} from "../services/EmailService.js"
@@ -48,12 +49,14 @@ export const create = async(req, res) => {
         const createDate = new Date();
         const verifyEmail = 'N';
         const active = 'N';
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const hashedVerifyPassword = await bcrypt.hash(req.body.verifyPassword, 10);
 
         const newAccount = await AccountLogin.create({
           username,
           email,
-          password,
-          verifyPassword,
+          password: hashedPassword,
+          verifyPassword: hashedVerifyPassword,
           phone,
           privacyFlag,
           createDate,

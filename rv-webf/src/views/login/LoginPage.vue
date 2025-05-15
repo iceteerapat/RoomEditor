@@ -1,19 +1,38 @@
 <script setup>
 import { ref } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter  } from 'vue-router';
+
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import IftaLabel from 'primevue/iftalabel';
+import RepositoriesFactory from '../../apis/repositories/RepositoriesFactory';
 
-const username = ref('');
+const repository = RepositoriesFactory.get('LoginRepository');
+
 const email = ref('');
 const password = ref('');
+const router = useRouter();
 
 const handleSubmit = () => {
   console.log('Email:', email.value);
-  console.log('Username: ', username.value);
   console.log('Password:', password.value);
 }
+
+const login = async() => {
+  try {
+
+    const payload = { email: email.value, password: password.value };
+    const response = await repository.login(payload);
+    alert('Login Success');
+    localStorage.setItem('token', response.data.token);
+    router.push('/home');
+
+  } catch (error) {
+    alert('Login failed');
+    console.error(error);
+  }
+};
+
 </script>
 
 <template>
@@ -23,8 +42,8 @@ const handleSubmit = () => {
         <h1>Login</h1>
         <form @submit.prevent="handleSubmit">
           <IftaLabel class="formusername">
-            <InputText id="username" v-model="username" :invalid="!value"/>
-            <label for="username">Username:</label>
+            <InputText id="email" v-model="email" :invalid="!value"/>
+            <label for="email">Email:</label>
           </IftaLabel>
           <IftaLabel class="formpassword">
             <InputText id="password" type="password" v-model="password" :invalid="!value"/>
@@ -33,7 +52,7 @@ const handleSubmit = () => {
           <div class="forgetpassword"> 
               <RouterLink to="/forgetpassword">Forget password?</RouterLink>
           </div>
-          <Button type="submit" label="Log in" severity="primary" />
+          <Button type="submit" label="Log in" severity="primary" @click="login" />
         </form>
         <ul>
           <div class="signup">

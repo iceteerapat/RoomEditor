@@ -1,7 +1,9 @@
 import CreateAccountRepository from './CreateAccountRepository';
+import LoginRepository from './LoginRepository';
 
 const repositories = {
-    'CreateAccountRepository': CreateAccountRepository
+    'CreateAccountRepository': CreateAccountRepository,
+    'LoginRepository': LoginRepository
 }
 
 export default {

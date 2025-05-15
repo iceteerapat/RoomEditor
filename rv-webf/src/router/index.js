@@ -16,14 +16,14 @@ const routes = [
         component: () => import('../views/login/CreateAccountPage.vue')
     },
     {
+        path: '/createAccount/verify/:token',
+        name: 'verifyEmail',
+        component: () => import('../views/login/VerifyEmailPage.vue')
+    },
+    {
         path: '/forgetPassword', 
         name: 'forgetPassword',
         component: () => import('../views/login/ForgotPassword.vue')
-    },
-    {
-        path: '/verify-email/:token',
-        name: 'verifyEmail',
-        component: () => import('../views/login/VerifyEmailPage.vue')
     },
     {
         path: '/home', 

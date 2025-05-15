@@ -6,7 +6,7 @@ export async function emailVerification(email, username){
       const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '15m' });
 
       const transporter = nodemailer.createTransport({
-          service: 'Gmail', // or use "SMTP" settings for custom domains
+          service: 'Gmail',
           auth: {
               user: process.env.EMAIL_USER,
               pass: process.env.EMAIL_PASS
@@ -22,6 +22,7 @@ export async function emailVerification(email, username){
           <p>Thank you for registering. Please click the link below to verify your email:</p>
           <a href="${process.env.BASE_URL}/createAccount/verify/${token}">Verify Email</a>
           <p>This link will expire in 15 minutes.</p>
+          <p>Room Visualizer</p>
         `
      };
       const info = await transporter.sendMail(mailOptions);
