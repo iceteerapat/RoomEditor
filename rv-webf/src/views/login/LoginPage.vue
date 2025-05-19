@@ -25,7 +25,7 @@ const login = async() => {
     const response = await repository.login(payload);
     alert('Login Success');
     localStorage.setItem('token', response.data.token);
-    router.push('/home');
+    router.push('/service');
 
   } catch (error) {
     alert('Login failed');
