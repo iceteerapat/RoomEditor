@@ -44,10 +44,7 @@ const resolver = ({ values }) => {
     if (!values.phone) {
         errors.phone = [{ message: 'Phone is required.' }];
     }
-    return {
-        values, 
-        errors
-    };
+    return {values, errors};
 };
 
 async function onSubmit({ valid }) {
@@ -60,13 +57,7 @@ async function onSubmit({ valid }) {
   } else {
     items.privacyFlag = 'N';
   }
-  console.log('Username: ', items.username);
-  console.log('Email: ', items.email);
-  console.log('Password: ', items.password);
-  console.log('Verify Password: ', items.verifyPassword);
-  console.log('Phone: ', items.phone);
-  console.log('Privacy Flag: ', items.privacyFlag);
-  console.log('Request: ', JSON.stringify(items));
+  
   try {
     const response = await respository.create(items);
     console.log("Response: ", response);

@@ -1,10 +1,10 @@
 import CreateAccountRepository from './CreateAccountRepository';
-import LoginRepository from './LoginRepository';
+import AuthRepository from './AuthRepository';
 import RoomServiceRepository from './RoomServiceRepository';
 
 const repositories = {
     'CreateAccountRepository': CreateAccountRepository,
-    'LoginRepository': LoginRepository,
+    'AuthRepository': AuthRepository,
     'RoomServiceRepository': RoomServiceRepository
 }
 

@@ -35,3 +35,11 @@ export const login = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+export const logout = async () =>{
+
+}
+
+export const refresh = async () =>{
+
+}

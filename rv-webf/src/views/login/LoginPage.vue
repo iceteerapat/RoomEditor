@@ -1,17 +1,17 @@
 <script setup>
 import { ref } from 'vue';
 import { RouterLink, useRouter  } from 'vue-router';
+import { useAuthStore } from '../../store/AuthStore';
 
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import IftaLabel from 'primevue/iftalabel';
-import RepositoriesFactory from '../../apis/repositories/RepositoriesFactory';
 
-const repository = RepositoriesFactory.get('LoginRepository');
+const store = useAuthStore();
+const router = useRouter();
 
 const email = ref('');
 const password = ref('');
-const router = useRouter();
 
 const handleSubmit = () => {
   console.log('Email:', email.value);
@@ -19,18 +19,8 @@ const handleSubmit = () => {
 }
 
 const login = async() => {
-  try {
-
-    const payload = { email: email.value, password: password.value };
-    const response = await repository.login(payload);
-    alert('Login Success');
-    localStorage.setItem('token', response.data.token);
+    store.login(email.value, password.value);
     router.push('/service');
-
-  } catch (error) {
-    alert('Login failed');
-    console.error(error);
-  }
 };
 
 </script>
