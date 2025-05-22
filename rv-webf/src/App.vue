@@ -11,6 +11,8 @@ import DynamicDialog from 'primevue/dynamicdialog';
   <RouterView />
 </template>
 
+<style src="@fortawesome/fontawesome-free/css/all.min.css"></style>
+
 <style>
 @import './assets/css/room-visuallizer-theme.css';
 </style>
