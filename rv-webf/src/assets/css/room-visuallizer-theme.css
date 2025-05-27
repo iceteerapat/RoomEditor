@@ -283,7 +283,7 @@ transform: translateY(-10px);
   justify-content: center;
 }
 .servicepage {
-  min-height: 67vh;
+  min-height: 68.5vh;
   margin-left: 150px;
   margin-right: 150px;
   margin-top: 25px;
@@ -298,11 +298,19 @@ transform: translateY(-10px);
   display: flex;
   flex-direction: column; 
   width: 100%;
-  height: 75px;
+  height: 90px;
   background-color: #10b981;
   justify-content: center;
 }
-
+.drawer-toggle-btn {
+  display: flex;
+  position: absolute;
+  left: 0px; /* outside the 150px margin */
+  top: 440px;
+  transform: translateY(-50%);
+  z-index: 10; /* ensure it's above other elements */
+  height: 650px;
+}
 .bar {
   margin-left: 50px;
   margin-right: 50px;
@@ -335,6 +343,17 @@ transform: translateY(-10px);
   flex-direction: column !important;
   align-items: flex-end !important;
 } */
+.logo-servicepage {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 30px;
+  margin: 0;
+}
+.logo-servicepage h1 {
+  font-size: 35px;
+  color: white;
+}
 .verify-page {
   min-height: 65vh;
   margin-left: 150px;

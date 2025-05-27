@@ -4,6 +4,7 @@ import { ref } from "vue";
 
 import Menu from 'primevue/menu';
 import Button from 'primevue/button';
+import Drawer from 'primevue/drawer';
 
 const showMenu = (event) => {
     menu.value.toggle(event);
@@ -25,6 +26,9 @@ const items = ref([
         ]
     }
 ]);
+
+const visibleLeft = ref(false);
+
 </script>
 
 <template>
@@ -34,13 +38,24 @@ const items = ref([
                 <i class="fas fa-user"/>
                 <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" style="align-items: flex-end"/>
             </div>
+            <div class="logo-servicepage">
+                <h1>Room Visualizer</h1>
+            </div>
+
         </header>
         <main>
+            <div class="drawer-toggle-btn">
+                <Button icon="fa-solid fa-arrow-right" @click="visibleLeft = true" />
+            </div>
+            <Drawer v-model:visible="visibleLeft" header="Menu">
+                <RouterLink to="/service/create">Create Room</RouterLink>
+                <RouterLink to="/service/renovate">Renovate Room</RouterLink>
+            </Drawer>
             <section class="servicepage">
 
             </section>
         </main>
-        <footer class="footerpage">
+        <footer class="footerpage" style="height: 160px;" >
             <div class="footerpage-container">
                 <h3>Room Visualizer</h3>
                 <div class="footerpage-column">

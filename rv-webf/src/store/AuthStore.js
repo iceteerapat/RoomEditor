@@ -21,6 +21,7 @@ export const useAuthStore = defineStore('auth', {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('email', response.data.userEmail);
           localStorage.setItem('username', response.data.userUsername);
+          window.refresh;
         }
       } catch (error) {
         alert('Login failed');
