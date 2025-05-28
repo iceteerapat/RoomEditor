@@ -36,10 +36,36 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = async () =>{
+export const logout = async (req, res) =>{
+  try {
+    res.status(200).json({ message: 'Logged out successfully'});
+  } catch(error) {
+    console.error(error);
+    res.status(500).json({ message: 'Logout Failed'});
+  }
+};
 
-}
+export const refresh = async (req, res) =>{
+  try {
+    const authHeader = req.headers.authorization;
 
-export const refresh = async () =>{
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ message: 'No token provided' });
+    }
 
-}
+    const refreshToken = authHeader.split(' ')[1];
+
+    const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
+
+    const newAccessToken = jwt.sign(
+      { email: decoded.email, id: decoded.id },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    res.json({ token: newAccessToken });
+  } catch (error) {
+    console.error('Refresh token error:', error);
+    res.status(403).json({ message: 'Invalid or expired refresh token' });
+  }
+};

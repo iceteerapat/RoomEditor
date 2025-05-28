@@ -41,6 +41,15 @@ module.exports = {
       type: Sequelize.DATE,
       allowNull: false,
       field: 'create_date'
+    },
+    verifyEmail:{
+      type: Sequelize.STRING(1),
+      allowNull: false,
+      field: 'verify_email'
+    },
+    active:{
+      type: Sequelize.STRING(1),
+      allowNull: false
     }
     })
   },

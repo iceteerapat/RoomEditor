@@ -1,11 +1,14 @@
 <script setup>
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import { ref } from "vue";
+import { useAuthStore } from '../../store/AuthStore';
+import { computed } from 'vue';
 
 import Menu from 'primevue/menu';
 import Button from 'primevue/button';
 import Drawer from 'primevue/drawer';
 
+const router = useRouter();
 const showMenu = (event) => {
     menu.value.toggle(event);
 };
@@ -15,24 +18,38 @@ const items = ref([
         label: localStorage.getItem('email'),
         items: [
             {
-                label: 'Setting',
-            },
-            {
                 label: 'Account',
+                command: () => {
+                    router.push('/service/account');
+                },
             },
             {
-                label: 'Logout'
+                label: 'Logout',
+                command: () => {
+                    router.push('/login/logout');
+                }
             }
         ]
     }
 ]);
 
 const visibleLeft = ref(false);
-
+const authStore = useAuthStore();
+const isLoggedIn = computed(() => 
+    !!authStore.token || !!localStorage.getItem('token')
+);
 </script>
 
 <template>
     <div class="wrapper">
+        <div v-if="!isLoggedIn" class="login-overlay">
+            <div class="login-content">
+                <h2>Please log in to access this feature</h2>
+                <RouterLink to="/login">
+                    <Button class="login-button">Go to Login</Button>
+                </RouterLink>
+            </div>
+        </div> 
         <header class="servicepage-menu">
             <div class="bar" @click="showMenu">
                 <i class="fas fa-user"/>

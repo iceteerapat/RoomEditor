@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia';
+import { useRouter } from 'vue-router';
 import RepositoriesFactory from '../apis/repositories/RepositoriesFactory';
 
 const repository = RepositoriesFactory.get('AuthRepository');
+const router = useRouter();
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -30,10 +32,32 @@ export const useAuthStore = defineStore('auth', {
 
     },
     async logout(){
-
+      try {
+        await repository.logout();
+        this.token = null;
+        this.email = null;
+        this.username = null;
+        localStorage.removeItem('token');
+        localStorage.removeItem('email');
+        localStorage.removeItem('username');
+        alert('Logged out');
+        window.refresh;
+        router.push('/login');
+      } catch (error) {
+        console.error('Logout failed:', error);
+      }
     },
     async refresh(){
-
+      try {
+        const response = await repository.refresh();
+        if (response && response.data.token) {
+          this.token = response.data.token;
+          localStorage.setItem('token', response.data.token);
+        }
+      } catch (error) {
+        console.error('Token refresh failed:', error);
+        this.logout();
+      }
     }
   }
 });

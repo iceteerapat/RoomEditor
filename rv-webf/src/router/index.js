@@ -1,4 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
+import { useAuthStore } from "../store/AuthStore";
 
 const routes = [
     {
@@ -38,7 +39,7 @@ const routes = [
     {
         path: '/service', 
         name: 'service',
-        component: () => import('../views/service/ServicePage.vue')
+        component: () => import('../views/service/ServicePage.vue'),
     },
     {
         path: '/service/create',

@@ -354,6 +354,33 @@ transform: translateY(-10px);
   font-size: 35px;
   color: white;
 }
+.login-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.login-content {
+  text-align: center;
+}
+.login-button {
+  padding: 12px 24px;
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.login-button:hover {
+  background-color: #0ea76d;
+}
 .verify-page {
   min-height: 65vh;
   margin-left: 150px;
