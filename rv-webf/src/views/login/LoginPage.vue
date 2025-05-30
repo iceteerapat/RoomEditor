@@ -19,8 +19,23 @@ const handleSubmit = () => {
 }
 
 const login = async() => {
-    store.login(email.value, password.value);
-    router.push('/service');
+  try {
+    const response = await store.login(email.value, password.value);
+
+    if (!response || !response.status) {
+      alert("Something went wrong. No response from server.");
+      return;
+    }
+
+    if (response.status !== 200) {
+      alert("Email / Password is invalid, please re-login");
+    } else {
+      router.push('/service');
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Unexpected error. Try again later.");
+  }
 };
 
 </script>

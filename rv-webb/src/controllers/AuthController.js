@@ -6,18 +6,18 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await AccountLogin.findOne({ where: { email } });
-
-    if (user.verifyEmail !== 'Y') {
-      return res.status(400).json({ message: 'Unverified account' });
-    }
-
+    
     if (!email || !password) {
     return res.status(400).json({ message: 'Email and password are required' });
     }
 
+    const user = await AccountLogin.findOne({ where: { email: email.trim().toLowerCase() } });
     if (!user) {
     return res.status(404).json({ message: 'Account not found' });
+    }
+
+    if (user.verifyEmail !== 'Y') {
+      return res.status(400).json({ message: 'Unverified account' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -29,7 +29,7 @@ export const login = async (req, res) => {
     const userEmail = user.email;
     const userUsername = user.username;
     
-    res.json({ token, userEmail, userUsername });
+    res.status(200).json({ token, userEmail, userUsername });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });

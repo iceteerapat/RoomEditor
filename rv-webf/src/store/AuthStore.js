@@ -22,11 +22,16 @@ export const useAuthStore = defineStore('auth', {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('email', response.data.userEmail);
           localStorage.setItem('username', response.data.userUsername);
+          return response;
         }
       } catch (error) {
-        console.error(error);
+          console.error(error);
+          if (error.response) {
+            return error.response;
+          } else {
+            return { status: 500, data: { message: 'Unknown error' } };
+          }
       }
-
     },
     async logout(){
       try {
