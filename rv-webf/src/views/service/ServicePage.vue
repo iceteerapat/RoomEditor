@@ -8,36 +8,38 @@ import Menu from 'primevue/menu';
 import Button from 'primevue/button';
 import Drawer from 'primevue/drawer';
 
-const router = useRouter();
-const showMenu = (event) => {
-    menu.value.toggle(event);
-};
-const menu = ref();
-const items = ref([
-    {
-        label: localStorage.getItem('email'),
-        items: [
-            {
-                label: 'Account',
-                command: () => {
-                    router.push('/service/account');
-                },
-            },
-            {
-                label: 'Logout',
-                command: () => {
-                    router.push('/login/logout');
-                }
-            }
-        ]
-    }
-]);
-
 const visibleLeft = ref(false);
 const authStore = useAuthStore();
 const isLoggedIn = computed(() => 
     !!authStore.token || !!localStorage.getItem('token')
 );
+
+const router = useRouter();
+const showMenu = (event) => {
+    menu.value.toggle(event);
+};
+const menu = ref();
+const items = computed(() => [
+  {
+    label: authStore.email || 'User',
+    items: [
+      {
+        label: 'Account',
+        command: () => {
+          router.push('/service/account');
+        }
+      },
+      {
+        label: 'Logout',
+        command: () => {
+          authStore.logout();
+          router.push('/home');
+        }
+      }
+    ]
+  }
+]);
+
 </script>
 
 <template>
@@ -53,7 +55,7 @@ const isLoggedIn = computed(() =>
         <header class="servicepage-menu">
             <div class="bar" @click="showMenu">
                 <i class="fas fa-user"/>
-                <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" style="align-items: flex-end"/>
+                <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" style="align-items: flex-end" />
             </div>
             <div class="logo-servicepage">
                 <h1>Room Visualizer</h1>

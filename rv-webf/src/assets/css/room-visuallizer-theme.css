@@ -306,7 +306,7 @@ transform: translateY(-10px);
   display: flex;
   position: absolute;
   left: 0px; /* outside the 150px margin */
-  top: 440px;
+  top: 430px;
   transform: translateY(-50%);
   z-index: 10; /* ensure it's above other elements */
   height: 650px;
@@ -360,7 +360,7 @@ transform: translateY(-10px);
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(255, 255, 255, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;

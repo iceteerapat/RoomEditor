@@ -7,9 +7,9 @@ const router = useRouter();
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    token: null,
-    username: null,
-    email: null
+    token: localStorage.getItem('token') || null,
+    username: localStorage.getItem('username') || null,
+    email: localStorage.getItem('email') || null,
   }),
   actions: {
     async login(email, password) {
@@ -19,14 +19,11 @@ export const useAuthStore = defineStore('auth', {
           this.token = response.data.token;
           this.email = response.data.userEmail;
           this.username = response.data.userUsername;
-          alert('Login Success');
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('email', response.data.userEmail);
           localStorage.setItem('username', response.data.userUsername);
-          window.refresh;
         }
       } catch (error) {
-        alert('Login failed');
         console.error(error);
       }
 
@@ -34,17 +31,15 @@ export const useAuthStore = defineStore('auth', {
     async logout(){
       try {
         await repository.logout();
+      } catch (error) {
+        console.error('Logout failed:', error);
+      } finally {
         this.token = null;
         this.email = null;
         this.username = null;
         localStorage.removeItem('token');
         localStorage.removeItem('email');
         localStorage.removeItem('username');
-        alert('Logged out');
-        window.refresh;
-        router.push('/login');
-      } catch (error) {
-        console.error('Logout failed:', error);
       }
     },
     async refresh(){
