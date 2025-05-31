@@ -306,12 +306,12 @@ transform: translateY(-10px);
   display: flex;
   position: absolute;
   left: 0px; /* outside the 150px margin */
-  top: 430px;
+  top: 435px;
   transform: translateY(-50%);
   z-index: 10; /* ensure it's above other elements */
   height: 650px;
 }
-.bar {
+.icon {
   margin-left: 50px;
   margin-right: 50px;
   width: 60px;
@@ -322,31 +322,47 @@ transform: translateY(-10px);
   align-items: center;
   justify-content: center;
 }
-.bar i {
+.icon i {
   font-size: 30px;
   color: #10b981;
   cursor: pointer;
 }
-.bar:hover {
+.icon:hover {
   background-color: #ffffffb0;
 }
-.bar i:hover {
+.icon i:hover {
   color: #10b98173;
   cursor: pointer;
 }
-.p-menu-item {
+.p-menu-item span{
   padding-left: 10px!important;
   font-size: 15px !important;
+  padding-bottom: 5px;
 }
-/* .p-menu-list {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-end !important;
-} */
+.profile-info {
+  position: absolute;
+  left: 88.5%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  margin: 0;
+  width: 170px;
+}
+.profile-info p {
+  font-size: 13px;
+  color: white;
+  padding-top: 3px;
+  width: 170px;
+  white-space: nowrap;
+  overflow: hidden;
+  word-break: break-all;
+}
+.p-drawer-content a {
+  padding-bottom: 20px !important;
+  font-size: 20px !important;
+}
 .logo-servicepage {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 5.5%;
   font-size: 30px;
   margin: 0;
 }

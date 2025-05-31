@@ -3,6 +3,7 @@ import { RouterLink, useRouter } from 'vue-router';
 import { ref } from "vue";
 import { useAuthStore } from '../../store/AuthStore';
 import { computed } from 'vue';
+import { formatDateToYMD } from '../../components/DateFormat';
 
 import Menu from 'primevue/menu';
 import Button from 'primevue/button';
@@ -21,7 +22,7 @@ const showMenu = (event) => {
 const menu = ref();
 const items = computed(() => [
   {
-    label: authStore.email || 'User',
+    label: 'Profile Setting',
     items: [
       {
         label: 'Account',
@@ -38,8 +39,9 @@ const items = computed(() => [
       }
     ]
   }
-]);
 
+]);
+const username = localStorage.getItem('username');
 </script>
 
 <template>
@@ -53,12 +55,17 @@ const items = computed(() => [
             </div>
         </div> 
         <header class="servicepage-menu">
-            <div class="bar" @click="showMenu">
+            <div class="icon" @click="showMenu">
                 <i class="fas fa-user"/>
-                <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" style="align-items: flex-end" />
+                <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" style="align-items: flex-end;" />
             </div>
             <div class="logo-servicepage">
                 <h1>Room Visualizer</h1>
+            </div>
+            <div class="profile-info">
+                <p>Username: {{ username }}</p>
+                <p>Stage: </p>
+                <p>Date: {{ formatDateToYMD(new Date()) }} </p>
             </div>
 
         </header>
