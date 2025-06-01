@@ -1,9 +1,7 @@
 import { defineStore } from 'pinia';
-import { useRouter } from 'vue-router';
-import RepositoriesFactory from '../apis/repositories/RepositoriesFactory';
+import RepositoriesFactory from '@/apis/repositories/RepositoriesFactory';
 
 const repository = RepositoriesFactory.get('AuthRepository');
-const router = useRouter();
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({

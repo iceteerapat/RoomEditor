@@ -116,71 +116,71 @@ p {
   margin-bottom: 15px;
 }
 .slider-container {
-    display: flex;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-    width: 90%;;
-    height: 640px;
-    object-fit: cover;
+  display: flex;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  width: 90%;;
+  height: 640px;
+  object-fit: cover;
 }
 .slider-image {
-    flex-shrink: 0;
-    object-fit: cover;
-    width: 100%;;
-    height: 640px;
-    object-fit: cover;
+  flex-shrink: 0;
+  object-fit: cover;
+  width: 100%;;
+  height: 640px;
+  object-fit: cover;
 }
 .homepage-section3 {
-    margin-left: 150px;
-    margin-right: 150px;
-    margin-top: 25px;
-    padding: 15px 100px;
-    display: flex;
-    flex-direction: column; 
-    justify-content: center; 
-    align-items: flex-end; 
+  margin-left: 150px;
+  margin-right: 150px;
+  margin-top: 25px;
+  padding: 15px 100px;
+  display: flex;
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: flex-end; 
 }
 .how-steps {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    flex-direction: column;
-    gap: 40px;
-    margin: 25px 0px;
-    padding: 15px 0px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  gap: 40px;
+  margin: 25px 0px;
+  padding: 15px 0px;
 }
 .how-step {
-    background-color: #f4f4f4;
-    border-radius: 15px;
-    padding: 30px;
-    max-width: 300px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease;
+  background-color: #f4f4f4;
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 300px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
 }
 .how-step:hover {
-transform: translateY(-10px);
+  transform: translateY(-10px);
 }
 .step-number {
-    background-color: #1f7aed;
-    color: white;
-    font-weight: bold;
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    border-radius: 50%;
-    margin-bottom: 15px;
-    font-size: 20px;
+  background-color: #1f7aed;
+  color: white;
+  font-weight: bold;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  font-size: 20px;
 }
 .homepage-section4 {
-    margin-left: 150px;
-    margin-right: 150px;
-    margin-top: 25px;
-    padding: 15px 100px;
-    display: flex;
-    flex-direction: column; 
-    justify-content: center; 
-    align-items: center
+  margin-left: 150px;
+  margin-right: 150px;
+  margin-top: 25px;
+  padding: 15px 100px;
+  display: flex;
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center
 }
 .use-cases-grid {
   margin-top: 50px;
@@ -272,15 +272,51 @@ transform: translateY(-10px);
   font-size: 13px;
 }
 .pricepage {
-  min-height: 65vh;
-  margin-left: 150px;
-  margin-right: 150px;
+  min-height: 80vh;
   margin-top: 25px;
   margin-bottom: 25px;
-  padding: 15px 150px;
+  padding: 15px 0px;
   display: flex;
   flex-direction: column; 
   justify-content: center;
+}
+.price-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  max-width: 1600px;
+  transform: translateX(9.3%);
+  height: 700px;
+}
+.price-card {
+  border: 1px solid #06421f;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
+}
+.price-card:hover {
+  transform: translateY(-10px);
+  transition: transform 0.4s;
+}
+.price-card h3 {
+  margin-bottom: 8px;
+  font-size: 30px;
+}
+.price-card .price {
+  font-size: 2rem;
+  margin: 16px 0;
+  color: #333;
+}
+.price-card button {
+  margin-top: 12px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #4f46e5;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
 }
 .servicepage {
   min-height: 68.5vh;
@@ -357,7 +393,9 @@ transform: translateY(-10px);
   word-break: break-all;
 }
 .p-drawer-content a {
+  padding-top: 20px !important;
   padding-bottom: 20px !important;
+  padding-left: 45px !important;
   font-size: 20px !important;
 }
 .logo-servicepage {

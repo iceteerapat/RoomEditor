@@ -5,8 +5,8 @@ import Toast from "vue-toastification";
 import PrimeVue from 'primevue/config'
 import ConfirmationService from 'primevue/confirmationservice';
 import DialogService from 'primevue/dialogservice';
-import App from './App.vue';
-import Router from './router';
+import App from '@/App.vue';
+import Router from '@/router';
 import Aura from '@primeuix/themes/aura';
 
 const pinia = createPinia();

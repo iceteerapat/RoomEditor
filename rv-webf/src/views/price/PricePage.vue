@@ -23,7 +23,32 @@ import Button from 'primevue/button';
         </header>
         <main>
             <section class="pricepage">
-
+                <div class="price-container">
+                    <div class="price-card">
+                        <h3>Basic</h3>
+                        <p class="price">$19/month</p>
+                        <p>Ideal for individuals</p>
+                        <Button>Choose</Button>
+                    </div>
+                    <div class="price-card">
+                        <h3>Standard</h3>
+                        <p class="price">$29/month</p>
+                        <p>Best for small teams</p>
+                        <Button>Choose</Button>
+                    </div>
+                    <div class="price-card">
+                        <h3>Professional</h3>
+                        <p class="price">$49/month</p>
+                        <p>Great for growing companies</p>
+                        <Button>Choose</Button>
+                    </div>
+                    <div class="price-card">
+                        <h3>Enterprise</h3>
+                        <p class="price">Contact us</p>
+                        <p>Custom solutions</p>
+                        <Button>Contact</Button>
+                    </div>
+                </div>
             </section>
         </main>
         <footer class="footerpage">

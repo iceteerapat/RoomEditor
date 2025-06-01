@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 
 import { validator } from "sequelize/lib/utils/validator-extras";
 import {emailVerification} from "../services/EmailService.js"
-
+import { formatDateToYMD } from "../../../rv-webf/src/components/DateFormat.js";
 
 export const create = async(req, res) => {
     try {
@@ -46,7 +46,7 @@ export const create = async(req, res) => {
           return res.status(400).json({ message: 'Username is already used' });
         }
 
-        const createDate = new Date();
+        const createDate = formatDateToYMD(new Date());
         const verifyEmail = 'N';
         const active = 'N';
         const hashedPassword = await bcrypt.hash(req.body.password, 10);

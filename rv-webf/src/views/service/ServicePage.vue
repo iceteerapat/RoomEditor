@@ -1,9 +1,9 @@
 <script setup>
 import { RouterLink, useRouter } from 'vue-router';
 import { ref } from "vue";
-import { useAuthStore } from '../../store/AuthStore';
+import { useAuthStore } from '@/store/AuthStore';
 import { computed } from 'vue';
-import { formatDateToYMD } from '../../components/DateFormat';
+import { formatDateToYMD } from '@/components/DateFormat';
 
 import Menu from 'primevue/menu';
 import Button from 'primevue/button';

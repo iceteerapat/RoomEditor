@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { RouterLink, useRouter  } from 'vue-router';
-import { useAuthStore } from '../../store/AuthStore';
+import { useAuthStore } from '@/store/AuthStore';
 
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'

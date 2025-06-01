@@ -1,4 +1,4 @@
-import Client from "../AxiosClient";
+import Client from "@/apis/AxiosClient";
 
 const resource = '/login';
 

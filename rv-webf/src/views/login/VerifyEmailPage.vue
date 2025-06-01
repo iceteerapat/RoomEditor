@@ -3,7 +3,7 @@ import { RouterLink, useRoute, useRouter } from 'vue-router';
 import { onMounted } from 'vue';
 
 import Button from 'primevue/button';
-import RepositoriesFactory from '../../apis/repositories/RepositoriesFactory';
+import RepositoriesFactory from '@/apis/repositories/RepositoriesFactory';
 
 const respository = RepositoriesFactory.get('CreateAccountRepository');
 const route = useRoute(); 
