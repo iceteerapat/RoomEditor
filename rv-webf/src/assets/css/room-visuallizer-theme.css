@@ -260,6 +260,7 @@ p {
 }
 .footerpage-column a {
   color: white;
+  
 }
 .footerpage-legal {
   width: 100%;
@@ -280,13 +281,22 @@ p {
   flex-direction: column; 
   justify-content: center;
 }
+.p-selectbutton {
+  flex-direction: row !important;
+  justify-content: center !important;
+  transform: translateY(-200%);
+}
+.p-togglebutton-label {
+  font-size: 20px !important;
+  font-weight: 780;
+}
 .price-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 40px;
   max-width: 1600px;
-  transform: translateX(10%);
-  height: 525px;
+  transform: translateX(9%);
+  height: 550px;
 }
 .price-card {
   border: 1px solid #06421f;
@@ -315,7 +325,7 @@ p {
   color: #333;
 }
 .price-card button {
-  margin-top: 50px;
+  margin-top: 80px;
   padding: 10px 20px;
   border: none;
   background-color: #4f46e5;
