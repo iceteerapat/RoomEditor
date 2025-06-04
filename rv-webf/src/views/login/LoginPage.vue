@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { RouterLink, useRouter  } from 'vue-router';
 import { useAuthStore } from '@/store/AuthStore';
 
@@ -13,9 +13,14 @@ const router = useRouter();
 const email = ref('');
 const password = ref('');
 
-const handleSubmit = () => {
-  console.log('Email:', email.value);
-  console.log('Password:', password.value);
+function redirectIfLoggedIn() {
+  if (
+    localStorage.getItem('token') &&
+    localStorage.getItem('email') &&
+    localStorage.getItem('username')
+  ) {
+    router.push('/service'); 
+  }
 }
 
 const login = async() => {
@@ -38,6 +43,9 @@ const login = async() => {
   }
 };
 
+onMounted(() => {
+  redirectIfLoggedIn();
+});
 </script>
 
 <template>
@@ -45,7 +53,7 @@ const login = async() => {
     <section class="loginpage">
       <div class="loginform">
         <h1>Login</h1>
-        <form @submit.prevent="handleSubmit">
+        <form @submit.prevent="login">
           <IftaLabel class="formusername">
             <InputText id="email" v-model="email" :invalid="!value"/>
             <label for="email">Email:</label>
@@ -57,7 +65,7 @@ const login = async() => {
           <div class="forgetpassword"> 
               <RouterLink to="/forgetpassword">Forget password?</RouterLink>
           </div>
-          <Button type="submit" label="Log in" severity="primary" @click="login" />
+          <Button type="submit" label="Log in" severity="primary" />
         </form>
         <ul>
           <div class="signup">

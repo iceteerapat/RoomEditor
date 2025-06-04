@@ -13,6 +13,7 @@ export const useAuthStore = defineStore('auth', {
     async login(email, password) {
       try {
         const response = await repository.login({email, password});
+
         if (response != null) {
           this.token = response.data.token;
           this.email = response.data.userEmail;

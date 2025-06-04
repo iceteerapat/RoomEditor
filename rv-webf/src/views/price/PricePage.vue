@@ -38,7 +38,7 @@ const pricingPlans = [
     monthlyPrice: '$49 / month',
     annualPrice: '$490 / year',
     features: [
-      'Unlimited HD images / month',
+      'Unlimited 4K images / month',
       'Picture size up to 3840 X 2160 pixels',
       'Batch generation 5',
       'Priority generation queue',
