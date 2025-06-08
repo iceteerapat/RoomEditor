@@ -64,8 +64,7 @@ const username = localStorage.getItem('username');
             </div>
             <div class="profile-info">
                 <p>Username: {{ username }}</p>
-                <p>Stage: </p>
-                <p>Date: {{ formatDateToYMD(new Date()) }} </p>
+                <p>Subscription: </p>
             </div>
 
         </header>
