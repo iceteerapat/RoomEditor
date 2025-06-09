@@ -98,7 +98,7 @@ const username = localStorage.getItem('username');
                     </div>
                     <div class="input-roomstyle">
                         <label for="roomstyle">Room Styles</label>
-                        <InputText id="roomstyle" v-model="roomStyle" aria-describedby="roomstyle-help"></InputText>
+                        <InputText id="roomstyle" v-model="roomStyle" aria-describedby="roomstyle-help" fluid/>
                         <Message size="small" severity="secondary" variant="simple">Enter your room style such as Italian-American style</Message>
                     </div>
                 </div>

@@ -650,8 +650,8 @@ p {
   margin-left: 20px;
 }
 .p-inputnumber-fluid {
-    width: 60% !important;
-    padding-left: 20px !important; 
+  width: 60% !important;
+  padding-left: 20px !important; 
 }
 .input-roomsize .p-message-text { 
   font-size: 13px; 
@@ -672,10 +672,11 @@ p {
   margin-bottom: 8px;
   margin-left: 20px;
 }
-.input-roomstyle .p-inputtext{
+.p-inputtext-fluid {
+  width: 80% !important;
   transform: translateX(20px);
 }
-.input-roomstyle  .p-message-text { 
+.input-roomstyle .p-message-text { 
   font-size: 13px; 
   color: #6c757d; 
   background-color: transparent;
