@@ -624,5 +624,62 @@ p {
   justify-content: center;
 }
 .input-properties {
-  
+  width: 400px;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(30%);
+  border: 2.5px solid #10b981;
+  border-radius: 12px;
+}
+.input-properties h2 {
+  padding-top: 20px;
+  display: flex;
+  justify-content: center;
+  font-weight: 700;
+}
+.input-roomsize {
+  font-size: 15px; 
+  font-weight: 700; 
+  color: grey; 
+  margin-bottom: 20px; 
+}
+.input-roomsize label {
+  display: block;
+  margin-bottom: 8px;
+  margin-left: 20px;
+}
+.p-inputnumber-fluid {
+    width: 60% !important;
+    padding-left: 20px !important; 
+}
+.input-roomsize .p-message-text { 
+  font-size: 13px; 
+  color: #6c757d; 
+  background-color: transparent;
+  border: none;
+  transform: translateX(20px);
+  padding-top: 10px;
+}
+.input-roomstyle {
+  font-size: 15px; 
+  font-weight: 700; 
+  color: grey; 
+  margin-bottom: 20px; 
+}
+.input-roomstyle label {
+  display: block;
+  margin-bottom: 8px;
+  margin-left: 20px;
+}
+.input-roomstyle .p-inputtext{
+  transform: translateX(20px);
+}
+.input-roomstyle  .p-message-text { 
+  font-size: 13px; 
+  color: #6c757d; 
+  background-color: transparent;
+  border: none;
+  transform: translateX(20px);
+  padding-top: 10px;
 }

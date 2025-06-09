@@ -8,6 +8,9 @@ import RepositoriesFactory from '../../apis/repositories/RepositoriesFactory'
 import Menu from 'primevue/menu';
 import Button from 'primevue/button';
 import Drawer from 'primevue/drawer';
+import InputText from 'primevue/inputtext';
+import Message from 'primevue/message';
+import InputNumber from 'primevue/inputnumber';
 
 const respository = RepositoriesFactory.get('RoomServiceRepository');
 const visibleLeft = ref(false);
@@ -87,7 +90,17 @@ const username = localStorage.getItem('username');
             </Drawer>
             <section class="createimage-page">
                 <div class="input-properties">
-
+                    <h2>Input Properties</h2>
+                    <div class="input-roomsize">
+                        <label for="roomsize">Room Size</label>
+                        <InputNumber inputId="roomsize" v-model="roomSize" aria-describedby="roomsize-help" :minFractionDigits="2" :maxFractionDigits="2" :min="0" :max="500"fluid />
+                        <Message size="small" severity="secondary" variant="simple">Enter your room size required (m²)</Message>
+                    </div>
+                    <div class="input-roomstyle">
+                        <label for="roomstyle">Room Styles</label>
+                        <InputText id="roomstyle" v-model="roomStyle" aria-describedby="roomstyle-help"></InputText>
+                        <Message size="small" severity="secondary" variant="simple">Enter your room style such as Italian-American style</Message>
+                    </div>
                 </div>
             </section>
         </main>
