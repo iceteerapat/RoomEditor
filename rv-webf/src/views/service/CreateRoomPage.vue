@@ -11,6 +11,8 @@ import Drawer from 'primevue/drawer';
 import InputText from 'primevue/inputtext';
 import Message from 'primevue/message';
 import InputNumber from 'primevue/inputnumber';
+import Select from 'primevue/select';
+import Textarea from 'primevue/textarea';
 
 const respository = RepositoriesFactory.get('RoomServiceRepository');
 const visibleLeft = ref(false);
@@ -20,6 +22,11 @@ const roomSize = ref('');
 const roomStyle = ref('');
 const roomType = ref('');
 const pictureSize = ref('');
+const size = ref([
+    {name: '1280 X 720', code: '1280720'},
+    {name: '1600 X 900', code: '1600900'},
+    {name: '1920 X 1080', code: '19201080'}
+])
 const etc = ref('');
 
 
@@ -94,13 +101,28 @@ const username = localStorage.getItem('username');
                     <div class="input-roomsize">
                         <label for="roomsize">Room Size</label>
                         <InputNumber inputId="roomsize" v-model="roomSize" aria-describedby="roomsize-help" :minFractionDigits="2" :maxFractionDigits="2" :min="0" :max="500"fluid />
-                        <Message size="small" severity="secondary" variant="simple">Enter your room size required (m²)</Message>
+                        <Message size="small" severity="secondary" variant="simple">Enter your room size required (m²).</Message>
                     </div>
                     <div class="input-roomstyle">
                         <label for="roomstyle">Room Styles</label>
                         <InputText id="roomstyle" v-model="roomStyle" aria-describedby="roomstyle-help" fluid/>
-                        <Message size="small" severity="secondary" variant="simple">Enter your room style such as Italian-American style</Message>
+                        <Message size="small" severity="secondary" variant="simple">Enter your room style such as Italian-American style.</Message>
                     </div>
+                    <div class="input-roomtype">
+                        <label for="roomtype">Room Type</label>
+                        <InputText id="roomtype" v-model="roomType" aria-describedby="roomtype-help" fluid/>
+                        <Message size="small" severity="secondary" variant="simple">Enter your room type such as Living room, Kitchen, etc.</Message>
+                    </div>
+                    <div class="select-size">
+                        <label for="picturesize">Picture Size</label>
+                        <Select v-model="pictureSize" :options="size" optionLabel="name" placeholder="Select picture size"/>
+                    </div>
+                    <div class="input-etc">
+                        <label for="description">Description</label>
+                        <Textarea id="description" v-model="etc" rows="5" cols="30" style="resize: none" />
+                        <Message size="small" severity="secondary" variant="simple">Describe your room more such as TV on the left or Couch attach with the wall.</Message>
+                    </div>
+                    <Button label="Generate Room" />
                 </div>
             </section>
         </main>
