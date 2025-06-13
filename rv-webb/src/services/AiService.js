@@ -13,7 +13,7 @@ export const genBasic = async (req, res) => {
       model: "stability-ai/stable-diffusion-3",
       input: {
         prompt: prompt,
-        aspect_ratio: ratio,
+        aspect_ratio: '16:9',
       },
     });
 
@@ -48,7 +48,7 @@ export const genBasic = async (req, res) => {
       version: "nightmareai/real-esrgan:f121d640bd286e1fdc67f9799164c1d5be36ff74576ee11c803ae5b665dd46aa",
       input: {
         image: baseImageUrl,
-        scale: 1.6,
+        scale: ratio,
       },
     });
 
@@ -76,18 +76,10 @@ export const genBasic = async (req, res) => {
       return res.status(500).json({ error: "Upscaling failed: no valid upscaled image URL found" });
     }
 
-    res.json({ image: upscaledImageUrl });
+    res.status(200).json({ image: upscaledImageUrl });
 
   } catch (error) {
     console.error("API call failed in try-catch block:", error);
     res.status(500).json({ error: "API call failed", details: error.message });
   }
 };
-
-export const genPro = async(req, res) => {
-
-}
-
-export const genPremium = async(req, res) => {
-
-}

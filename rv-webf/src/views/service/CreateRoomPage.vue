@@ -13,22 +13,60 @@ import Message from 'primevue/message';
 import InputNumber from 'primevue/inputnumber';
 import Select from 'primevue/select';
 import Textarea from 'primevue/textarea';
+import Image from 'primevue/image';
+import ProgressSpinner from 'primevue/progressspinner';
 
 const respository = RepositoriesFactory.get('RoomServiceRepository');
 const visibleLeft = ref(false);
 const authStore = useAuthStore();
 
+const loading = ref(false);
 const roomSize = ref('');
 const roomStyle = ref('');
 const roomType = ref('');
 const pictureSize = ref('');
 const size = ref([
-    {name: '1280 X 720', code: '1280720'},
-    {name: '1600 X 900', code: '1600900'},
-    {name: '1920 X 1080', code: '19201080'}
+    {name: '800 X 600', code: 0.69},
+    {name: '1024 X 768', code: 0.88},
+    {name: '1280 X 720', code: 0.95},
+    {name: '1366 X 768', code: 1},
+    {name: '1600 X 900', code: 1.18},
+    {name: '1760 X 990', code: 1.3},
+    {name: '1920 X 1080', code: 1.41}
 ])
 const etc = ref('');
+const imageUrl = ref('');
 
+async function onSubmit() {
+    loading.value = true;
+    try {
+        let prompt = `Create ${roomType.value.toLowerCase()} with ${roomSize.value} square metre and have the style of ${roomStyle.value.toLowerCase()}`;
+        if (etc.value !== '') {
+            prompt += ` and include ${etc.value.toLowerCase()}`;
+        }
+        const ratio = pictureSize.value.code;
+
+        const response = await respository.create({prompt, ratio});
+        if (response.status === 200) {
+            imageUrl.value = response.data.image;
+        } else {
+            console.error("Image generation failed", response);
+        }
+    } catch(error) {
+        console.error("Error during generation:", error);
+    } finally {
+        loading.value = false;
+    }
+}
+
+function downloadImage() {
+  const link = document.createElement('a');
+  link.href = imageUrl.value;
+  link.download = 'generated-room.jpg';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 
 const isLoggedIn = computed(() => 
     !!authStore.token || !!localStorage.getItem('token')
@@ -122,7 +160,13 @@ const username = localStorage.getItem('username');
                         <Textarea id="description" v-model="etc" rows="5" cols="30" style="resize: none" />
                         <Message size="small" severity="secondary" variant="simple">Describe your room more such as TV on the left or Couch attach with the wall.</Message>
                     </div>
-                    <Button label="Generate Room" />
+                    <Button label="Generate Room" @click="onSubmit"/>
+                    <ProgressSpinner v-if="loading" style="width: 50px; height: 50px" strokeWidth="8" fill="transparent" animationDuration=".5s" aria-label="Custom ProgressSpinner"/>
+                </div>
+                <div class="image-result">
+                    <h2>Image Result</h2>
+                    <Image :src="imageUrl" alt="Generated room" width="80%" preview v-if="imageUrl"/>
+                    <Button label="Download Image" @click="downloadImage" v-if="imageUrl"/>
                 </div>
             </section>
         </main>

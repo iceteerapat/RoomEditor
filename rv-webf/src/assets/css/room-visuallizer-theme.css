@@ -620,8 +620,8 @@ p {
   margin-bottom: 25px;
   padding: 15px 20px;
   display: flex;
-  flex-direction: column; 
-  justify-content: center;
+  flex-direction: row; 
+  justify-content: space-between;
 }
 .input-properties {
   width: 400px;
@@ -751,4 +751,25 @@ p {
   width: 50% !important;
   transform: translateX(100px);
   margin-top: 15px;
+}
+.image-result {
+  width: 1250px;
+  height: 750px;
+  display: flex;
+  flex-direction: column;
+  border: 2.5px solid #10b981;
+  border-radius: 12px;
+}
+.image-result h2 {
+  padding-top: 20px;
+  display: flex;
+  justify-content: center;
+  font-weight: 700;
+}
+.image-result img {
+  transform: translateX(120px);
+}
+.image-result .p-button {
+  width: 20% !important;
+  transform: translate(490px, 40px);
 }

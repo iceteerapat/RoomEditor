@@ -1,7 +1,7 @@
 import express from 'express';
 import { create, verify } from '../controllers/CreateAccountController.js';
 import { login, logout, refresh } from '../controllers/AuthController.js';
-import { genBasic, genPro, genPremium } from '../services/AiService.js';
+import { genBasic} from '../services/AiService.js';
 
 const route = express.Router();    
 
@@ -16,7 +16,5 @@ route.post('/login/logout', logout);
 
 //AI Service
 route.post('/service/create', genBasic);
-// route.post('/service/create', genPro);
-// route.post('/service/create', genPremium);
 
 export default route;
