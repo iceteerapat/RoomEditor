@@ -1,10 +1,11 @@
 <script setup>
 import { RouterLink, useRouter } from 'vue-router';
 import { ref } from "vue";
-import { useAuthStore } from '@/store/AuthStore';
 import { computed } from 'vue';
+import { formatDateToYMD } from '../../components/DateFormat';
+import { useServiceStore } from '../../store/ServiceStore';
+import { useAuthStore } from '../../store/AuthStore';
 
-import RepositoriesFactory from '../../apis/repositories/RepositoriesFactory'
 import Menu from 'primevue/menu';
 import Button from 'primevue/button';
 import Drawer from 'primevue/drawer';
@@ -16,12 +17,14 @@ import Textarea from 'primevue/textarea';
 import Image from 'primevue/image';
 import ProgressSpinner from 'primevue/progressspinner';
 
-const respository = RepositoriesFactory.get('RoomServiceRepository');
 const visibleLeft = ref(false);
+const serviceStore = useServiceStore();
 const authStore = useAuthStore();
 
+const now = new Date();
 const loading = ref(false);
-const roomSize = ref('');
+const roomSizeWidth = ref('');
+const roomSizeHeight = ref('');
 const roomStyle = ref('');
 const roomType = ref('');
 const pictureSize = ref('');
@@ -32,7 +35,7 @@ const size = ref([
     {name: '1366 X 768', code: 1},
     {name: '1600 X 900', code: 1.18},
     {name: '1760 X 990', code: 1.3},
-    {name: '1920 X 1080', code: 1.41}
+    {name: '1920 X 1080', code: 1.43}
 ])
 const etc = ref('');
 const imageUrl = ref('');
@@ -40,13 +43,13 @@ const imageUrl = ref('');
 async function onSubmit() {
     loading.value = true;
     try {
-        let prompt = `Create ${roomType.value.toLowerCase()} with ${roomSize.value} square metre and have the style of ${roomStyle.value.toLowerCase()}`;
+        let prompt = `Create ${roomType.value.toLowerCase()} with ${roomSizeWidth.value} square metre of width and ${roomSizeHeight.value} square metre of height and having the style of ${roomStyle.value.toLowerCase()}`;
         if (etc.value !== '') {
             prompt += ` and include ${etc.value.toLowerCase()}`;
         }
         const ratio = pictureSize.value.code;
 
-        const response = await respository.create({prompt, ratio});
+        const response = await serviceStore.genImage({prompt, ratio});
         if (response.status === 200) {
             imageUrl.value = response.data.image;
         } else {
@@ -59,13 +62,25 @@ async function onSubmit() {
     }
 }
 
-function downloadImage() {
-  const link = document.createElement('a');
-  link.href = imageUrl.value;
-  link.download = 'generated-room.jpg';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+async function downloadImage() {
+  try {
+    const response = await fetch(imageUrl.value, {
+      mode: 'cors',
+    });
+    const blob = await response.blob();
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `generated-room-${formatDateToYMD(now)}.jpg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Download failed:", error);
+  }
 }
 
 const isLoggedIn = computed(() => 
@@ -137,8 +152,13 @@ const username = localStorage.getItem('username');
                 <div class="input-properties">
                     <h2>Input Properties</h2>
                     <div class="input-roomsize">
-                        <label for="roomsize">Room Size</label>
-                        <InputNumber inputId="roomsize" v-model="roomSize" aria-describedby="roomsize-help" :minFractionDigits="2" :maxFractionDigits="2" :min="0" :max="500"fluid />
+                        <label for="roomSizeWidth">Room Width</label>
+                        <InputNumber inputId="roomSizeWidth" v-model="roomSizeWidth" aria-describedby="roomSizeWidth-help" :minFractionDigits="2" :maxFractionDigits="2" :min="0" :max="500"fluid />
+                        <Message size="small" severity="secondary" variant="simple">Enter your room size required (m²).</Message>
+                    </div>
+                    <div class="input-roomsize">
+                        <label for="roomSizeHeight">Room Height</label>
+                        <InputNumber inputId="roomSizeHeight" v-model="roomSizeHeight" aria-describedby="roomSizeHeight-help" :minFractionDigits="2" :maxFractionDigits="2" :min="0" :max="500"fluid />
                         <Message size="small" severity="secondary" variant="simple">Enter your room size required (m²).</Message>
                     </div>
                     <div class="input-roomstyle">
@@ -161,12 +181,17 @@ const username = localStorage.getItem('username');
                         <Message size="small" severity="secondary" variant="simple">Describe your room more such as TV on the left or Couch attach with the wall.</Message>
                     </div>
                     <Button label="Generate Room" @click="onSubmit"/>
-                    <ProgressSpinner v-if="loading" style="width: 50px; height: 50px" strokeWidth="8" fill="transparent" animationDuration=".5s" aria-label="Custom ProgressSpinner"/>
                 </div>
                 <div class="image-result">
                     <h2>Image Result</h2>
                     <Image :src="imageUrl" alt="Generated room" width="80%" preview v-if="imageUrl"/>
                     <Button label="Download Image" @click="downloadImage" v-if="imageUrl"/>
+                </div>
+                <div v-if="loading" class="loading-overlay">
+                    <div class="loading-content">
+                        <ProgressSpinner v-if="loading" style="width: 50px; height: 50px" strokeWidth="8" fill="transparent" animationDuration=".5s" aria-label="Custom ProgressSpinner"/>
+                        <p>Right now image is generated, please wait for 2-3 minutes</p>
+                    </div>
                 </div>
             </section>
         </main>

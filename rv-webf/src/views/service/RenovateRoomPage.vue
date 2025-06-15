@@ -1,16 +1,137 @@
 <script setup>
 import { RouterLink, useRouter } from 'vue-router';
 import { ref } from "vue";
-import { useAuthStore } from '@/store/AuthStore';
 import { computed } from 'vue';
-import { formatDateToYMD } from '@/components/DateFormat';
+import { formatDateToYMD } from '../../components/DateFormat';
+import { useServiceStore } from '../../store/ServiceStore';
+import { useAuthStore } from '../../store/AuthStore';
 
 import Menu from 'primevue/menu';
 import Button from 'primevue/button';
 import Drawer from 'primevue/drawer';
+import InputText from 'primevue/inputtext';
+import Message from 'primevue/message';
+import Select from 'primevue/select';
+import Textarea from 'primevue/textarea';
+import Image from 'primevue/image';
+import ProgressSpinner from 'primevue/progressspinner';
+import FileUpload from 'primevue/fileupload';
+
 
 const visibleLeft = ref(false);
+const serviceStore = useServiceStore();
 const authStore = useAuthStore();
+
+const now = new Date();
+const loading = ref(false);
+const roomFile = ref('');
+const roomStyle = ref('');
+const roomType = ref('');
+const pictureSize = ref('');
+const size = ref([
+    {name: '800 X 600', code: 0.69},
+    {name: '1024 X 768', code: 0.88},
+    {name: '1280 X 720', code: 0.95},
+    {name: '1366 X 768', code: 1},
+    {name: '1600 X 900', code: 1.18},
+    {name: '1760 X 990', code: 1.3},
+    {name: '1920 X 1080', code: 1.43}
+])
+const etc = ref('');
+const imageUrl = ref('');
+
+function onFileSelect(event) {
+    const file = event.files[0];
+    if (!file) {
+        return; // No file selected
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+            const MAX_WIDTH = 1280; // Or 1024
+            const MAX_HEIGHT = 720; // Or 768
+            const quality = 0.8; 
+
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+                if (width > MAX_WIDTH) {
+                    height *= MAX_WIDTH / width;
+                    width = MAX_WIDTH;
+                }
+            } else {
+                if (height > MAX_HEIGHT) {
+                    width *= MAX_HEIGHT / height;
+                    height = MAX_HEIGHT;
+                }
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const resizedDataURL = canvas.toDataURL('image/jpeg', quality);
+            roomFile.value = resizedDataURL;
+
+            console.log('Original image size:', file.size, 'bytes');
+            console.log('Resized data URL length:', resizedDataURL.length, 'bytes'); 
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file); 
+}
+
+async function onSubmit() {
+    loading.value = true;
+    try {
+        let prompt = `Renovate ${roomType.value.toLowerCase()} with the style of ${roomStyle.value.toLowerCase()}`;
+        if (etc.value !== '') {
+            prompt += ` and include ${etc.value.toLowerCase()}`;
+        }
+        const ratio = pictureSize.value.code;
+        const image = roomFile.value;
+
+        const response = await serviceStore.renovateImage({prompt, image, ratio});
+        if (response.status === 200) {
+            imageUrl.value = response.data.image;
+        } else {
+            console.error("Image generation failed", response);
+        }
+    } catch(error) {
+        console.error("Error during generation:", error);
+    } finally {
+        loading.value = false;
+    }
+}
+
+async function downloadImage() {
+  try {
+    const response = await fetch(imageUrl.value, {
+      mode: 'cors',
+    });
+    const blob = await response.blob();
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `generated-room-${formatDateToYMD(now)}.jpg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Download failed:", error);
+  }
+}
+
 const isLoggedIn = computed(() => 
     !!authStore.token || !!localStorage.getItem('token')
 );
@@ -76,8 +197,47 @@ const username = localStorage.getItem('username');
                 <RouterLink to="/service/create">Create Room</RouterLink>
                 <RouterLink to="/service/renovate">Renovate Room</RouterLink>
             </Drawer>
-            <section class="servicepage">
-
+            <section class="createimage-page">
+                <div class="input-properties">
+                    <h2>Input Properties</h2>
+                    <div class="input-roomsize">
+                        <label for="roomSizeWidth">Room Photo</label>
+                        <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary" style="transform: translateX(-80px); margin-top: 0px;" />
+                        <img v-if="roomFile" :src="roomFile" alt="Image" style="margin-top: 10px; border-radius: 5px; height: 112.5px; width: 200px; transform: translateX(20px);" />
+                        <Message size="small" severity="secondary" variant="simple">Upload your room's photo.</Message>
+                    </div>
+                    <div class="input-roomstyle">
+                        <label for="roomstyle">Room Styles</label>
+                        <InputText id="roomstyle" v-model="roomStyle" aria-describedby="roomstyle-help" fluid/>
+                        <Message size="small" severity="secondary" variant="simple">Enter your room style such as Italian-American style.</Message>
+                    </div>
+                    <div class="input-roomtype">
+                        <label for="roomtype">Room Type</label>
+                        <InputText id="roomtype" v-model="roomType" aria-describedby="roomtype-help" fluid/>
+                        <Message size="small" severity="secondary" variant="simple">Enter your room type such as Living room, Kitchen, etc.</Message>
+                    </div>
+                    <div class="select-size">
+                        <label for="picturesize">Picture Size</label>
+                        <Select v-model="pictureSize" :options="size" optionLabel="name" placeholder="Select picture size"/>
+                    </div>
+                    <div class="input-etc">
+                        <label for="description">Description</label>
+                        <Textarea id="description" v-model="etc" rows="5" cols="30" style="resize: none" />
+                        <Message size="small" severity="secondary" variant="simple">Describe your room more such as TV on the left or Couch attach with the wall.</Message>
+                    </div>
+                    <Button label="Generate Room" @click="onSubmit" style="margin-top: -2.5px;"/>
+                </div>
+                <div class="image-result">
+                    <h2>Image Result</h2>
+                    <Image :src="imageUrl" alt="Generated room" width="80%" preview v-if="imageUrl"/>
+                    <Button label="Download Image" @click="downloadImage" v-if="imageUrl"/>
+                </div>
+                <div v-if="loading" class="loading-overlay">
+                    <div class="loading-content">
+                        <ProgressSpinner v-if="loading" style="width: 50px; height: 50px" strokeWidth="8" fill="transparent" animationDuration=".5s" aria-label="Custom ProgressSpinner"/>
+                        <p>Right now image is generated, please wait for 2-3 minutes</p>
+                    </div>
+                </div>
             </section>
         </main>
         <footer class="footerpage" style="height: 160px;" >
