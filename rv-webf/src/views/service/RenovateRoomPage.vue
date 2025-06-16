@@ -13,7 +13,7 @@ import InputText from 'primevue/inputtext';
 import Message from 'primevue/message';
 import Select from 'primevue/select';
 import Textarea from 'primevue/textarea';
-import Image from 'primevue/image';
+import PrimeVueImage  from 'primevue/image';
 import ProgressSpinner from 'primevue/progressspinner';
 import FileUpload from 'primevue/fileupload';
 
@@ -22,6 +22,7 @@ const visibleLeft = ref(false);
 const serviceStore = useServiceStore();
 const authStore = useAuthStore();
 
+const samplePhoto = ref('');
 const now = new Date();
 const loading = ref(false);
 const roomFile = ref('');
@@ -43,16 +44,14 @@ const imageUrl = ref('');
 function onFileSelect(event) {
     const file = event.files[0];
     if (!file) {
-        return; // No file selected
+        return; 
     }
-
     const reader = new FileReader();
-
-    reader.onload = (e) => {
+    reader.onload = async (e) => { 
         const img = new Image();
-        img.onload = () => {
-            const MAX_WIDTH = 1280; // Or 1024
-            const MAX_HEIGHT = 720; // Or 768
+        img.onload = async () => { 
+            const MAX_WIDTH = 1280; 
+            const MAX_HEIGHT = 720; 
             const quality = 0.8; 
 
             let width = img.width;
@@ -79,13 +78,12 @@ function onFileSelect(event) {
 
             const resizedDataURL = canvas.toDataURL('image/jpeg', quality);
             roomFile.value = resizedDataURL;
-
-            console.log('Original image size:', file.size, 'bytes');
-            console.log('Resized data URL length:', resizedDataURL.length, 'bytes'); 
         };
-        img.src = e.target.result;
+        samplePhoto.value = e.target.result;
+        roomFile.value = e.target.result;
     };
-    reader.readAsDataURL(file); 
+
+    reader.readAsDataURL(file);
 }
 
 async function onSubmit() {
@@ -96,9 +94,9 @@ async function onSubmit() {
             prompt += ` and include ${etc.value.toLowerCase()}`;
         }
         const ratio = pictureSize.value.code;
-        const image = roomFile.value;
+        const imageProps = roomFile.value;
 
-        const response = await serviceStore.renovateImage({prompt, image, ratio});
+        const response = await serviceStore.renovateImage({prompt, imageProps, ratio});
         if (response.status === 200) {
             imageUrl.value = response.data.image;
         } else {
@@ -203,7 +201,7 @@ const username = localStorage.getItem('username');
                     <div class="input-roomsize">
                         <label for="roomSizeWidth">Room Photo</label>
                         <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary" style="transform: translateX(-80px); margin-top: 0px;" />
-                        <img v-if="roomFile" :src="roomFile" alt="Image" style="margin-top: 10px; border-radius: 5px; height: 112.5px; width: 200px; transform: translateX(20px);" />
+                        <img v-if="samplePhoto" :src="samplePhoto" alt="Image" style="margin-top: 10px; border-radius: 5px; height: 112.5px; width: 200px; transform: translateX(20px);" />
                         <Message size="small" severity="secondary" variant="simple">Upload your room's photo.</Message>
                     </div>
                     <div class="input-roomstyle">
@@ -227,10 +225,10 @@ const username = localStorage.getItem('username');
                     </div>
                     <Button label="Generate Room" @click="onSubmit" style="margin-top: -2.5px;"/>
                 </div>
-                <div class="image-result">
+                <div class="renovate-image-result">
                     <h2>Image Result</h2>
-                    <Image :src="imageUrl" alt="Generated room" width="80%" preview v-if="imageUrl"/>
-                    <Button label="Download Image" @click="downloadImage" v-if="imageUrl"/>
+                    <PrimeVueImage  :src="imageUrl" alt="Generated room" preview v-if="imageUrl" class="renovated-image" style="transform: translateX(0px);"/>
+                    <Button label="Download Image" @click="downloadImage" v-if="imageUrl" style="margin-top: -30px;"/>
                 </div>
                 <div v-if="loading" class="loading-overlay">
                     <div class="loading-content">

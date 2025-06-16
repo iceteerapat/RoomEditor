@@ -1,6 +1,6 @@
 import Replicate from "replicate";
 import dotenv from 'dotenv';
-
+import { shrinkImage } from "./ShrinkImage.js";
 
 dotenv.config();
 const replicate = new Replicate({
@@ -86,13 +86,14 @@ export const genBasic = async (req, res) => {
 };
 
 export const renovateBasic = async (req, res) => {
-  const { prompt, image, ratio } = req.body;
+  const { prompt, imageProps, ratio } = req.body;
   try {
+    const resizedBase64Image = await shrinkImage(imageProps); 
     const prediction = await replicate.predictions.create({
       model: "stability-ai/stable-diffusion-3",
       input: {
         prompt: prompt,
-        image: image,
+        image: resizedBase64Image,
         aspect_ratio: '16:9',
       },
     });
