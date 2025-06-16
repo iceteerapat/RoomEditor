@@ -811,7 +811,7 @@ p {
   font-weight: 700;
 }
 .renovate-image-result img {
-  transform: translateX(30px);
+  /* transform: translateX(30px); */
   z-index: 0;
 }
 .renovate-image-result .p-button {
@@ -824,7 +824,9 @@ p {
 .renovated-image {
   max-width: 1280px;
   max-height: 720px; 
-  transform: translateX(-200px);
+  /* transform: translateX(-100px); */
+  display: flex;
+  justify-content: center;
   height: auto;
   width: auto;
 }

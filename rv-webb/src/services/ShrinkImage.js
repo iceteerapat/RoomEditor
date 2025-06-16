@@ -11,6 +11,7 @@ export async function shrinkImage(base64String) {
         })
         .jpeg({quality: 80})
         .toBuffer();
+        console.log("transform success")
         return `data:image/jpeg;base64,${resize.toString('base64')}`;
     }catch(error){
         console.log("Error shrink image service: ", error)
