@@ -11,40 +11,39 @@ const options = ref(['Monthly', 'Annually']);
 const pricingPlans = [
   {
     name: 'Basic',
-    monthlyPrice: '$19 / month',
-    annualPrice: '$190 / year', 
+    monthlyPrice: '$14.99 / month',
+    annualPrice: '$140.99 / year', 
     features: [
       '250 Full HD images / month',
       'Picture size up to 1920 X 1080 pixels',
-      'Batch generation 1',
-      'Standard queue speed',
-      'Save last 25 images',
+      'Access to Create Room Service',
+      'Access to Renovate Room Service'
     ],
   },
-  {
-    name: 'Pro',
-    monthlyPrice: '$29 / month',
-    annualPrice: '$290 / year',
-    features: [
-      '600 2k images / month',
-      'Picture size up to 2048 X 1080 pixels',
-      'Batch generation 3',
-      'Faster queue speed',
-      'Save up to 100 images',
-    ],
-  },
-  {
-    name: 'Premium',
-    monthlyPrice: '$49 / month',
-    annualPrice: '$490 / year',
-    features: [
-      'Unlimited 4K images / month',
-      'Picture size up to 3840 X 2160 pixels',
-      'Batch generation 5',
-      'Priority generation queue',
-      'Unlimited image history + folders',
-    ],
-  },
+  // {
+  //   name: 'Pro',
+  //   monthlyPrice: '$29 / month',
+  //   annualPrice: '$290 / year',
+  //   features: [
+  //     '600 2k images / month',
+  //     'Picture size up to 2048 X 1080 pixels',
+  //     'Batch generation 3',
+  //     'Faster queue speed',
+  //     'Save up to 100 images',
+  //   ],
+  // },
+  // {
+  //   name: 'Premium',
+  //   monthlyPrice: '$49 / month',
+  //   annualPrice: '$490 / year',
+  //   features: [
+  //     'Unlimited 4K images / month',
+  //     'Picture size up to 3840 X 2160 pixels',
+  //     'Batch generation 5',
+  //     'Priority generation queue',
+  //     'Unlimited image history + folders',
+  //   ],
+  // },
   {
     name: 'Enterprise',
     monthlyPrice: 'Contact Us',
@@ -95,46 +94,14 @@ const selectedPlans = computed(() => {
                         </template>
                         <p
                         v-if="plan.name === 'Enterprise'"
-                        style="display: block; text-align: left; line-height: 1.8; padding-bottom: 83px;"
+                        style="display: block; text-align: left; line-height: 1.8; padding-bottom: 46.5px;"
                         >
                         {{ plan.features[0] }}
                         </p>
                         <Button style="font-weight: 780;">
                         {{ plan.name === 'Enterprise' ? 'Contact us' : 'Purchase' }}
                         </Button>
-                        <!-- <p>250 Full HD images / month </p>
-                        <p>Picture size up to 1920 X 1080 pixels</p>
-                        <p>Batch generation 1</p>
-                        <p>Standard queue speed</p>
-                        <p>Save last 25 images</p>
-                        <Button style="font-weight: 780;">Purchase</Button> -->
                     </div>
-                    <!-- <div class="price-card">
-                        <h3>Pro</h3>
-                        <p class="price">$29 / month</p>
-                        <p>600 2k images / month </p>
-                        <p>Picture size up to 2048 X 1080 pixels</p>
-                        <p>Batch generation 3</p>
-                        <p>Faster queue speed</p>
-                        <p>Save up to 100 images</p>
-                        <Button style="font-weight: 780;">Purchase</Button>
-                    </div> -->
-                    <!-- <div class="price-card">
-                        <h3>Premium</h3>
-                        <p class="price">$49 / month</p>
-                        <p>Unlimited HD images / month </p>
-                        <p>Picture size up to 3840 X 2160 pixels</p>
-                        <p>Batch generation 5</p>
-                        <p>Priority generation queue</p>
-                        <p>Unlimited image history + folders</p>
-                        <Button style="font-weight: 780;">Purchase</Button>
-                    </div> -->
-                    <!-- <div class="price-card">
-                        <h3>Enterprise</h3>
-                        <p class="price">Contact Us</p>
-                        <p style="display: block; text-align: left; line-height: 1.8; padding-bottom: 83px;">For businesses, agencies, or platforms needing high-volume AI-powered room generation, custom tools, or API access.</p>
-                        <Button style="font-weight: 780;">Contact us</Button>
-                    </div> -->
                 </div>
             </section>
         </main>

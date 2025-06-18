@@ -233,7 +233,7 @@ const username = localStorage.getItem('username');
                 <div v-if="loading" class="loading-overlay">
                     <div class="loading-content">
                         <ProgressSpinner v-if="loading" style="width: 50px; height: 50px" strokeWidth="8" fill="transparent" animationDuration=".5s" aria-label="Custom ProgressSpinner"/>
-                        <p>Right now image is generated, please wait for 2-3 minutes</p>
+                        <p>Right now image is generating, please wait for 2-3 minutes</p>
                     </div>
                 </div>
             </section>
