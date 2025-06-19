@@ -10,11 +10,22 @@ const options = ref(['Monthly', 'Annually']);
 
 const pricingPlans = [
   {
-    name: 'Basic',
+    name: 'One at a time',
+    monthlyPrice: '$6.99',
+    annualPrice: '$6.99',
+    features: [
+        'Generate up to 35 Full HD images',
+        'Picture size up to 1920 X 1080 pixels',
+        'Access to Create Room Service',
+        'Access to Renovate Room Service'
+    ]
+  },
+  {
+    name: 'Subscription',
     monthlyPrice: '$14.99 / month',
     annualPrice: '$140.99 / year', 
     features: [
-      '250 Full HD images / month',
+      'Generate up to 250 Full HD images / month',
       'Picture size up to 1920 X 1080 pixels',
       'Access to Create Room Service',
       'Access to Renovate Room Service'

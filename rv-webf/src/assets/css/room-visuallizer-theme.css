@@ -292,10 +292,10 @@ p {
 }
 .price-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 250px;
-  max-width: 1000px;
-  transform: translateX(45.5%);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 50px;
+  max-width: 1350px;
+  transform: translateX(20.5%);
   height: 550px;
 }
 .price-card {
@@ -325,7 +325,7 @@ p {
   color: #333;
 }
 .price-card button {
-  margin-top: 40px;
+  margin-top: 90px;
   padding: 10px 20px;
   border: none;
   background-color: #4f46e5;
