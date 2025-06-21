@@ -1,11 +1,11 @@
 <script setup>
-import { RouterLink, useRouter } from 'vue-router';
+import { RouterLink } from 'vue-router';
 import { ref, computed } from 'vue';
+import { handlePlanSelection } from '../../components/Purchase.js';
 
 import Button from 'primevue/button';
 import SelectButton from 'primevue/selectbutton';
 
-const router = useRouter();
 const billingCycle = ref('Monthly');
 const options = ref(['Monthly', 'Annually']);
 
@@ -49,19 +49,6 @@ const selectedPlans = computed(() => {
   }));
 });
 
-function handlePlanSelection(planName) {
-  if (planName === 'Subscription') {
-    if (billingCycle.value === 'Monthly') {
-     window.location.href ='https://buy.stripe.com/test_5kQ4gzfwIfGs9aV8S7a3u01';
-    } else {
-      window.location.href = 'https://buy.stripe.com/test_bJecN5aco3XK5YJ2tJa3u02';
-    }
-  } else if (planName === 'Enterprise') {
-    router.push('/contact');
-  } else {
-   window.location.href = 'https://buy.stripe.com/test_6oUaEXesE1PCgDn1pFa3u00';
-  }
-}
 </script>
 
 <template>
@@ -99,7 +86,7 @@ function handlePlanSelection(planName) {
                         >
                         {{ plan.features[0] }}
                         </p>
-                        <Button @click="handlePlanSelection(plan.name)" style="font-weight: 780;">
+                        <Button @click="handlePlanSelection(plan.name, billingCycle)" style="font-weight: 780;">
                         {{ plan.name === 'Enterprise' ? 'Contact us' : 'Purchase' }}
                         </Button>
                     </div>
