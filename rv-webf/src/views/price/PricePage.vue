@@ -1,10 +1,11 @@
 <script setup>
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
 
 import Button from 'primevue/button';
 import SelectButton from 'primevue/selectbutton';
 
+const router = useRouter();
 const billingCycle = ref('Monthly');
 const options = ref(['Monthly', 'Annually']);
 
@@ -25,36 +26,12 @@ const pricingPlans = [
     monthlyPrice: '$14.99 / month',
     annualPrice: '$140.99 / year', 
     features: [
-      'Generate up to 250 Full HD images / month',
+      'Generate up to 250 Full HD images per month',
       'Picture size up to 1920 X 1080 pixels',
       'Access to Create Room Service',
       'Access to Renovate Room Service'
     ],
   },
-  // {
-  //   name: 'Pro',
-  //   monthlyPrice: '$29 / month',
-  //   annualPrice: '$290 / year',
-  //   features: [
-  //     '600 2k images / month',
-  //     'Picture size up to 2048 X 1080 pixels',
-  //     'Batch generation 3',
-  //     'Faster queue speed',
-  //     'Save up to 100 images',
-  //   ],
-  // },
-  // {
-  //   name: 'Premium',
-  //   monthlyPrice: '$49 / month',
-  //   annualPrice: '$490 / year',
-  //   features: [
-  //     'Unlimited 4K images / month',
-  //     'Picture size up to 3840 X 2160 pixels',
-  //     'Batch generation 5',
-  //     'Priority generation queue',
-  //     'Unlimited image history + folders',
-  //   ],
-  // },
   {
     name: 'Enterprise',
     monthlyPrice: 'Contact Us',
@@ -68,10 +45,23 @@ const pricingPlans = [
 const selectedPlans = computed(() => {
   return pricingPlans.map(plan => ({
     ...plan,
-    currentPrice:
-      billingCycle.value === 'Monthly' ? plan.monthlyPrice : plan.annualPrice,
+    currentPrice: billingCycle.value === 'Monthly' ? plan.monthlyPrice : plan.annualPrice,
   }));
 });
+
+function handlePlanSelection(planName) {
+  if (planName === 'Subscription') {
+    if (billingCycle.value === 'Monthly') {
+     window.location.href ='https://buy.stripe.com/test_5kQ4gzfwIfGs9aV8S7a3u01';
+    } else {
+      window.location.href = 'https://buy.stripe.com/test_bJecN5aco3XK5YJ2tJa3u02';
+    }
+  } else if (planName === 'Enterprise') {
+    router.push('/contact');
+  } else {
+   window.location.href = 'https://buy.stripe.com/test_6oUaEXesE1PCgDn1pFa3u00';
+  }
+}
 </script>
 
 <template>
@@ -109,7 +99,7 @@ const selectedPlans = computed(() => {
                         >
                         {{ plan.features[0] }}
                         </p>
-                        <Button style="font-weight: 780;">
+                        <Button @click="handlePlanSelection(plan.name)" style="font-weight: 780;">
                         {{ plan.name === 'Enterprise' ? 'Contact us' : 'Purchase' }}
                         </Button>
                     </div>
