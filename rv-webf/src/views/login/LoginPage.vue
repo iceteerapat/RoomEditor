@@ -15,9 +15,7 @@ const password = ref('');
 
 function redirectIfLoggedIn() {
   if (
-    localStorage.getItem('token') &&
-    localStorage.getItem('email') &&
-    localStorage.getItem('username')
+    localStorage.getItem('token')
   ) {
     router.push('/service'); 
   }

@@ -5,9 +5,7 @@ const repository = RepositoriesFactory.get('AuthRepository');
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    token: localStorage.getItem('token') || null,
-    username: localStorage.getItem('username') || null,
-    email: localStorage.getItem('email') || null,
+    token: localStorage.getItem('token') || null
   }),
   actions: {
     async login(email, password) {
@@ -16,11 +14,7 @@ export const useAuthStore = defineStore('auth', {
 
         if (response != null) {
           this.token = response.data.token;
-          this.email = response.data.userEmail;
-          this.username = response.data.userUsername;
           localStorage.setItem('token', response.data.token);
-          localStorage.setItem('email', response.data.userEmail);
-          localStorage.setItem('username', response.data.userUsername);
           return response;
         }
       } catch (error) {
@@ -39,11 +33,7 @@ export const useAuthStore = defineStore('auth', {
         console.error('Logout failed:', error);
       } finally {
         this.token = null;
-        this.email = null;
-        this.username = null;
         localStorage.removeItem('token');
-        localStorage.removeItem('email');
-        localStorage.removeItem('username');
       }
     },
     async refresh(){

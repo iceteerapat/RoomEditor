@@ -6,6 +6,10 @@ const baseLinkOneAtATime = 'https://buy.stripe.com/test_6oUaEXesE1PCgDn1pFa3u00'
 const baseLinkSubscribeMonthly = 'https://buy.stripe.com/test_5kQ4gzfwIfGs9aV8S7a3u01';
 const baseLinkSubscribeAnnually = 'https://buy.stripe.com/test_bJecN5aco3XK5YJ2tJa3u02';
 
+const baseLinkOneAtATimeId = 'price_1Rbm2FGbnW1BWWOPK94CLqcK';
+const baseLinkSubscribeMonthlyId = 'price_1RVD30GbnW1BWWOPKd9A3usu';
+const baseLinkSubscribeAnnuallyId = 'price_1RVD30GbnW1BWWOPvZGgp2LN';
+
 export function handlePlanSelection(planName, billingCycle) {
   const email = localStorage.getItem('email');
   

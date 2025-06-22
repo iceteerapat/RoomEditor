@@ -5,9 +5,7 @@ const respository = RepositoriesFactory.get('RoomServiceRepository');
 
 export const useServiceStore = defineStore('service', {
   state: () => ({
-    token: localStorage.getItem('token') || null,
-    username: localStorage.getItem('username') || null,
-    email: localStorage.getItem('email') || null,
+    token: localStorage.getItem('token') || null
   }),
   actions: {
     async genImage(prompt, ratio){
