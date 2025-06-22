@@ -5,6 +5,7 @@ import { computed } from 'vue';
 import { formatDateToYMD } from '../../components/DateFormat';
 import { useServiceStore } from '../../store/ServiceStore';
 import { useAuthStore } from '../../store/AuthStore';
+import { decodeJwt } from '../../components/DecodeJwt.js';
 
 import Menu from 'primevue/menu';
 import Button from 'primevue/button';
@@ -160,7 +161,24 @@ const items = computed(() => [
   }
 
 ]);
-const username = localStorage.getItem('username');
+
+const token = localStorage.getItem('token');
+const email = ref('');
+const username = ref('');
+const customerId = ref('');
+const serviceName = ref('');
+const imageGenerate = ref('');
+
+if(token){
+    const data = decodeJwt(token);
+    if(data){
+        email.value = data.email || '';
+        username.value = data.username || '';
+        customerId.value = data.customerId || '';
+        serviceName.value = data.serviceName || '';
+        imageGenerate.value = data.imageGenerate || '';
+    }
+}
 </script>
 
 <template>
@@ -183,7 +201,7 @@ const username = localStorage.getItem('username');
             </div>
             <div class="profile-info">
                 <p>Username: {{ username }}</p>
-                <p>Subscription: </p>
+                <p>Subscription: {{ serviceName }}</p>
             </div>
 
         </header>
