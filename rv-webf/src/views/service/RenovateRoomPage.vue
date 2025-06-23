@@ -42,6 +42,24 @@ const size = ref([
 const etc = ref('');
 const imageUrl = ref('');
 
+const token = localStorage.getItem('token');
+const email = ref('');
+const username = ref('');
+const customerId = ref('');
+const serviceName = ref('');
+const imageGenerate = ref('');
+
+if(token){
+    const data = decodeJwt(token);
+    if(data){
+        email.value = data.email || '';
+        username.value = data.username || '';
+        customerId.value = data.customerId || '';
+        serviceName.value = data.serviceName || '';
+        imageGenerate.value = data.imageGenerate || '';
+    }
+}
+
 function onFileSelect(event) {
     const file = event.files[0];
     if (!file) {
@@ -162,23 +180,6 @@ const items = computed(() => [
 
 ]);
 
-const token = localStorage.getItem('token');
-const email = ref('');
-const username = ref('');
-const customerId = ref('');
-const serviceName = ref('');
-const imageGenerate = ref('');
-
-if(token){
-    const data = decodeJwt(token);
-    if(data){
-        email.value = data.email || '';
-        username.value = data.username || '';
-        customerId.value = data.customerId || '';
-        serviceName.value = data.serviceName || '';
-        imageGenerate.value = data.imageGenerate || '';
-    }
-}
 </script>
 
 <template>

@@ -1,5 +1,7 @@
 import Replicate from "replicate";
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+import AccountService from "../models/rvAccountService.js";
 import { shrinkImage } from "./ShrinkImage.js";
 
 dotenv.config();
@@ -9,7 +11,32 @@ const replicate = new Replicate({
 
 export const genBasic = async (req, res) => {
   const { prompt, ratio } = req.body;
+  const auth = req.headers.authorization;
+
   try {
+    if(!auth || !auth.startsWith('Bearer ')){
+      return res.status(401).jason({ message: 'Authorization token required'});
+    } 
+    const token = auth.split(' ')[1];
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+
+    const email = decodedToken.email;
+    const username = decodedToken.username;
+    const customerId = decodedToken.customerId;
+    const serviceName = decodedToken.serviceName;
+    
+    const service = await AccountService.findOne({ where: {customerId: customerId}});
+    if(!service){
+      console.log("Cannot find AccountService in database.")
+      return res.status(500).json({ message: 'Internal Server Error'});
+    } 
+    if(service.imageGenerated === 0){
+      return res.status(401).json({ message: 'Image Credit is 0, please subscribe or add credit'});
+    }
+
+    service.imageGenerated = service.imageGenerated - 1;
+    await service.save();
+
     const prediction = await replicate.predictions.create({
       model: "stability-ai/stable-diffusion-3",
       input: {
@@ -77,6 +104,7 @@ export const genBasic = async (req, res) => {
       return res.status(500).json({ error: "Upscaling failed: no valid upscaled image URL found" });
     }
 
+    console.log("image generate successfully: ", customerId, service.imageGenerated)
     res.status(200).json({ image: upscaledImageUrl });
 
   } catch (error) {
@@ -87,7 +115,32 @@ export const genBasic = async (req, res) => {
 
 export const renovateBasic = async (req, res) => {
   const { prompt, imageProps, ratio } = req.body;
+    const auth = req.headers.authorization;
+
   try {
+    if(!auth || !auth.startsWith('Bearer ')){
+      return res.status(401).json({ message: 'Authorization token required'});
+    } 
+    const token = auth.split(' ')[1];
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+
+    const email = decodedToken.email;
+    const username = decodedToken.username;
+    const customerId = decodedToken.customerId;
+    const serviceName = decodedToken.serviceName;
+    
+    const service = await AccountService.findOne({ where: {customerId: customerId}});
+    if(!service){
+      console.log("Cannot find AccountService in database.")
+      return res.status(500).json({ message: 'Internal Server Error'});
+    } 
+    if(service.imageGenerated === 0){
+      return res.status(401).jason({ message: 'Image Credit is 0, please subscribe or add credit'});
+    }
+
+    service.imageGenerated = service.imageGenerated - 1;
+    await service.save();
+
     const resizedBase64Image = await shrinkImage(imageProps); 
     const prediction = await replicate.predictions.create({
       model: "stability-ai/stable-diffusion-3",
@@ -157,6 +210,7 @@ export const renovateBasic = async (req, res) => {
       return res.status(500).json({ error: "Upscaling failed: no valid upscaled image URL found" });
     }
 
+    console.log("image generate successfully: ", customerId, service.imageGenerated)
     res.status(200).json({ image: upscaledImageUrl });
 
   } catch (error) {
