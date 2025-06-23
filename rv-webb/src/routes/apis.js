@@ -1,7 +1,7 @@
 import express from 'express';
 import { create, verify } from '../controllers/CreateAccountController.js';
 import { login, logout, refresh } from '../controllers/AuthController.js';
-import { genBasic, renovateBasic} from '../services/AiService.js';
+import { genBasic, renovateBasic} from '../controllers/ServiceController.js';
 import { purchased } from '../controllers/StripeController.js';
 
 const route = express.Router();    

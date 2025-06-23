@@ -1,4 +1,5 @@
 import { useRouter } from "vue-router";
+import { decodeJwt } from './DecodeJwt.js';
 
 const router = useRouter();
 
@@ -11,8 +12,14 @@ const baseLinkSubscribeMonthlyId = 'price_1RVD30GbnW1BWWOPKd9A3usu';
 const baseLinkSubscribeAnnuallyId = 'price_1RVD30GbnW1BWWOPvZGgp2LN';
 
 export function handlePlanSelection(planName, billingCycle) {
-  const email = localStorage.getItem('email');
-  
+  const token = localStorage.getItem('token');
+  if(!token){
+    return;
+  }
+
+  const data = decodeJwt(token);
+  const email = data.email;
+
   const linkOneAtATime = email ? `${baseLinkOneAtATime}?prefilled_email=${email}` : baseLinkOneAtATime;
   const linkSubscribeMonthly = email ? `${baseLinkSubscribeMonthly}?prefilled_email=${email}` : baseLinkSubscribeMonthly;
   const linkSubscribeAnnually = email ? `${baseLinkSubscribeAnnually}?prefilled_email=${email}` : baseLinkSubscribeAnnually;

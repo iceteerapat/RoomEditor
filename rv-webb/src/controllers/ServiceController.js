@@ -2,7 +2,7 @@ import Replicate from "replicate";
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import AccountService from "../models/rvAccountService.js";
-import { shrinkImage } from "./ShrinkImage.js";
+import { shrinkImage } from "../services/ShrinkImage.js";
 
 dotenv.config();
 const replicate = new Replicate({
@@ -20,10 +20,7 @@ export const genBasic = async (req, res) => {
     const token = auth.split(' ')[1];
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
-    const email = decodedToken.email;
-    const username = decodedToken.username;
     const customerId = decodedToken.customerId;
-    const serviceName = decodedToken.serviceName;
     
     const service = await AccountService.findOne({ where: {customerId: customerId}});
     if(!service){
@@ -124,10 +121,7 @@ export const renovateBasic = async (req, res) => {
     const token = auth.split(' ')[1];
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
-    const email = decodedToken.email;
-    const username = decodedToken.username;
     const customerId = decodedToken.customerId;
-    const serviceName = decodedToken.serviceName;
     
     const service = await AccountService.findOne({ where: {customerId: customerId}});
     if(!service){
