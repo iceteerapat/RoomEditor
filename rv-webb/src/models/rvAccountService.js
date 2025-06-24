@@ -38,6 +38,11 @@ const AccountService = sequelize.define('rv_account_service', {
     type: DataTypes.DATE,
     allowNull: false,
     field: 'create_date'
+  },
+  stripeCustomerId: {
+    type: DataTypes.STRING(20),
+    allowNull: true,
+    field: 'stripe_custome_id'
   }
 }, {
   sequelize,

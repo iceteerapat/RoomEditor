@@ -1,7 +1,7 @@
 import Client from "@/apis/AxiosClient";
 
 export default {
-    pruchase(payload){
-        return Client.post('/webhook', payload);
+    create(payload){
+        return Client.post('/create-checkout-session', payload);
     }
 };

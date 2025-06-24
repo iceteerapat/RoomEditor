@@ -30,6 +30,9 @@ export const genBasic = async (req, res) => {
     if(service.imageGenerated === 0){
       return res.status(401).json({ message: 'Image Credit is 0, please subscribe or add credit'});
     }
+    if(service.serviceAccess === 'N'){
+      return res.status(401).json({ message: 'Customer is not allowed to access the service, please re-subscription or paid one at a time'});
+    }
 
     service.imageGenerated = service.imageGenerated - 1;
     await service.save();
@@ -130,6 +133,9 @@ export const renovateBasic = async (req, res) => {
     } 
     if(service.imageGenerated === 0){
       return res.status(401).jason({ message: 'Image Credit is 0, please subscribe or add credit'});
+    }
+    if(service.serviceAccess === 'N'){
+      return res.status(401).json({ message: 'Customer is not allowed to access the service, please re-subscription or paid one at a time'});
     }
 
     service.imageGenerated = service.imageGenerated - 1;

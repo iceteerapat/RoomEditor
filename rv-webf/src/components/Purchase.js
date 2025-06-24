@@ -1,38 +1,58 @@
 import { useRouter } from "vue-router";
 import { decodeJwt } from './DecodeJwt.js';
 
+import RepositoriesFactory from '@/apis/repositories/RepositoriesFactory.js';
+
+const repository = RepositoriesFactory.get('PurchaseRepository');
 const router = useRouter();
 
-const baseLinkOneAtATime = 'https://buy.stripe.com/test_6oUaEXesE1PCgDn1pFa3u00';
-const baseLinkSubscribeMonthly = 'https://buy.stripe.com/test_5kQ4gzfwIfGs9aV8S7a3u01';
-const baseLinkSubscribeAnnually = 'https://buy.stripe.com/test_bJecN5aco3XK5YJ2tJa3u02';
+const priceOneAtATimeId = 'price_1Rbm2FGbnW1BWWOPK94CLqcK';
+const priceSubscribeMonthlyId = 'price_1RVD30GbnW1BWWOPKd9A3usu';
+const priceSubscribeAnnuallyId = 'price_1RVD30GbnW1BWWOPvZGgp2LN';
 
-const baseLinkOneAtATimeId = 'price_1Rbm2FGbnW1BWWOPK94CLqcK';
-const baseLinkSubscribeMonthlyId = 'price_1RVD30GbnW1BWWOPKd9A3usu';
-const baseLinkSubscribeAnnuallyId = 'price_1RVD30GbnW1BWWOPvZGgp2LN';
-
-export function handlePlanSelection(planName, billingCycle) {
+export async function handlePlanSelection(planName, billingCycle) {
   const token = localStorage.getItem('token');
-  if(!token){
-    return;
-  }
-
   const data = decodeJwt(token);
-  const email = data.email;
-
-  const linkOneAtATime = email ? `${baseLinkOneAtATime}?prefilled_email=${email}` : baseLinkOneAtATime;
-  const linkSubscribeMonthly = email ? `${baseLinkSubscribeMonthly}?prefilled_email=${email}` : baseLinkSubscribeMonthly;
-  const linkSubscribeAnnually = email ? `${baseLinkSubscribeAnnually}?prefilled_email=${email}` : baseLinkSubscribeAnnually;
+  let selectedPriceId = null;
+  let checkoutMode = 'payment';
 
   if (planName === 'Subscription') {
+    checkoutMode = 'subscription';
     if (billingCycle === 'Monthly') {
-      window.location.href = linkSubscribeMonthly;
+      selectedPriceId = priceSubscribeMonthlyId;
+    } else if (billingCycle === 'Annually') {
+      selectedPriceId = priceSubscribeAnnuallyId;
     } else {
-      window.location.href = linkSubscribeAnnually;
+      console.error("Internal Error Occured, please refresh page");
+      return;
     }
   } else if (planName === 'Enterprise') {
     router.push('/contact');
+    return; 
+  } else if (planName === 'One at a time') { 
+    selectedPriceId = priceOneAtATimeId;
   } else {
-    window.location.href = linkOneAtATime;
+    console.error("Internal Error Occured, please refresh page");
+    return; 
+  }
+
+  if(selectedPriceId){
+    try{
+      const response = await repository.create({priceId: selectedPriceId, userEmail: data.email, checkoutMode: checkoutMode});
+      const session = response.data;
+      if (session && session.url) {
+        window.location.href = session.url;
+      } else {
+        console.error("Backend did not return a valid Stripe Checkout Session URL.", session);
+        alert("Failed to initiate checkout. Please try again.");
+      }
+    }catch(error){
+      console.error("Error creating Stripe Checkout Session:", error.response?.data || error.message);
+      alert("There was an error processing your request. Please try again.");
+      if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+        localStorage.removeItem('token');
+        router.push('/login');
+      }
+    }
   }
 }

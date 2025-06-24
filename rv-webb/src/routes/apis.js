@@ -2,7 +2,7 @@ import express from 'express';
 import { create, verify } from '../controllers/CreateAccountController.js';
 import { login, logout, refresh } from '../controllers/AuthController.js';
 import { genBasic, renovateBasic} from '../controllers/ServiceController.js';
-import { purchased } from '../controllers/StripeController.js';
+import { purchased, handleWebhook } from '../controllers/StripeController.js';
 
 const route = express.Router();    
 
@@ -19,7 +19,7 @@ route.post('/login/logout', logout);
 route.post('/service/create', genBasic);
 route.post('/service/renovate', renovateBasic);
 
-//Purchase
-route.post('/webhook', purchased);
+//Stripe
+route.post('/create-checkout-session', purchased);
 
 export default route;
