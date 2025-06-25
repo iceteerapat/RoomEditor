@@ -7,6 +7,7 @@ import { useServiceStore } from '../../store/ServiceStore';
 import { useAuthStore } from '../../store/AuthStore';
 import { decodeJwt } from '../../components/DecodeJwt.js';
 
+import Repositories from '../../apis/repositories/RepositoriesFactory.js';
 import Menu from 'primevue/menu';
 import Button from 'primevue/button';
 import Drawer from 'primevue/drawer';
@@ -23,6 +24,7 @@ const visibleLeft = ref(false);
 const serviceStore = useServiceStore();
 const authStore = useAuthStore();
 
+const repository = Repositories.get('PurchaseRepository');
 const samplePhoto = ref('');
 const now = new Date();
 const loading = ref(false);
@@ -165,7 +167,7 @@ const items = computed(() => [
       {
         label: 'Account',
         command: () => {
-          router.push('/service/account');
+          onManage();
         }
       },
       {
@@ -179,6 +181,18 @@ const items = computed(() => [
   }
 
 ]);
+
+async function onManage(){
+    try{
+        const response = await repository.manage({withCredentials: true});
+        const portalUrl = response.data.url;
+        window.location.href = portalUrl;
+    }catch(error){
+        console.error('Error creating portal session:', error);
+        alert('Could not open billing portal. Please try again later.');
+    }
+
+}
 
 </script>
 

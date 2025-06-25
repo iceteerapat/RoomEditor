@@ -106,7 +106,7 @@ export const verify = async(req, res) => {
     }
     
     const serviceName = service.serviceName;
-    const serviceAccess = 'N';
+    const serviceAccess = 'T';
     const serviceId = service.recId;
     const imageGenerated = service.serviceUsage;
     const customerId = await createCustomerId();

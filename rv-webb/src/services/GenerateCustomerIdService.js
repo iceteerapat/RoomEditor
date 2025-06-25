@@ -13,8 +13,8 @@ export function generateCustomerId(date) {
 
 export async function validateCustomerId(customerId){
 
-  const validateAccountId = await Account.findOne({ where: { custoemrId: customerId }});
-  const validateServiceId = await AccountService.findOne({ where: { custoemrId: customerId }});
+  const validateAccountId = await Account.findOne({ where: { customerId: customerId }});
+  const validateServiceId = await AccountService.findOne({ where: { customerId: customerId }});
 
   if(validateAccountId || validateServiceId) {
     return false;

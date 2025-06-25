@@ -153,3 +153,40 @@ export const handleWebhook = async(req, res) => {
         res.status(200).json({ message: 'Internal Error'})
     }
 }
+
+export const managed = async(req, res) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ message: 'Authorization token required' });
+    }
+
+    const token = authHeader.split(' ')[1];
+    let decodedToken;
+    try{
+        decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    }catch(error){
+        if (error.name === 'TokenExpiredError' || error.name === 'JsonWebTokenError') {
+            return res.status(401).json({ message: 'Invalid or expired token' });
+        }
+        console.error('JWT verification error:', error);
+        return res.status(500).json({ message: 'Authentication failed' });
+    }
+    
+    const customerId = decodedToken.customerId;
+    try{
+        const userService = await AccountService.findOne({ where: {customerId: customerId}});
+        if (!userService || !userService.stripeCustomerId) {
+            return res.status(404).json({ error: 'Customer ID not found for user.' });
+        }
+
+        const session = await stripe.billingPortal.sessions.create({
+        customer: userService.stripeCustomerId,
+        return_url: `${process.env.BASE_URL}/service`
+        });
+
+        res.json({ url: session.url });
+    }catch(error){
+        console.error('Error creating billing portal session:', error);
+        res.status(500).json({ error: error.message });
+    }
+}

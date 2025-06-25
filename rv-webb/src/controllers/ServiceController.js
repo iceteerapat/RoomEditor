@@ -15,7 +15,7 @@ export const genBasic = async (req, res) => {
 
   try {
     if(!auth || !auth.startsWith('Bearer ')){
-      return res.status(401).jason({ message: 'Authorization token required'});
+      return res.status(401).json({ message: 'Authorization token required'});
     } 
     const token = auth.split(' ')[1];
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
@@ -132,7 +132,7 @@ export const renovateBasic = async (req, res) => {
       return res.status(500).json({ message: 'Internal Server Error'});
     } 
     if(service.imageGenerated === 0){
-      return res.status(401).jason({ message: 'Image Credit is 0, please subscribe or add credit'});
+      return res.status(401).json({ message: 'Image Credit is 0, please subscribe or add credit'});
     }
     if(service.serviceAccess === 'N'){
       return res.status(401).json({ message: 'Customer is not allowed to access the service, please re-subscription or paid one at a time'});

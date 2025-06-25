@@ -2,7 +2,7 @@ import express from 'express';
 import { create, verify } from '../controllers/CreateAccountController.js';
 import { login, logout, refresh } from '../controllers/AuthController.js';
 import { genBasic, renovateBasic} from '../controllers/ServiceController.js';
-import { purchased, handleWebhook } from '../controllers/StripeController.js';
+import { purchased, managed } from '../controllers/StripeController.js';
 
 const route = express.Router();    
 
@@ -21,5 +21,6 @@ route.post('/service/renovate', renovateBasic);
 
 //Stripe
 route.post('/create-checkout-session', purchased);
+route.post('/create-portal-session', managed);
 
 export default route;
