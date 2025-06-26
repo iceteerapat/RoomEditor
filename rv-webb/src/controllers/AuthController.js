@@ -77,7 +77,12 @@ export const refresh = async (req, res) =>{
     const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
 
     const newAccessToken = jwt.sign(
-      { email: decoded.email, id: decoded.id },
+      { email: decoded.email, 
+        username: decoded.username, 
+        customerId: decoded.customerId,
+        serviceName: decoded.serviceName,
+        imageGenerate: decoded.imageGenerated 
+      },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );

@@ -6,10 +6,11 @@ import { useAuthStore } from '@/store/AuthStore';
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import IftaLabel from 'primevue/iftalabel';
+import GlobalDialog from '../../components/GlobalDialog.vue';
 
+const messageDialog = ref(null);
 const store = useAuthStore();
 const router = useRouter();
-
 const email = ref('');
 const password = ref('');
 
@@ -26,18 +27,18 @@ const login = async() => {
     const response = await store.login(email.value, password.value);
 
     if (!response || !response.status) {
-      alert("Something went wrong. No response from server.");
+      messageDialog.value.show(response.data.message, 'Error');
       return;
     }
 
     if (response.status !== 200) {
-      alert("Email / Password is invalid, please re-login");
+      messageDialog.value.show(response.data.message, 'Error');
     } else {
       router.push('/service');
     }
   } catch (error) {
     console.error(error);
-    alert("Unexpected error. Try again later.");
+    messageDialog.value.show(error.message, 'Error');
   }
 };
 
@@ -64,6 +65,7 @@ onMounted(() => {
               <RouterLink to="/forgetpassword">Forget password?</RouterLink>
           </div>
           <Button type="submit" label="Log in" severity="primary" />
+          <GlobalDialog ref="messageDialog" />
         </form>
         <ul>
           <div class="signup">

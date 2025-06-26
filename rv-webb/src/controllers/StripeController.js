@@ -61,7 +61,7 @@ export const handleWebhook = async(req, res) => {
             );
         } catch (err) {
             console.log(`⚠️  Webhook signature verification failed.`, err.message);
-            return res.sendStatus(400);
+            return res.sendStatus(400).json({ message: 'Error, please re-login.' });
         }
     }
     try{
@@ -75,13 +75,13 @@ export const handleWebhook = async(req, res) => {
                 const internalCustomerId = session.metadata?.internalCustomerId;
                 if (!internalCustomerId) {
                     console.error(`Missing metadata for session ${session.id}. Cannot link to internal user.`);
-                    return res.sendStatus(400);
+                    return res.sendStatus(400).json({ message: 'Error, please re-login.' });
                 }
 
                 const userService = await AccountService.findOne({ where: { customerId: internalCustomerId } });
                 if (!userService) {
                     console.error(`Account not found for internalUserId: ${internalCustomerId}`);
-                    return res.sendStatus(404);
+                    return res.sendStatus(404).json({ message: 'Account not found.' });
                 }
                 if (!userService.stripeCustomerId) {
                     await AccountService.update(
@@ -97,7 +97,7 @@ export const handleWebhook = async(req, res) => {
 
                     if (!purchasedPrice) {
                         console.error(`Price not found in line items for subscription session ${session.id}`);
-                        return res.sendStatus(400);
+                        return res.sendStatus(400).json({ message: 'Price not found.' });
                     }
                     console.log(`Subscription ${subscriptionId} created for user ${internalCustomerId} with Price: ${purchasedPrice.id}`);
                     console.log(`Plan: ${purchasedPrice.product.name}, Interval: ${purchasedPrice.recurring.interval}`);
@@ -173,12 +173,24 @@ export const managed = async(req, res) => {
     }
     
     const customerId = decodedToken.customerId;
+    const email = decodedToken.email;
     try{
         const userService = await AccountService.findOne({ where: {customerId: customerId}});
-        if (!userService || !userService.stripeCustomerId) {
-            return res.status(404).json({ error: 'Customer ID not found for user.' });
+        if (!userService) {
+            return res.status(404).json({ message: 'User account not found.' });
         }
-
+        
+        let stripeCustomerId = userService.stripeCustomerId;
+        if(!stripeCustomerId){
+            const customer = await stripe.customers.create({
+                email: email,
+                metadata: {customerId}
+            });
+            
+            stripeCustomerId = customer.id;
+            await userService.update({ stripeCustomerId: stripeCustomerId});
+        }
+        
         const session = await stripe.billingPortal.sessions.create({
         customer: userService.stripeCustomerId,
         return_url: `${process.env.BASE_URL}/service`
@@ -187,6 +199,6 @@ export const managed = async(req, res) => {
         res.json({ url: session.url });
     }catch(error){
         console.error('Error creating billing portal session:', error);
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ message: error.message });
     }
 }

@@ -61,7 +61,7 @@ export const genBasic = async (req, res) => {
 
     if (result.status !== "succeeded" || !Array.isArray(result.output) || result.output.length === 0) {
       return res.status(500).json({
-        error: "Base image generation failed or produced no output.",
+        message: "Base image generation failed or produced no output.",
         details: result.error || `Prediction status: ${result.status}`
       });
     }
@@ -69,7 +69,7 @@ export const genBasic = async (req, res) => {
     const baseImageUrl = result.output[0];
 
     if (!baseImageUrl) {
-        return res.status(500).json({ error: "Base image URL is null or undefined after generation." });
+        return res.status(500).json({ message: "Base image URL is null or undefined after generation." });
     }
 
     const upscalePrediction = await replicate.predictions.create({
@@ -94,14 +94,14 @@ export const genBasic = async (req, res) => {
 
     if (upscaleResult.status !== "succeeded" || typeof upscaleResult.output !== 'string' || !upscaleResult.output) {
       return res.status(500).json({
-        error: "Upscaling failed or produced no valid URL output.",
+        message: "Upscaling failed or produced no valid URL output.",
         details: upscaleResult.error || `Prediction status: ${upscaleResult.status}`
       });
     }
     const upscaledImageUrl = upscaleResult.output;
 
     if (!upscaledImageUrl) {
-      return res.status(500).json({ error: "Upscaling failed: no valid upscaled image URL found" });
+      return res.status(500).json({ message: "Upscaling failed: no valid upscaled image URL found" });
     }
 
     console.log("image generate successfully: ", customerId, service.imageGenerated)
@@ -109,7 +109,7 @@ export const genBasic = async (req, res) => {
 
   } catch (error) {
     console.error("API call failed in try-catch block:", error);
-    res.status(500).json({ error: "API call failed", details: error.message });
+    res.status(500).json({ message: "API call failed", details: error.message });
   }
 };
 
@@ -167,7 +167,7 @@ export const renovateBasic = async (req, res) => {
 
     if (result.status !== "succeeded" || !Array.isArray(result.output) || result.output.length === 0) {
       return res.status(500).json({
-        error: "Base image generation failed or produced no output.",
+        message: "Base image generation failed or produced no output.",
         details: result.error || `Prediction status: ${result.status}`
       });
     }
@@ -200,14 +200,14 @@ export const renovateBasic = async (req, res) => {
 
     if (upscaleResult.status !== "succeeded" || typeof upscaleResult.output !== 'string' || !upscaleResult.output) {
       return res.status(500).json({
-        error: "Upscaling failed or produced no valid URL output.",
+        message: "Upscaling failed or produced no valid URL output.",
         details: upscaleResult.error || `Prediction status: ${upscaleResult.status}`
       });
     }
     const upscaledImageUrl = upscaleResult.output;
 
     if (!upscaledImageUrl) {
-      return res.status(500).json({ error: "Upscaling failed: no valid upscaled image URL found" });
+      return res.status(500).json({ message: "Upscaling failed: no valid upscaled image URL found" });
     }
 
     console.log("image generate successfully: ", customerId, service.imageGenerated)
@@ -215,6 +215,6 @@ export const renovateBasic = async (req, res) => {
 
   } catch (error) {
     console.error("API call failed in try-catch block:", error);
-    res.status(500).json({ error: "API call failed", details: error.message });
+    res.status(500).json({ message: "API call failed", details: error.message });
   }
 };

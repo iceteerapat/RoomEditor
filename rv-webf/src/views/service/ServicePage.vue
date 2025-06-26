@@ -9,7 +9,9 @@ import Repositories from '../../apis/repositories/RepositoriesFactory.js';
 import Menu from 'primevue/menu';
 import Button from 'primevue/button';
 import Drawer from 'primevue/drawer';
+import GlobalDialog from '../../components/GlobalDialog.vue';
 
+const messageDialog = ref(null);
 const repository = Repositories.get('PurchaseRepository');
 const visibleLeft = ref(false);
 const authStore = useAuthStore();
@@ -68,8 +70,7 @@ async function onManage(){
         const portalUrl = response.data.url;
         window.location.href = portalUrl;
     }catch(error){
-        console.error('Error creating portal session:', error);
-        alert('Could not open billing portal. Please try again later.');
+        messageDialog.value.show(error.response.data?.message, 'Error');
     }
 
 }
@@ -96,6 +97,7 @@ async function onManage(){
             <div class="profile-info">
                 <p>Username: {{ username }}</p>
                 <p>Subscription: {{ serviceName }}</p>
+                <p>Credits: {{ imageGenerate }}</p>
             </div>
 
         </header>
@@ -124,5 +126,6 @@ async function onManage(){
                 </div>
             </div>
         </footer>
+        <GlobalDialog ref="messageDialog" />
     </div>
 </template>

@@ -18,7 +18,9 @@ import Select from 'primevue/select';
 import Textarea from 'primevue/textarea';
 import Image from 'primevue/image';
 import ProgressSpinner from 'primevue/progressspinner';
+import GlobalDialog from '../../components/GlobalDialog.vue';
 
+const messageDialog = ref(null);
 const visibleLeft = ref(false);
 const serviceStore = useServiceStore();
 const authStore = useAuthStore();
@@ -74,10 +76,11 @@ async function onSubmit() {
         if (response.status === 200) {
             imageUrl.value = response.data.image;
         } else {
-            console.error("Image generation failed", response);
+            messageDialog.value.show(response.data.message, 'Error');
         }
     } catch(error) {
         console.error("Error during generation:", error);
+        messageDialog.value.show(error.message, 'Error');
     } finally {
         loading.value = false;
     }
@@ -101,6 +104,7 @@ async function downloadImage() {
     URL.revokeObjectURL(url);
   } catch (error) {
     console.error("Download failed:", error);
+    messageDialog.value.show(error.response.data?.message, 'Error');
   }
 }
 
@@ -141,8 +145,7 @@ async function onManage(){
         const portalUrl = response.data.url;
         window.location.href = portalUrl;
     }catch(error){
-        console.error('Error creating portal session:', error);
-        alert('Could not open billing portal. Please try again later.');
+        messageDialog.value.show(error.response.data?.message, 'Error');
     }
 
 }
@@ -214,6 +217,7 @@ async function onManage(){
                         <Message size="small" severity="secondary" variant="simple">Describe your room more such as TV on the left or Couch attach with the wall.</Message>
                     </div>
                     <Button label="Generate Room" @click="onSubmit"/>
+                    <GlobalDialog ref="messageDialog"/>
                 </div>
                 <div class="image-result">
                     <h2>Image Result</h2>
