@@ -45,10 +45,15 @@ const routes = [
         name: 'serviceCreate',
         component: () => import ('../views/service/CreateRoomPage.vue')
     },
-        {
+    {
         path: '/service/renovate',
         name: 'serviceRenovate',
         component: () => import ('../views/service/RenovateRoomPage.vue')
+    },
+    {
+        path: '/service/creditAndSubscription',
+        name: 'serviceCreditAndSubscription',
+        component: () => import ('../views/service/PriceMenuPage.vue')
     }
 ]
 

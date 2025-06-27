@@ -82,7 +82,6 @@ async function onManage(){
                 <p>Subscription: {{ authStore.getServiceName }}</p>
                 <p>Credits: {{ authStore.getImageGeneratedFromToken }}</p>
             </div>
-
         </header>
         <main>
             <div class="drawer-toggle-btn">
@@ -91,6 +90,7 @@ async function onManage(){
             <Drawer v-model:visible="visibleLeft" header="Menu">
                 <RouterLink to="/service/create">Create Room</RouterLink>
                 <RouterLink to="/service/renovate">Renovate Room</RouterLink>
+                <RouterLink to="/service/creditAndSubscription">Credits & Subscription</RouterLink>
             </Drawer>
             <section class="servicepage">
 

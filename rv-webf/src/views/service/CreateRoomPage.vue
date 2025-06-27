@@ -165,6 +165,7 @@ async function onManage(){
             <Drawer v-model:visible="visibleLeft" header="Menu">
                 <RouterLink to="/service/create">Create Room</RouterLink>
                 <RouterLink to="/service/renovate">Renovate Room</RouterLink>
+                <RouterLink to="/service/creditAndSubscription">Credits & Subscription</RouterLink>
             </Drawer>
             <section class="createimage-page">
                 <div class="input-properties">

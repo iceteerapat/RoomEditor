@@ -1,16 +1,14 @@
-import { useRouter } from "vue-router";
 import { decodeJwt } from './DecodeJwt.js';
 
 import RepositoriesFactory from '@/apis/repositories/RepositoriesFactory.js';
 
 const repository = RepositoriesFactory.get('PurchaseRepository');
-const router = useRouter();
 
 const priceOneAtATimeId = 'price_1Rbm2FGbnW1BWWOPK94CLqcK';
 const priceSubscribeMonthlyId = 'price_1RVD30GbnW1BWWOPKd9A3usu';
 const priceSubscribeAnnuallyId = 'price_1RVD30GbnW1BWWOPvZGgp2LN';
 
-export async function handlePlanSelection(planName, billingCycle) {
+export async function handlePlanSelection(planName, billingCycle, router) {
   const token = localStorage.getItem('token');
   const data = decodeJwt(token);
   let selectedPriceId = null;
@@ -38,7 +36,7 @@ export async function handlePlanSelection(planName, billingCycle) {
 
   if(selectedPriceId){
     try{
-      const response = await repository.create({priceId: selectedPriceId, userEmail: data.email, checkoutMode: checkoutMode});
+      const response = await repository.create({priceId: selectedPriceId, userEmail: data?.email, checkoutMode: checkoutMode});
       const session = response.data;
       if (session && session.url) {
         window.location.href = session.url;
@@ -48,11 +46,8 @@ export async function handlePlanSelection(planName, billingCycle) {
       }
     }catch(error){
       console.error("Error creating Stripe Checkout Session:", error.response?.data || error.message);
-      alert("There was an error processing your request. Please try again.");
-      if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-        localStorage.removeItem('token');
-        router.push('/login');
-      }
+      alert("Please login or sign-up to access our service.");
+      router.push('/login');
     }
   }
 }
