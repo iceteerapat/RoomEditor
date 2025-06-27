@@ -45,6 +45,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     async refresh(){
+      if (!this.token) return;
       try {
         const response = await repository.refresh();
         if (response && response.data.token) {

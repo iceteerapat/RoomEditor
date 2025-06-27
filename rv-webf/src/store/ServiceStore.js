@@ -5,12 +5,16 @@ const respository = RepositoriesFactory.get('RoomServiceRepository');
 
 export const useServiceStore = defineStore('service', {
   state: () => ({
-    token: localStorage.getItem('token') || null
+    token: localStorage.getItem('token') || null,
   }),
   actions: {
     async genImage(prompt, ratio){
         try {
             const response = await respository.create(prompt, ratio);
+            if(response.data.token){
+              this.token = response.data.token;
+              localStorage.setItem('token', response.data.token);
+            }
             return response;
         } catch (error) {
           if (error.response) {
@@ -32,6 +36,10 @@ export const useServiceStore = defineStore('service', {
     async renovateImage(prompt, image, ratio){
       try {
             const response = await respository.renovate(prompt, image, ratio);
+            if(response.data.token){
+              this.token = response.data.token;
+              localStorage.setItem('token', response.data.token);
+            }
             return response;
       } catch (error) {
         if (error.response) {

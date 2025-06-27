@@ -5,6 +5,7 @@ import AccountService from "../models/rvAccountService.js";
 import { shrinkImage } from "../services/ShrinkImage.js";
 
 dotenv.config();
+const JWT_SECRET = process.env.JWT_SECRET;
 const replicate = new Replicate({
     auth: process.env.REPLICATE_API_TOKEN
 });
@@ -104,8 +105,22 @@ export const genBasic = async (req, res) => {
       return res.status(500).json({ message: "Upscaling failed: no valid upscaled image URL found" });
     }
 
+    const payload = {
+      email: service.email,
+      username: service.username,
+      customerId: service.customerId,
+      serviceName: service.serviceName,
+      imageGenerated: service.imageGenerated
+    }
+
+    const newAccessToken = jwt.sign(
+    payload,
+    JWT_ACCESS_SECRET,
+    { expiresIn: '1h' } // Your desired access token expiry
+    );
+
     console.log("image generate successfully: ", customerId, service.imageGenerated)
-    res.status(200).json({ image: upscaledImageUrl });
+    res.status(200).json({ image: upscaledImageUrl, token: newAccessToken });
 
   } catch (error) {
     console.error("API call failed in try-catch block:", error);
@@ -210,8 +225,22 @@ export const renovateBasic = async (req, res) => {
       return res.status(500).json({ message: "Upscaling failed: no valid upscaled image URL found" });
     }
 
+    const payload = {
+      email: service.email,
+      username: service.username,
+      customerId: service.customerId,
+      serviceName: service.serviceName,
+      imageGenerated: service.imageGenerated
+    }
+
+    const newAccessToken = jwt.sign(
+      payload,
+      JWT_ACCESS_SECRET,
+      { expiresIn: '1h' } // Your desired access token expiry
+    );
+
     console.log("image generate successfully: ", customerId, service.imageGenerated)
-    res.status(200).json({ image: upscaledImageUrl });
+    res.status(200).json({ image: upscaledImageUrl, token: newAccessToken });
 
   } catch (error) {
     console.error("API call failed in try-catch block:", error);
