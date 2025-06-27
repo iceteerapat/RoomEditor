@@ -42,7 +42,7 @@ export const login = async (req, res) => {
        username: user.username,
        customerId: service.customerId,
        serviceName: service.serviceName,
-       imageGenerate: service.imageGenerated
+       imageGenerated: service.imageGenerated
        }, 
        process.env.JWT_SECRET, 
        { expiresIn: '1h' }
@@ -77,11 +77,12 @@ export const refresh = async (req, res) =>{
     const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
 
     const newAccessToken = jwt.sign(
-      { email: decoded.email, 
+      { 
+        email: decoded.email, 
         username: decoded.username, 
         customerId: decoded.customerId,
         serviceName: decoded.serviceName,
-        imageGenerate: decoded.imageGenerated 
+        imageGenerated: decoded.imageGenerated 
       },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }

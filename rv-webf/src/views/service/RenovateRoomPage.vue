@@ -5,7 +5,6 @@ import { computed } from 'vue';
 import { formatDateToYMD } from '../../components/DateFormat';
 import { useServiceStore } from '../../store/ServiceStore';
 import { useAuthStore } from '../../store/AuthStore';
-import { decodeJwt } from '../../components/DecodeJwt.js';
 
 import Repositories from '../../apis/repositories/RepositoriesFactory.js';
 import Menu from 'primevue/menu';
@@ -45,24 +44,6 @@ const size = ref([
 ])
 const etc = ref('');
 const imageUrl = ref('');
-
-const token = localStorage.getItem('token');
-const email = ref('');
-const username = ref('');
-const customerId = ref('');
-const serviceName = ref('');
-const imageGenerate = ref('');
-
-if(token){
-    const data = decodeJwt(token);
-    if(data){
-        email.value = data.email || '';
-        username.value = data.username || '';
-        customerId.value = data.customerId || '';
-        serviceName.value = data.serviceName || '';
-        imageGenerate.value = data.imageGenerate || '';
-    }
-}
 
 function onFileSelect(event) {
     const file = event.files[0];
@@ -216,8 +197,9 @@ async function onManage(){
                 <h1>Room Visualizer</h1>
             </div>
             <div class="profile-info">
-                <p>Username: {{ username }}</p>
-                <p>Subscription: {{ serviceName }}</p>
+                <p>Username: {{ authStore.getUsername }}</p>
+                <p>Subscription: {{ authStore.getServiceName }}</p>
+                <p>Credits: {{ serviceStore.getImageGenerateCount }}</p>
             </div>
 
         </header>

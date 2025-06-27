@@ -2,6 +2,7 @@ import Replicate from "replicate";
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import AccountService from "../models/rvAccountService.js";
+import AccountLogin from "../models/rvAccountLogin.js";
 import { shrinkImage } from "../services/ShrinkImage.js";
 
 dotenv.config();
@@ -22,10 +23,11 @@ export const genBasic = async (req, res) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
     const customerId = decodedToken.customerId;
+    const email = decodedToken.email;
     
     const service = await AccountService.findOne({ where: {customerId: customerId}});
     if(!service){
-      console.log("Cannot find AccountService in database.")
+      console.log("Cannot find Service in database.")
       return res.status(500).json({ message: 'Internal Server Error'});
     } 
     if(service.imageGenerated === 0){
@@ -37,6 +39,12 @@ export const genBasic = async (req, res) => {
 
     service.imageGenerated = service.imageGenerated - 1;
     await service.save();
+
+    const account = await AccountLogin.findOne({ where: {email: email}})
+    if(!account){
+      console.log("Cannot find Account in database.")
+      return res.status(500).json({ message: 'Internal Server Error'});
+    } 
 
     const prediction = await replicate.predictions.create({
       model: "stability-ai/stable-diffusion-3",
@@ -106,8 +114,8 @@ export const genBasic = async (req, res) => {
     }
 
     const payload = {
-      email: service.email,
-      username: service.username,
+      email: account.email,
+      username: account.username,
       customerId: service.customerId,
       serviceName: service.serviceName,
       imageGenerated: service.imageGenerated
@@ -115,7 +123,7 @@ export const genBasic = async (req, res) => {
 
     const newAccessToken = jwt.sign(
     payload,
-    JWT_ACCESS_SECRET,
+    JWT_SECRET,
     { expiresIn: '1h' } // Your desired access token expiry
     );
 
@@ -155,6 +163,12 @@ export const renovateBasic = async (req, res) => {
 
     service.imageGenerated = service.imageGenerated - 1;
     await service.save();
+
+    const account = await AccountLogin.findOne({ where: {email: email}})
+    if(!account){
+      console.log("Cannot find Account in database.")
+      return res.status(500).json({ message: 'Internal Server Error'});
+    } 
 
     const resizedBase64Image = await shrinkImage(imageProps); 
     const prediction = await replicate.predictions.create({
@@ -226,8 +240,8 @@ export const renovateBasic = async (req, res) => {
     }
 
     const payload = {
-      email: service.email,
-      username: service.username,
+      email: account.email,
+      username: account.username,
       customerId: service.customerId,
       serviceName: service.serviceName,
       imageGenerated: service.imageGenerated
@@ -235,7 +249,7 @@ export const renovateBasic = async (req, res) => {
 
     const newAccessToken = jwt.sign(
       payload,
-      JWT_ACCESS_SECRET,
+      JWT_SECRET,
       { expiresIn: '1h' } // Your desired access token expiry
     );
 

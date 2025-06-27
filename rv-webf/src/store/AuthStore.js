@@ -1,20 +1,54 @@
 import { defineStore } from 'pinia';
+import { jwtDecode } from 'jwt-decode';
 import RepositoriesFactory from '@/apis/repositories/RepositoriesFactory';
 
 const repository = RepositoriesFactory.get('AuthRepository');
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    token: localStorage.getItem('token') || null
+    token: localStorage.getItem('token') || null,
+    userDecodedData: null,
   }),
+    getters: {
+    isAuthenticated: (state) => !!state.token,
+    getUserEmail: (state) => state.userDecodedData?.email,
+    getUsername: (state) => state.userDecodedData?.username,
+    getCustomerId: (state) => state.userDecodedData?.customerId,
+    getServiceName: (state) => state.userDecodedData?.serviceName,
+    getImageGeneratedFromToken: (state) => state.userDecodedData?.imageGenerated,
+  },
   actions: {
+    setToken(newToken) {
+      this.token = newToken;
+      localStorage.setItem('token', newToken);
+      console.log('AuthStore: New token received and set in localStorage.');
+      try {
+        this.userDecodedData = jwtDecode(newToken);
+        console.log('AuthStore: Token decoded, userDecodedData updated:', this.userDecodedData);
+        console.log('AuthStore: Decoded username:', this.userDecodedData?.username); // Specific check for username
+        
+        const serviceStore = useServiceStore();
+        serviceStore.updateImageGenerated(this.userDecodedData.imageGenerated);
+      } catch (e) {
+        console.error('Failed to decode token:', e);
+        this.userDecodedData = null;
+        this.token = null;
+        localStorage.removeItem('token');
+      }
+    },
+
+    initializeAuth() {
+        const storedToken = localStorage.getItem('token');
+        if (storedToken) {
+            this.setToken(storedToken);
+        }
+    },
     async login(email, password) {
       try {
         const response = await repository.login({email, password});
 
         if (response != null) {
-          this.token = response.data.token;
-          localStorage.setItem('token', response.data.token);
+          this.setToken(response.data.token);
           return response;
         }
       } catch (error) {
@@ -49,8 +83,7 @@ export const useAuthStore = defineStore('auth', {
       try {
         const response = await repository.refresh();
         if (response && response.data.token) {
-          this.token = response.data.token;
-          localStorage.setItem('token', response.data.token);
+          this.setToken(response.data.token);
         }
       } catch (error) {
         console.error('Token refresh failed:', error);
@@ -59,3 +92,5 @@ export const useAuthStore = defineStore('auth', {
     }
   }
 });
+
+import { useServiceStore } from './ServiceStore';

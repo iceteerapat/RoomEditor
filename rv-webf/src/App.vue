@@ -9,8 +9,14 @@ import DynamicDialog from 'primevue/dynamicdialog';
 const authStore = useAuthStore();
 
 onMounted(async () => {
+  authStore.initializeAuth();
   if (authStore.isAuthenticated) { 
-    await authStore.refresh();
+    try {
+      await authStore.refresh();
+      console.log('Token refreshed successfully on app startup.');
+    } catch (error) {
+      console.error('Failed to refresh token on app startup:', error);
+    }
   }
 });
 </script>
