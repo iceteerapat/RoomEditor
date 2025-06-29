@@ -1,6 +1,7 @@
 import sequelize from '../../sequelize-instance.js';
 import { DataTypes } from 'sequelize';
-const AccountLogin = sequelize.define('rv_account_login', {
+
+const Account = sequelize.define('rv_account', {
     recId: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -8,17 +9,24 @@ const AccountLogin = sequelize.define('rv_account_login', {
       primaryKey: true,
       field: 'rec_id'
     },
-    username: {
-      type: DataTypes.STRING(50),
-      allowNull: false
-    },
     email: {
       type: DataTypes.STRING(50),
       allowNull: false
     },
+    customerId: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
+      field: 'customer_id'
+    },
+    username: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      field: 'username'
+    },
     password: {
       type: DataTypes.STRING(100),
-      allowNull: false
+      allowNull: false,
+      field: 'password'
     },
     verifyPassword: {
       type: DataTypes.STRING(100),
@@ -26,41 +34,34 @@ const AccountLogin = sequelize.define('rv_account_login', {
       field: 'verify_password'
     },
     phone: {
-      type: DataTypes.STRING(20),
-      allowNull: false
+      type: DataTypes.STRING(10),
+      allowNull: false,
+      field: 'phone'
     },
-    privacyFlag: {
+    verifyEmail: {
       type: DataTypes.STRING(1),
       allowNull: false,
-      field: 'privacy_flag'
+      field: 'verify_email'
+    },
+    active: {
+      type: DataTypes.STRING(1),
+      allowNull: false,
+      field: 'active'
     },
     createDate: {
       type: DataTypes.DATE,
       allowNull: false,
       field: 'create_date'
     },
-    verifyEmail:{
+    privacyFlag: {
       type: DataTypes.STRING(1),
       allowNull: false,
-      field: 'verify_email'
+      field: 'privacy_flag'
     },
-    active:{
-      type: DataTypes.STRING(1),
-      allowNull: false
-    }
   }, {
     sequelize,
-    tableName: 'rv_account_login',
+    tableName: 'rv_account',
     schema: 'public',
-    timestamps: false,
-    indexes: [
-      {
-        name: "rv_account_login_pk",
-        unique: true,
-        fields: [
-          { name: "rec_id" },
-        ]
-      },
-    ]
-  });
-export default AccountLogin;
+    timestamps: false
+});
+export default Account;

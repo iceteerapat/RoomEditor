@@ -1,8 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import AccountLogin from "../models/rvAccountLogin.js";
-import AccountService from "../models/rvAccountService.js";
-import Account from "../models/rvAccount.js";
+import Account from "../models/Account.js";
+import Service from "../models/Service.js";
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
@@ -13,36 +12,31 @@ export const login = async (req, res) => {
     return res.status(400).json({ message: 'Email and password are required' });
     }
 
-    const user = await AccountLogin.findOne({ where: { email: email } });
-    if (!user) {
+    const account = await Account.findOne({ where: { email: email } });
+    if (!account) {
     return res.status(404).json({ message: 'User not found' });
     }
 
-    if (user.verifyEmail !== 'Y') {
-      return res.status(400).json({ message: 'Unverified account' });
+    if (account.verifyEmail !== 'Y') {
+      return res.status(404).json({ message: 'Unverified account' });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, account.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    const account = await Account.findOne({ where: { email: user.email } });
-    if (!account) {
-    return res.status(404).json({ message: 'Account not found' });
-    }
-
-    const service = await AccountService.findOne({ where: {customerId: account.customerId } });
+    const service = await Service.findOne({ where: {customerId: account.customerId } });
     if (!service) {
     return res.status(404).json({ message: 'Account Service not found' });
     }
 
     const token = jwt.sign({
-       email: user.email,
-       username: user.username,
-       customerId: service.customerId,
-       serviceName: service.serviceName,
-       imageGenerated: service.imageGenerated
+       email: account.email,
+       username: account.username,
+       customerId: account.customerId,
+       productName: service.productName,
+       credits: service.credits
        }, 
        process.env.JWT_SECRET, 
        { expiresIn: '1h' }
@@ -76,11 +70,11 @@ export const refresh = async (req, res) =>{
 
     const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
 
-    const service = await AccountService.findOne({ where: {customerId: decoded.customerId } });
+    const service = await Service.findOne({ where: {customerId: decoded.customerId } });
     if (!service) {
     return res.status(404).json({ message: 'Account Service not found' });
     }
-    const account = await AccountLogin.findOne({ where: { email: decoded.email } });
+    const account = await Account.findOne({ where: { email: decoded.email } });
     if (!account) {
     return res.status(404).json({ message: 'Account not found' });
     }
@@ -89,9 +83,9 @@ export const refresh = async (req, res) =>{
       { 
         email: account.email, 
         username: account.username, 
-        customerId: service.customerId,
-        serviceName: service.serviceName,
-        imageGenerated: service.imageGenerated 
+        customerId: account.customerId,
+        productName: service.productName,
+        credits: service.credits 
       },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }

@@ -1,8 +1,8 @@
 import Replicate from "replicate";
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import AccountService from "../models/rvAccountService.js";
-import AccountLogin from "../models/rvAccountLogin.js";
+import Account from "../models/Account.js";
+import Service from "../models/Service.js";
 import { shrinkImage } from "../services/ShrinkImage.js";
 
 dotenv.config();
@@ -25,22 +25,22 @@ export const genBasic = async (req, res) => {
     const customerId = decodedToken.customerId;
     const email = decodedToken.email;
     
-    const service = await AccountService.findOne({ where: {customerId: customerId}});
+    const service = await Service.findOne({ where: {customerId: customerId}});
     if(!service){
       console.log("Cannot find Service in database.")
       return res.status(500).json({ message: 'Internal Server Error'});
     } 
-    if(service.imageGenerated === 0){
+    if(service.credits === 0){
       return res.status(401).json({ message: 'Image Credit is 0, please subscribe or add credit'});
     }
     if(service.serviceAccess === 'N'){
       return res.status(401).json({ message: 'Customer is not allowed to access the service, please re-subscription or paid one at a time'});
     }
 
-    service.imageGenerated = service.imageGenerated - 1;
+    service.credits = service.credits - 1;
     await service.save();
 
-    const account = await AccountLogin.findOne({ where: {email: email}})
+    const account = await Account.findOne({ where: {email: email}})
     if(!account){
       console.log("Cannot find Account in database.")
       return res.status(500).json({ message: 'Internal Server Error'});
@@ -119,7 +119,7 @@ export const genBasic = async (req, res) => {
       username: account.username,
       customerId: service.customerId,
       serviceName: service.serviceName,
-      imageGenerated: service.imageGenerated
+      credits: service.credits
     }
 
     const newAccessToken = jwt.sign(
@@ -128,7 +128,7 @@ export const genBasic = async (req, res) => {
     { expiresIn: '1h' } // Your desired access token expiry
     );
 
-    console.log("image generate successfully: ", customerId, service.imageGenerated)
+    console.log("image generate successfully: ", customerId, service.credits)
     res.status(200).json({ image: upscaledImageUrl, token: newAccessToken });
 
   } catch (error) {
@@ -151,22 +151,22 @@ export const renovateBasic = async (req, res) => {
     const customerId = decodedToken.customerId;
     const email = decodedToken.email;
 
-    const service = await AccountService.findOne({ where: {customerId: customerId}});
+    const service = await Service.findOne({ where: {customerId: customerId}});
     if(!service){
-      console.log("Cannot find AccountService in database.")
+      console.log("Cannot find Service in database.")
       return res.status(500).json({ message: 'Internal Server Error'});
     } 
-    if(service.imageGenerated === 0){
+    if(service.credits === 0){
       return res.status(401).json({ message: 'Image Credit is 0, please subscribe or add credit'});
     }
     if(service.serviceAccess === 'N'){
       return res.status(401).json({ message: 'Customer is not allowed to access the service, please re-subscription or paid one at a time'});
     }
 
-    service.imageGenerated = service.imageGenerated - 1;
+    service.credits = service.credits - 1;
     await service.save();
 
-    const account = await AccountLogin.findOne({ where: {email: email}})
+    const account = await Account.findOne({ where: {email: email}})
     if(!account){
       console.log("Cannot find Account in database.")
       return res.status(500).json({ message: 'Internal Server Error'});
@@ -247,7 +247,7 @@ export const renovateBasic = async (req, res) => {
       username: account.username,
       customerId: service.customerId,
       serviceName: service.serviceName,
-      imageGenerated: service.imageGenerated
+      credits: service.credits
     }
 
     const newAccessToken = jwt.sign(
@@ -256,7 +256,7 @@ export const renovateBasic = async (req, res) => {
       { expiresIn: '1h' } // Your desired access token expiry
     );
 
-    console.log("image generate successfully: ", customerId, service.imageGenerated)
+    console.log("image generate successfully: ", customerId, service.credits)
     res.status(200).json({ image: upscaledImageUrl, token: newAccessToken });
 
   } catch (error) {

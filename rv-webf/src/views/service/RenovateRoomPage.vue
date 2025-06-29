@@ -205,8 +205,8 @@ async function onManage(){
             </div>
             <div class="profile-info">
                 <p>Username: {{ authStore.getUsername }}</p>
-                <p>Subscription: {{ authStore.getServiceName }}</p>
-                <p>Credits: {{ serviceStore.getImageGenerateCount }}</p>
+                <p>Subscription: {{ authStore.getProductName }}</p>
+                <p>Credits: {{ serviceStore.getCreditsCount }}</p>
             </div>
 
         </header>

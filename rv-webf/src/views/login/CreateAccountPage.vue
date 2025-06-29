@@ -2,6 +2,7 @@
 import { reactive, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import { Form } from '@primevue/forms';
+import { useMessageDialog } from '../../components/MessageDialog.js'; 
 
 import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext'
@@ -12,9 +13,8 @@ import Password from 'primevue/password';
 import Message from 'primevue/message';
 
 import RepositoriesFactory from '../../apis/repositories/RepositoriesFactory';
-import GlobalDialog from '../../components/GlobalDialog.vue';
 
-const messageDialog = ref(null);
+const messageDialog = useMessageDialog();
 const respository = RepositoriesFactory.get('CreateAccountRepository');
 
 const dialogPrivacyPolicy = ref(false);
@@ -68,7 +68,7 @@ async function onSubmit({ valid }) {
     }
   } catch (error) {
     console.error("Error: "+ error);
-    messageDialog.value.show(error.response.data?.message, 'Error');
+    messageDialog.show(error.response.data?.message, 'error');
   }
 }
 </script>
@@ -196,7 +196,6 @@ async function onSubmit({ valid }) {
                         Congratulations🎉🎉🎉 You have create account successfully. Please verify your email and get start!!!
                     </p>
                   </Dialog>
-                  <GlobalDialog ref="messageDialog"/>
                   <div class="checkaccount">
                     Aleady have an account? <RouterLink to="/login">Log in</RouterLink>
                   </div>

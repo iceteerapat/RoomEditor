@@ -14,8 +14,8 @@ export const useAuthStore = defineStore('auth', {
     getUserEmail: (state) => state.userDecodedData?.email,
     getUsername: (state) => state.userDecodedData?.username,
     getCustomerId: (state) => state.userDecodedData?.customerId,
-    getServiceName: (state) => state.userDecodedData?.serviceName,
-    getImageGeneratedFromToken: (state) => state.userDecodedData?.imageGenerated,
+    getProductName: (state) => state.userDecodedData?.productName,
+    getCreditsFromToken: (state) => state.userDecodedData?.credits,
   },
   actions: {
     setToken(newToken) {
@@ -28,7 +28,7 @@ export const useAuthStore = defineStore('auth', {
         console.log('AuthStore: Decoded username:', this.userDecodedData?.username); // Specific check for username
         
         const serviceStore = useServiceStore();
-        serviceStore.updateImageGenerated(this.userDecodedData.imageGenerated);
+        serviceStore.updateCredits(this.userDecodedData.credits);
       } catch (e) {
         console.error('Failed to decode token:', e);
         this.userDecodedData = null;

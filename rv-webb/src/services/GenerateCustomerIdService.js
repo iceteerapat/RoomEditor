@@ -1,5 +1,5 @@
-import Account from "../models/rvAccount.js";
-import AccountService from "../models/rvAccountService.js";
+import Account from "../models/Account.js";
+import Service from "../models/Service.js";
 
 export function generateCustomerId(date) {
   const year = date.getFullYear();
@@ -14,7 +14,7 @@ export function generateCustomerId(date) {
 export async function validateCustomerId(customerId){
 
   const validateAccountId = await Account.findOne({ where: { customerId: customerId }});
-  const validateServiceId = await AccountService.findOne({ where: { customerId: customerId }});
+  const validateServiceId = await Service.findOne({ where: { customerId: customerId }});
 
   if(validateAccountId || validateServiceId) {
     return false;

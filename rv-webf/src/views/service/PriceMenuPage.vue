@@ -10,10 +10,10 @@ import SelectButton from 'primevue/selectbutton';
 import Repositories from '../../apis/repositories/RepositoriesFactory.js';
 import Menu from 'primevue/menu';
 import Drawer from 'primevue/drawer';
-import GlobalDialog from '../../components/GlobalDialog.vue';
 
 const billingCycle = ref('Monthly');
 const options = ref(['Monthly', 'Annually']);
+const serviceStore = useServiceStore();
 
 const pricingPlans = [
   {
@@ -124,8 +124,8 @@ async function onManage(){
             </div>
             <div class="profile-info">
                 <p>Username: {{ authStore.getUsername }}</p>
-                <p>Subscription: {{ authStore.getServiceName }}</p>
-                <p>Credits: {{ authStore.getImageGeneratedFromToken }}</p>
+                <p>Subscription: {{ authStore.getProductName }}</p>
+                <p>Credits: {{ serviceStore.getCreditsCount }}</p>
             </div>
         </header>
         <main>

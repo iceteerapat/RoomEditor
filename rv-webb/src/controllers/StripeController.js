@@ -1,7 +1,6 @@
 import Stripe from "stripe";
-import Service from "../models/rvService.js";
-import AccountService from "../models/rvAccountService.js";
-import AccountLogin from "../models/rvAccountLogin.js";
+import Product from "../models/Product.js";
+import Service from "../models/Service.js";
 import jwt from 'jsonwebtoken';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -27,6 +26,12 @@ export const purchased = async(req, res) => {
     }
     const customerId = decodedToken.customerId;
 
+    const service = await Service.findOne({ where: {customerId: customerId}});
+    if(!service.stripeCustomerId){
+        console.error(`Service not found for internalUserId: ${customerId}`);
+        return res.sendStatus(404).json({ message: 'Account not found.' });
+    }
+
     try{
         const session = await stripe.checkout.sessions.create({
             line_items:[
@@ -39,6 +44,7 @@ export const purchased = async(req, res) => {
             success_url: `${process.env.BASE_URL}/service/create`,
             cancel_url: `${process.env.BASE_URL}/service/create`,
             customer_email: userEmail,
+            customer: service.stripeCustomerId,
             metadata: {
                 internalCustomerId: customerId,
             }
@@ -79,13 +85,13 @@ export const handleWebhook = async(req, res) => {
                     return res.sendStatus(400).json({ message: 'Error, please re-login.' });
                 }
 
-                const userService = await AccountService.findOne({ where: { customerId: internalCustomerId } });
+                const userService = await Service.findOne({ where: { customerId: internalCustomerId } });
                 if (!userService) {
                     console.error(`Account not found for internalUserId: ${internalCustomerId}`);
                     return res.sendStatus(404).json({ message: 'Account not found.' });
                 }
                 if (!userService.stripeCustomerId) {
-                    await AccountService.update(
+                    await Service.update(
                         { stripeCustomerId: session.customer }, // session.customer is Stripe's cus_ID
                         { where: { customerId: internalCustomerId } }
                     );
@@ -104,28 +110,28 @@ export const handleWebhook = async(req, res) => {
                     console.log(`Plan: ${purchasedPrice.product.name}, Interval: ${purchasedPrice.recurring.interval}`);
 
                     if(purchasedPrice.recurring.interval === 'year'){
-                        const service = await Service.findOne({ where :{ recId: 3}});
-                        userService.serviceName = service.serviceName;
+                        const product = await Product.findOne({ where :{ recId: 4}});
+                        userService.serviceName = product.productName;
                         userService.serviceAccess = 'Y';
-                        userService.serviceId = service.recId;
-                        userService.imageGenerated = userService.imageGenerated + service.serviceUsage;
+                        userService.serviceId = product.recId;
+                        userService.credits = userService.credits + product.creditGrant;
                         await userService.save();
                     }else {
-                        const service = await Service.findOne({ where :{ recId: 2}});
-                        userService.serviceName = service.serviceName;
+                        const product = await Product.findOne({ where :{ recId: 3}});
+                        userService.serviceName = product.productName;
                         userService.serviceAccess = 'Y';
-                        userService.serviceId = service.recId;
-                        userService.imageGenerated = userService.imageGenerated + service.serviceUsage;
+                        userService.serviceId = product.recId;
+                        userService.credits = userService.credits + product.creditGrant;
                         await userService.save();
                     }
-                    console.log(`AccountService updated for customer ${internalCustomerId} with new subscription.`);
+                    console.log(`Service updated for customer ${internalCustomerId} with new subscription.`);
 
                 } else if (session.mode === 'payment') {
-                    const service = await Service.findOne({ where :{ recId: 1 }});
-                    userService.serviceName = service.serviceName;
+                    const product = await Product.findOne({ where :{ recId: 2 }});
+                    userService.serviceName = product.productName;
                     userService.serviceAccess = 'Y';
-                    userService.serviceId = service.recId;
-                    await AccountService.increment('imageGenerated', { by: 35, where: { customerId: internalCustomerId } });
+                    userService.serviceId = product.recId;
+                    await Service.increment('credits', { by: 35, where: { customerId: internalCustomerId } });
                     console.log(`User ${internalCustomerId} granted credits.`);
                     await userService.save();
                 }
@@ -136,16 +142,16 @@ export const handleWebhook = async(req, res) => {
             case 'customer.subscription.deleted': {
                 const subscription = event.data.object;
                 const stripeCustomerId = subscription.customer;
-                const userService = await AccountService.findOne({ where: { stripeCustomerId: stripeCustomerId } });
+                const userService = await Service.findOne({ where: { stripeCustomerId: stripeCustomerId } });
 
                 if (userService) {
-                    const service = await Service.findOne({ where :{ recId: 1 }});
-                    userService.serviceName = service.serviceName;
+                    const product = await Product.findOne({ where :{ recId: 1 }});
+                    userService.serviceName = product.serviceName;
                     userService.serviceAccess = 'N';
-                    userService.serviceId = service.recId;
-                    userService.imageGenerated = 0;
+                    userService.serviceId = product.recId;
+                    userService.credits = 0;
                     await userService.save();
-                    console.log(`AccountService marked as canceled for customer ${userService.customerId}.`);
+                    console.log(`Service marked as canceled for customer ${userService.customerId}.`);
                 }
                 break;
             }
@@ -177,21 +183,21 @@ export const managed = async(req, res) => {
     const customerId = decodedToken.customerId;
     const email = decodedToken.email;
     try{
-        const userService = await AccountService.findOne({ where: {customerId: customerId}});
+        const userService = await Service.findOne({ where: {customerId: customerId}});
         if (!userService) {
             return res.status(404).json({ message: 'User account not found.' });
         }
         
-        let stripeCustomerId = userService.stripeCustomerId;
-        if(!stripeCustomerId){
-            const customer = await stripe.customers.create({
-                email: email,
-                metadata: {customerId}
-            });
+        // let stripeCustomerId = userService.stripeCustomerId;
+        // if(!stripeCustomerId){
+        //     const customer = await stripe.customers.create({
+        //         email: email,
+        //         metadata: {customerId}
+        //     });
             
-            stripeCustomerId = customer.id;
-            await userService.update({ stripeCustomerId: stripeCustomerId});
-        }
+        //     stripeCustomerId = customer.id;
+        //     await userService.update({ stripeCustomerId: stripeCustomerId});
+        // }
         
         const session = await stripe.billingPortal.sessions.create({
         customer: userService.stripeCustomerId,

@@ -6,14 +6,14 @@ const respository = RepositoriesFactory.get('RoomServiceRepository');
 
 export const useServiceStore = defineStore('service', {
   state: () => ({
-    imageGenerated: 0,
+    credits: 0,
   }),
   getters: {
-    getImageGenerateCount: (state) => state.imageGenerated
+    getCreditsCount: (state) => state.credits
   },
   actions: {
-    updateImageGenerated(count) {
-      this.imageGenerated = count;
+    updateCredits(count) {
+      this.credits = count;
     },
     async genImage(prompt, ratio){
       const authStore = useAuthStore();

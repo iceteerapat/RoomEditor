@@ -1,7 +1,7 @@
 import sequelize from '../../sequelize-instance.js';
 import { DataTypes } from 'sequelize';
 
-const Service = sequelize.define('rv_service', {
+const Product = sequelize.define('rv_product', {
     recId: {
       autoIncrement: true,
       primaryKey: true,
@@ -9,21 +9,21 @@ const Service = sequelize.define('rv_service', {
       allowNull: false,
       field: 'rec_id'
     },
-    serviceName: {
+    productName: {
       type: DataTypes.STRING(20),
       allowNull: false,
-      field: 'service_name'
+      field: 'product_name'
     },
-    serviceUsage: {
+    creditGrant: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      field: 'service_usage'
+      field: 'credit_grant'
     }
   }, {
     sequelize,
-    tableName: 'rv_service',
+    tableName: 'rv_product',
     schema: 'public',
     timestamps: false
 });
 
-export default Service;
+export default Product;
