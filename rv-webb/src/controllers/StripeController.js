@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 import Service from "../models/rvService.js";
 import AccountService from "../models/rvAccountService.js";
+import AccountLogin from "../models/rvAccountLogin.js";
 import jwt from 'jsonwebtoken';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -35,8 +36,8 @@ export const purchased = async(req, res) => {
                 }
             ],
             mode: checkoutMode,
-            success_url: `${process.env.BASE_URL}/service`,
-            cancel_url: `${process.env.BASE_URL}/cancel`,
+            success_url: `${process.env.BASE_URL}/service/create`,
+            cancel_url: `${process.env.BASE_URL}/service/create`,
             customer_email: userEmail,
             metadata: {
                 internalCustomerId: customerId,
@@ -128,6 +129,7 @@ export const handleWebhook = async(req, res) => {
                     console.log(`User ${internalCustomerId} granted credits.`);
                     await userService.save();
                 }
+
                 break;
             }
 
@@ -193,7 +195,7 @@ export const managed = async(req, res) => {
         
         const session = await stripe.billingPortal.sessions.create({
         customer: userService.stripeCustomerId,
-        return_url: `${process.env.BASE_URL}/service`
+        return_url: `${process.env.BASE_URL}/service/create`
         });
 
         res.json({ url: session.url });

@@ -5,6 +5,7 @@ import { useAuthStore } from '@/store/AuthStore'
 
 import ConfirmDialog from 'primevue/confirmdialog';
 import DynamicDialog from 'primevue/dynamicdialog';
+import GlobalDialog from './components/GlobalDialog.vue';
 
 const authStore = useAuthStore();
 
@@ -25,6 +26,7 @@ onMounted(async () => {
   <ConfirmDialog />
   <DynamicDialog />
   <RouterView />
+  <GlobalDialog />
 </template>
 
 <style src="@fortawesome/fontawesome-free/css/all.min.css"></style>

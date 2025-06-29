@@ -5,6 +5,7 @@ import { computed } from 'vue';
 import { formatDateToYMD } from '../../components/DateFormat';
 import { useServiceStore } from '../../store/ServiceStore';
 import { useAuthStore } from '../../store/AuthStore';
+import { useMessageDialog } from '../../components/MessageDialog.js'; 
 
 import Repositories from '../../apis/repositories/RepositoriesFactory.js';
 import Menu from 'primevue/menu';
@@ -17,9 +18,8 @@ import Select from 'primevue/select';
 import Textarea from 'primevue/textarea';
 import Image from 'primevue/image';
 import ProgressSpinner from 'primevue/progressspinner';
-import GlobalDialog from '../../components/GlobalDialog.vue';
 
-const messageDialog = ref(null);
+const messageDialog = useMessageDialog();
 const visibleLeft = ref(false);
 const serviceStore = useServiceStore();
 const authStore = useAuthStore();
@@ -57,11 +57,17 @@ async function onSubmit() {
         if (response.status === 200) {
             imageUrl.value = response.data.image;
         } else {
-            messageDialog.value.show(response.data.message, 'Error');
+        await messageDialog.show(response.data.message, 'error');
         }
     } catch(error) {
-        console.error("Error during generation:", error);
-        messageDialog.value.show(error.message, 'Error');
+        loading.value = false;
+        await messageDialog.show(error.message, 'error');
+        if(error.status === 401){
+            router.push('/service/creditAndSubscription');
+        }
+        if(error.status === 404){
+            router.push('/login');
+        }
     } finally {
         loading.value = false;
     }
@@ -200,7 +206,6 @@ async function onManage(){
                         <Message size="small" severity="secondary" variant="simple">Describe your room more such as TV on the left or Couch attach with the wall.</Message>
                     </div>
                     <Button label="Generate Room" @click="onSubmit"/>
-                    <GlobalDialog ref="messageDialog"/>
                 </div>
                 <div class="image-result">
                     <h2>Image Result</h2>
@@ -220,7 +225,7 @@ async function onManage(){
                 <h3>Room Visualizer</h3>
                 <div class="footerpage-column">
                     <RouterLink to="/home">Home</RouterLink>
-                    <RouterLink to="/service">Create Room</RouterLink>
+                    <RouterLink to="/service/create">Create Room</RouterLink>
                     <RouterLink to="/price">Pricing</RouterLink>
                 </div>
                 <div class="footerpage-legal">

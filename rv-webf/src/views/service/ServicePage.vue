@@ -101,7 +101,7 @@ async function onManage(){
                 <h3>Room Visualizer</h3>
                 <div class="footerpage-column">
                     <RouterLink to="/home">Home</RouterLink>
-                    <RouterLink to="/service">Create Room</RouterLink>
+                    <RouterLink to="/service/create">Create Room</RouterLink>
                     <RouterLink to="/price">Pricing</RouterLink>
                 </div>
                 <div class="footerpage-legal">

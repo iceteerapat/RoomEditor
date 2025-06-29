@@ -1,34 +1,33 @@
 <script setup>
-import { ref, defineExpose } from 'vue';
+import { computed } from 'vue';
+import { useMessageDialog } from './MessageDialog';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 
-const dialogVisible = ref(false);
-const dialogHeader = ref('');
-const dialogMessage = ref('');
+const messageDialog = useMessageDialog();
 
-/**
- * Function to show the dialog from outside this component.
- * @param {string} message - The message content.
- * @param {string} header - The dialog header.
- */
-
-const show = (message, header = 'Message') => {
-  dialogMessage.value = message;
-  dialogHeader.value = header;
-  dialogVisible.value = true;
-};
-
-defineExpose({
-  show,
+// Optional: Compute header based on message type
+const dialogHeader = computed(() => {
+  switch (messageDialog.dialogType.value) {
+    case 'error': return 'Error';
+    case 'warning': return 'Warning';
+    case 'success': return 'Success';
+    default: return 'Information';
+  }
 });
 </script>
 
 <template>
-  <Dialog v-model:visible="dialogVisible" :header="dialogHeader" modal :style="{ width: '30vw' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
-    <p>{{ dialogMessage }}</p>
+  <Dialog
+    :visible="messageDialog.isDialogVisible.value"
+    :modal="true"
+    :closable="false"
+    :header="dialogHeader"
+    @update:visible="messageDialog.hide"
+  >
+    <p>{{ messageDialog.dialogMessage.value }}</p>
     <template #footer>
-      <Button label="OK" icon="pi pi-check" @click="dialogVisible = false" autofocus />
+      <Button label="OK" @click="messageDialog.hide()" />
     </template>
   </Dialog>
 </template>

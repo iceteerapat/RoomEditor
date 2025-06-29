@@ -193,7 +193,7 @@ async function onSubmit({ valid }) {
                   <Button type="submit" label="Create Account" severity="primary" />
                   <Dialog v-model:visible="dialogSuccess" modal header="Success" :style="{ width: '770px' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
                     <p class="m-0">
-                        Congratulations🎉🎉🎉 You have create account successfully. Please verify your email and get Start!!!
+                        Congratulations🎉🎉🎉 You have create account successfully. Please verify your email and get start!!!
                     </p>
                   </Dialog>
                   <GlobalDialog ref="messageDialog"/>

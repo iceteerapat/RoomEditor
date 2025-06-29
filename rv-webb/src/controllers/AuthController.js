@@ -76,13 +76,22 @@ export const refresh = async (req, res) =>{
 
     const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
 
+    const service = await AccountService.findOne({ where: {customerId: decoded.customerId } });
+    if (!service) {
+    return res.status(404).json({ message: 'Account Service not found' });
+    }
+    const account = await AccountLogin.findOne({ where: { email: decoded.email } });
+    if (!account) {
+    return res.status(404).json({ message: 'Account not found' });
+    }
+
     const newAccessToken = jwt.sign(
       { 
-        email: decoded.email, 
-        username: decoded.username, 
-        customerId: decoded.customerId,
-        serviceName: decoded.serviceName,
-        imageGenerated: decoded.imageGenerated 
+        email: account.email, 
+        username: account.username, 
+        customerId: service.customerId,
+        serviceName: service.serviceName,
+        imageGenerated: service.imageGenerated 
       },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }

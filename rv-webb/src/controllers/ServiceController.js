@@ -17,7 +17,7 @@ export const genBasic = async (req, res) => {
 
   try {
     if(!auth || !auth.startsWith('Bearer ')){
-      return res.status(401).json({ message: 'Authorization token required'});
+      return res.status(404).json({ message: 'Authorization token required, please re-login'});
     } 
     const token = auth.split(' ')[1];
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
@@ -51,6 +51,7 @@ export const genBasic = async (req, res) => {
       input: {
         prompt: prompt,
         aspect_ratio: '16:9',
+        output_quality: 100,
       },
     });
 
@@ -142,13 +143,14 @@ export const renovateBasic = async (req, res) => {
 
   try {
     if(!auth || !auth.startsWith('Bearer ')){
-      return res.status(401).json({ message: 'Authorization token required'});
+      return res.status(404).json({ message: 'Authorization token required, please re-login'});
     } 
     const token = auth.split(' ')[1];
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
     const customerId = decodedToken.customerId;
-    
+    const email = decodedToken.email;
+
     const service = await AccountService.findOne({ where: {customerId: customerId}});
     if(!service){
       console.log("Cannot find AccountService in database.")
@@ -177,6 +179,7 @@ export const renovateBasic = async (req, res) => {
         prompt: prompt,
         image: resizedBase64Image,
         aspect_ratio: '16:9',
+        output_quality: 100,
       },
     });
 

@@ -6,9 +6,9 @@ import { useAuthStore } from '@/store/AuthStore';
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import IftaLabel from 'primevue/iftalabel';
-import GlobalDialog from '../../components/GlobalDialog.vue';
+import { useMessageDialog } from '../../components/MessageDialog.js'; 
 
-const messageDialog = ref(null);
+const messageDialog = useMessageDialog();
 const store = useAuthStore();
 const router = useRouter();
 const email = ref('');
@@ -18,7 +18,7 @@ function redirectIfLoggedIn() {
   if (
     localStorage.getItem('token')
   ) {
-    router.push('/service'); 
+    router.push('/service/create'); 
   }
 }
 
@@ -27,18 +27,17 @@ const login = async() => {
     const response = await store.login(email.value, password.value);
 
     if (!response || !response.status) {
-      messageDialog.value.show(response.data.message, 'Error');
+      await messageDialog.show(response.data.message, 'error');
       return;
     }
 
     if (response.status !== 200) {
-      messageDialog.value.show(response.data.message, 'Error');
+      await messageDialog.show(response.data.message, 'error');
     } else {
-      router.push('/service');
+      router.push('/service/create');
     }
   } catch (error) {
-    console.error(error);
-    messageDialog.value.show(error.message, 'Error');
+    await messageDialog.show(response.data.message, 'error');
   }
 };
 
@@ -65,7 +64,6 @@ onMounted(() => {
               <RouterLink to="/forgetpassword">Forget password?</RouterLink>
           </div>
           <Button type="submit" label="Log in" severity="primary" />
-          <GlobalDialog ref="messageDialog" />
         </form>
         <ul>
           <div class="signup">

@@ -831,3 +831,51 @@ p {
   height: auto;
   width: auto;
 }
+
+@media (min-width: 1024px) {
+
+}
+
+@media (min-width: 375px) {
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.navbar {
+  margin: 15px 0px;
+  padding: 15px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo {
+    font-weight: bold;
+    font-size: 16px;
+}
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+a {
+    display: block;
+    padding: 0px 20px;
+    color: black;
+    font-size: large;
+    text-decoration: none;
+}
+.nav-links a {
+    text-decoration: none;
+    font-weight: bold;
+}
+.nav-links a:hover {
+    text-decoration: solid;
+}
+.nav-links .login-button {
+    margin-left: 20px;
+}
+}

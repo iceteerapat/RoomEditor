@@ -5,6 +5,7 @@ import { computed } from 'vue';
 import { formatDateToYMD } from '../../components/DateFormat';
 import { useServiceStore } from '../../store/ServiceStore';
 import { useAuthStore } from '../../store/AuthStore';
+import { useMessageDialog } from '../../components/MessageDialog.js'; 
 
 import Repositories from '../../apis/repositories/RepositoriesFactory.js';
 import Menu from 'primevue/menu';
@@ -17,10 +18,9 @@ import Textarea from 'primevue/textarea';
 import PrimeVueImage  from 'primevue/image';
 import ProgressSpinner from 'primevue/progressspinner';
 import FileUpload from 'primevue/fileupload';
-import GlobalDialog from '../../components/GlobalDialog.vue';
 
-const messageDialog = ref(null);
-
+const messageDialog = useMessageDialog();
+const router = useRouter();
 const visibleLeft = ref(false);
 const serviceStore = useServiceStore();
 const authStore = useAuthStore();
@@ -103,12 +103,20 @@ async function onSubmit() {
         const response = await serviceStore.renovateImage({prompt, imageProps, ratio});
         if (response.status === 200) {
             imageUrl.value = response.data.image;
-        } else {
-            messageDialog.value.show(response.data.message, 'Error');
+        } 
+        else {
+            await messageDialog.show(response.data.message, 'error');
         }
     } catch(error) {
-        messageDialog.value.show(error.message, 'Error');
-    } finally {
+        loading.value = false;
+        await messageDialog.show(error.message, 'error');
+        if(error.status === 401){
+            router.push('/service/creditAndSubscription');
+        }
+        if(error.status === 404){
+            router.push('/login');
+        }
+    }finally {
         loading.value = false;
     }
 }
@@ -138,7 +146,6 @@ const isLoggedIn = computed(() =>
     !!authStore.token || !!localStorage.getItem('token')
 );
 
-const router = useRouter();
 const showMenu = (event) => {
     menu.value.toggle(event);
 };
@@ -241,7 +248,6 @@ async function onManage(){
                         <Message size="small" severity="secondary" variant="simple">Describe your room more such as TV on the left or Couch attach with the wall.</Message>
                     </div>
                     <Button label="Generate Room" @click="onSubmit" style="margin-top: -2.5px;"/>
-                    <GlobalDialog ref="messageDialog"/>
                 </div>
                 <div class="renovate-image-result">
                     <h2>Image Result</h2>
