@@ -104,7 +104,8 @@ async function onManage(){
 </script>
 
 <template>
-    <div class="min-h-screen bg-gray-100 flex flex-col"> <div v-if="!isLoggedIn" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="min-h-screen bg-gray-100 flex flex-col"> 
+        <div v-if="!isLoggedIn" class="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50">
             <div class="bg-white p-8 rounded-lg shadow-xl text-center">
                 <h2 class="text-2xl font-semibold mb-4 text-gray-800">Please log in to access this feature</h2>
                 <RouterLink to="/login">
@@ -114,17 +115,20 @@ async function onManage(){
         </div> 
         
         <header class="flex items-center justify-between p-4 bg-white shadow-md">
-            <div class="cursor-pointer p-2" @click="showMenu">
-                <i class="fas fa-user text-2xl text-gray-700"/>
-                <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" class="mt-2" />
-            </div>
-            <div class="flex-grow text-center">
-                <h1 class="text-3xl font-bold text-gray-800">Room Visualizer</h1>
-            </div>
-            <div class="text-right text-sm text-gray-600 space-y-1">
+            <div class="hidden md:block text-left text-sm text-gray-600 space-y-1">
                 <p>Username: <span class="font-medium">{{ authStore.getUsername }}</span></p>
                 <p>Subscription: <span class="font-medium">{{ authStore.getProductName }}</span></p>
                 <p>Credits: <span class="font-medium">{{ serviceStore.getCreditsCount }}</span></p>
+            </div>
+            <div class="md:hidden">
+                <p>Credits: <span class="font-medium">{{ serviceStore.getCreditsCount }}</span></p>
+            </div>
+            <div class="flex-grow text-center">
+                <h1 class="hidden md:block text-3xl font-bold text-gray-800 transform translate-x-5">Room Visualizer</h1>
+            </div>
+            <div class="cursor-pointer p-2" @click="showMenu">
+                <i class="fas fa-user text-2xl text-gray-700"/>
+                <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" class="mt-2" />
             </div>
         </header>
 
@@ -133,17 +137,17 @@ async function onManage(){
             </div>
             <Drawer v-model:visible="visibleLeft" header="Menu" position="left" class="md:hidden">
                 <div class="flex flex-col gap-4 p-4">
-                    <RouterLink to="/service/create" class="text-lg text-blue-600 hover:text-blue-800 transition-colors">Create Room</RouterLink>
-                    <RouterLink to="/service/renovate" class="text-lg text-blue-600 hover:text-blue-800 transition-colors">Renovate Room</RouterLink>
-                    <RouterLink to="/service/creditAndSubscription" class="text-lg text-blue-600 hover:text-blue-800 transition-colors">Credits & Subscription</RouterLink>
+                    <RouterLink to="/service/create" class="text-lg text-green-600 hover:text-green-800 transition-colors">Create Room</RouterLink>
+                    <RouterLink to="/service/renovate" class="text-lg text-green-600 hover:text-green-800 transition-colors">Renovate Room</RouterLink>
+                    <RouterLink to="/service/creditAndSubscription" class="text-lg text-green-600 hover:text-green-800 transition-colors">Credits & Subscription</RouterLink>
                 </div>
             </Drawer>
 
             <aside class="hidden md:block w-64 bg-white p-4 rounded-lg shadow-md">
                 <nav class="flex flex-col gap-4">
-                    <RouterLink to="/service/create" class="text-lg font-medium text-gray-700 hover:text-blue-600 transition-colors py-2 px-3 rounded-md hover:bg-blue-50">Create Room</RouterLink>
-                    <RouterLink to="/service/renovate" class="text-lg font-medium text-gray-700 hover:text-blue-600 transition-colors py-2 px-3 rounded-md hover:bg-blue-50">Renovate Room</RouterLink>
-                    <RouterLink to="/service/creditAndSubscription" class="text-lg font-medium text-gray-700 hover:text-blue-600 transition-colors py-2 px-3 rounded-md hover:bg-blue-50">Credits & Subscription</RouterLink>
+                    <RouterLink to="/service/create" class="text-lg font-medium text-gray-700 hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">Create Room</RouterLink>
+                    <RouterLink to="/service/renovate" class="text-lg font-medium text-gray-700 hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">Renovate Room</RouterLink>
+                    <RouterLink to="/service/creditAndSubscription" class="text-lg font-medium text-gray-700 hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">Credits & Subscription</RouterLink>
                 </nav>
             </aside>
 
@@ -153,7 +157,7 @@ async function onManage(){
                     <div class="bg-gray-50 p-8 rounded-lg shadow-md flex flex-col items-center text-center border-2 border-gray-200 hover:shadow-lg transition-shadow" 
                          v-for="plan in selectedPlans" :key="plan.name">
                         <h3 class="text-2xl font-semibold text-gray-800 mb-4">{{ plan.name }}</h3>
-                        <p class="text-4xl font-bold text-blue-600 mb-6 price">{{ plan.currentPrice }}</p>
+                        <p class="text-4xl font-bold text-green-600 mb-6 price">{{ plan.currentPrice }}</p>
                         
                         <template v-if="plan.name !== 'Enterprise'">
                             <p v-for="(feature, index) in plan.features" :key="index" class="text-gray-700 mb-2 last:mb-4">

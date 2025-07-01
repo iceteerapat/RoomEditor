@@ -57,20 +57,20 @@ const purchasePlan = (planName, cycle) => {
 
 <template>
   <div class="min-h-screen flex flex-col">
-      <header class="bg-gray-800 text-white shadow-md">
+      <header class="bg-white-800 text-black shadow-md">
           <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
-              <div class="text-2xl font-bold text-blue-400">
+              <div class="text-2xl font-bold text-white-800">
                   Room Visualizer
               </div>
               <ul class="hidden md:flex space-x-6 items-center">
-                  <RouterLink to="/home" class="hover:text-blue-300 transition-colors duration-200">Home</RouterLink>
-                  <RouterLink to="/service/create" class="hover:text-blue-300 transition-colors duration-200">Create Room</RouterLink>
-                  <RouterLink to="/price" class="hover:text-blue-300 transition-colors duration-200">Pricing</RouterLink>
-                  <Button asChild v-slot="slotProps" class="!text-white"> <RouterLink to="/login" :class="`${slotProps.class} bg-blue-500 hover:bg-blue-600 focus:ring-blue-500`">Login</RouterLink>
+                  <RouterLink to="/home" class="hover:text-green-600 transition-colors duration-200">Home</RouterLink>
+                  <RouterLink to="/service/create" class="hover:text-green-600 transition-colors duration-200">Create Room</RouterLink>
+                  <RouterLink to="/price" class="hover:text-green-600 transition-colors duration-200">Pricing</RouterLink>
+                  <Button asChild v-slot="slotProps" class="!text-white"> <RouterLink to="/login" :class="`${slotProps.class} bg-green-600 hover:bg-green-600 focus:ring-green-600`">Login</RouterLink>
                   </Button>
               </ul>
 
-              <button class="md:hidden text-white focus:outline-none">
+              <button class="md:hidden text-black focus:outline-none">
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                   </svg>
@@ -91,7 +91,7 @@ const purchasePlan = (planName, cycle) => {
         />
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-15  w-full  max-w-7xl">
         <div
           v-for="plan in selectedPlans"
           :key="plan.name"
@@ -99,7 +99,7 @@ const purchasePlan = (planName, cycle) => {
           :class="{ 'border-blue-500': plan.name === 'Subscription' }"
         >
           <h3 class="text-3xl font-bold text-gray-900 mb-4">{{ plan.name }}</h3>
-          <p class="text-5xl font-extrabold text-blue-600 mb-6">{{ plan.currentPrice }}</p>
+          <p class="text-4xl font-bold text-green-700 mb-6">{{ plan.currentPrice }}</p>
 
           <ul class="flex-grow space-y-3 mb-8 text-gray-700 text-lg">
             <template v-if="plan.name !== 'Enterprise'">
@@ -134,7 +134,7 @@ const purchasePlan = (planName, cycle) => {
     <footer class="bg-gray-800 text-white py-8 px-6 md:px-8 lg:px-12">
       <div class="container mx-auto flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
         <h3 class="text-2xl font-bold text-white">Room Visualizer</h3>
-        <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-8 text-lg">
+        <div class="flex flex-col pl-25 md:flex-row space-y-2 md:space-y-0 md:space-x-8 text-lg">
           <RouterLink to="/home" class="hover:text-blue-400 transition-colors duration-200">Home</RouterLink>
           <RouterLink to="/service/create" class="hover:text-blue-400 transition-colors duration-200">Create Room</RouterLink>
           <RouterLink to="/price" class="hover:text-blue-400 transition-colors duration-200">Pricing</RouterLink>
