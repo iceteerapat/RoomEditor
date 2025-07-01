@@ -91,7 +91,7 @@ async function downloadImage() {
     URL.revokeObjectURL(url);
   } catch (error) {
     console.error("Download failed:", error);
-    messageDialog.value.show(error.response.data?.message, 'Error');
+    messageDialog.show(error.response.data?.message, 'Error'); // Corrected messageDialog usage
   }
 }
 
@@ -132,7 +132,7 @@ async function onManage(){
         const portalUrl = response.data.url;
         window.location.href = portalUrl;
     }catch(error){
-        messageDialog.value.show(error.response.data?.message, 'Error');
+        messageDialog.show(error.response.data?.message, 'Error'); // Corrected messageDialog usage
     }
 
 }
@@ -140,95 +140,115 @@ async function onManage(){
 </script>
 
 <template>
-    <div class="wrapper">
-        <div v-if="!isLoggedIn" class="login-overlay">
-            <div class="login-content">
-                <h2>Please log in to access this feature</h2>
+    <div class="min-h-screen bg-gray-100 flex flex-col"> <div v-if="!isLoggedIn" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white p-8 rounded-lg shadow-xl text-center">
+                <h2 class="text-2xl font-semibold mb-4">Please log in to access this feature</h2>
                 <RouterLink to="/login">
-                    <Button class="login-button">Go to Login</Button>
+                    <Button class="mt-4 px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">Go to Login</Button>
                 </RouterLink>
             </div>
         </div> 
-        <header class="servicepage-menu">
-            <div class="icon" @click="showMenu">
-                <i class="fas fa-user"/>
-                <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" style="align-items: flex-end;" />
-            </div>
-            <div class="logo-servicepage">
-                <h1>Room Visualizer</h1>
-            </div>
-            <div class="profile-info">
-                <p>Username: {{ authStore.getUsername }}</p>
-                <p>Subscription: {{ authStore.getProductName }}</p>
-                <p>Credits: {{ serviceStore.getCreditsCount }}</p>
-            </div>
 
-        </header>
-        <main>
-            <div class="drawer-toggle-btn">
-                <Button icon="fa-solid fa-arrow-right" @click="visibleLeft = true" />
+        <header class="flex items-center justify-between p-4 bg-white shadow-md">
+            <div class="cursor-pointer p-2" @click="showMenu">
+                <i class="fas fa-user text-2xl text-gray-700"/>
+                <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" class="mt-2" />
             </div>
-            <Drawer v-model:visible="visibleLeft" header="Menu">
-                <RouterLink to="/service/create">Create Room</RouterLink>
-                <RouterLink to="/service/renovate">Renovate Room</RouterLink>
-                <RouterLink to="/service/creditAndSubscription">Credits & Subscription</RouterLink>
+            <div class="flex-grow text-center">
+                <h1 class="text-3xl font-bold text-gray-800">Room Visualizer</h1>
+            </div>
+            <div class="text-right text-sm text-gray-600 space-y-1">
+                <p>Username: <span class="font-medium">{{ authStore.getUsername }}</span></p>
+                <p>Subscription: <span class="font-medium">{{ authStore.getProductName }}</span></p>
+                <p>Credits: <span class="font-medium">{{ serviceStore.getCreditsCount }}</span></p>
+            </div>
+        </header>
+
+        <main class="flex-grow flex flex-col md:flex-row p-4 gap-6">
+            <div class="md:hidden flex justify-start mb-4"> <Button icon="fa-solid fa-arrow-right" @click="visibleLeft = true" class="p-button-rounded p-button-text" />
+            </div>
+            <Drawer v-model:visible="visibleLeft" header="Menu" position="left" class="md:hidden">
+                <div class="flex flex-col gap-4 p-4">
+                    <RouterLink to="/service/create" class="text-lg text-blue-600 hover:text-blue-800 transition-colors">Create Room</RouterLink>
+                    <RouterLink to="/service/renovate" class="text-lg text-blue-600 hover:text-blue-800 transition-colors">Renovate Room</RouterLink>
+                    <RouterLink to="/service/creditAndSubscription" class="text-lg text-blue-600 hover:text-blue-800 transition-colors">Credits & Subscription</RouterLink>
+                </div>
             </Drawer>
-            <section class="createimage-page">
-                <div class="input-properties">
-                    <h2>Input Properties</h2>
-                    <div class="input-roomsize">
-                        <label for="roomSizeWidth">Room Width</label>
-                        <InputNumber inputId="roomSizeWidth" v-model="roomSizeWidth" aria-describedby="roomSizeWidth-help" :minFractionDigits="2" :maxFractionDigits="2" :min="0" :max="500"fluid />
-                        <Message size="small" severity="secondary" variant="simple">Enter your room size required (m²).</Message>
+
+            <aside class="hidden md:block w-64 bg-white p-4 rounded-lg shadow-md">
+                <nav class="flex flex-col gap-4">
+                    <RouterLink to="/service/create" class="text-lg font-medium text-gray-700 hover:text-blue-600 transition-colors py-2 px-3 rounded-md hover:bg-blue-50">Create Room</RouterLink>
+                    <RouterLink to="/service/renovate" class="text-lg font-medium text-gray-700 hover:text-blue-600 transition-colors py-2 px-3 rounded-md hover:bg-blue-50">Renovate Room</RouterLink>
+                    <RouterLink to="/service/creditAndSubscription" class="text-lg font-medium text-gray-700 hover:text-blue-600 transition-colors py-2 px-3 rounded-md hover:bg-blue-50">Credits & Subscription</RouterLink>
+                </nav>
+            </aside>
+
+            <section class="flex-grow flex flex-col lg:flex-row gap-6 bg-white p-6 rounded-lg shadow-md">
+                <div class="flex-1 space-y-6">
+                    <h2 class="text-2xl font-bold text-gray-800 border-b pb-2 mb-4">Input Properties</h2>
+                    
+                    <div class="flex flex-col gap-2">
+                        <label for="roomSizeWidth" class="text-gray-700 font-medium">Room Width (m²)</label>
+                        <InputNumber inputId="roomSizeWidth" v-model="roomSizeWidth" aria-describedby="roomSizeWidth-help" :minFractionDigits="2" :maxFractionDigits="2" :min="0" :max="500" class="w-full" />
+                        <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Enter your room width in square meters (m²).</Message>
                     </div>
-                    <div class="input-roomsize">
-                        <label for="roomSizeHeight">Room Height</label>
-                        <InputNumber inputId="roomSizeHeight" v-model="roomSizeHeight" aria-describedby="roomSizeHeight-help" :minFractionDigits="2" :maxFractionDigits="2" :min="0" :max="500"fluid />
-                        <Message size="small" severity="secondary" variant="simple">Enter your room size required (m²).</Message>
+                    
+                    <div class="flex flex-col gap-2">
+                        <label for="roomSizeHeight" class="text-gray-700 font-medium">Room Height (m²)</label>
+                        <InputNumber inputId="roomSizeHeight" v-model="roomSizeHeight" aria-describedby="roomSizeHeight-help" :minFractionDigits="2" :maxFractionDigits="2" :min="0" :max="500" class="w-full" />
+                        <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Enter your room height in square meters (m²).</Message>
                     </div>
-                    <div class="input-roomstyle">
-                        <label for="roomstyle">Room Styles</label>
-                        <InputText id="roomstyle" v-model="roomStyle" aria-describedby="roomstyle-help" fluid/>
-                        <Message size="small" severity="secondary" variant="simple">Enter your room style such as Italian-American style.</Message>
+                    
+                    <div class="flex flex-col gap-2">
+                        <label for="roomstyle" class="text-gray-700 font-medium">Room Styles</label>
+                        <InputText id="roomstyle" v-model="roomStyle" aria-describedby="roomstyle-help" class="w-full" />
+                        <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Enter your room style such as Italian-American style.</Message>
                     </div>
-                    <div class="input-roomtype">
-                        <label for="roomtype">Room Type</label>
-                        <InputText id="roomtype" v-model="roomType" aria-describedby="roomtype-help" fluid/>
-                        <Message size="small" severity="secondary" variant="simple">Enter your room type such as Living room, Kitchen, etc.</Message>
+                    
+                    <div class="flex flex-col gap-2">
+                        <label for="roomtype" class="text-gray-700 font-medium">Room Type</label>
+                        <InputText id="roomtype" v-model="roomType" aria-describedby="roomtype-help" class="w-full" />
+                        <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Enter your room type such as Living room, Kitchen, etc.</Message>
                     </div>
-                    <div class="select-size">
-                        <label for="picturesize">Picture Size</label>
-                        <Select v-model="pictureSize" :options="size" optionLabel="name" placeholder="Select picture size"/>
+                    
+                    <div class="flex flex-col gap-2">
+                        <label for="picturesize" class="text-gray-700 font-medium">Picture Size</label>
+                        <Select v-model="pictureSize" :options="size" optionLabel="name" placeholder="Select picture size" class="w-full" />
                     </div>
-                    <div class="input-etc">
-                        <label for="description">Description</label>
-                        <Textarea id="description" v-model="etc" rows="5" cols="30" style="resize: none" />
-                        <Message size="small" severity="secondary" variant="simple">Describe your room more such as TV on the left or Couch attach with the wall.</Message>
+                    
+                    <div class="flex flex-col gap-2">
+                        <label for="description" class="text-gray-700 font-medium">Description</label>
+                        <Textarea id="description" v-model="etc" rows="5" cols="30" class="w-full resize-none" />
+                        <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Describe your room more such as TV on the left or Couch attached to the wall.</Message>
                     </div>
-                    <Button label="Generate Room" @click="onSubmit"/>
+                    
+                    <Button label="Generate Room" @click="onSubmit" class="w-full mt-4 bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors" />
                 </div>
-                <div class="image-result">
-                    <h2>Image Result</h2>
-                    <Image :src="imageUrl" alt="Generated room" width="80%" preview v-if="imageUrl"/>
-                    <Button label="Download Image" @click="downloadImage" v-if="imageUrl"/>
+                
+                <div class="flex-1 space-y-6 flex flex-col items-center justify-center border-t lg:border-t-0 lg:border-l pt-6 lg:pt-0 lg:pl-6 border-gray-200">
+                    <h2 class="text-2xl font-bold text-gray-800">Image Result</h2>
+                    <Image :src="imageUrl" alt="Generated room" class="max-w-full h-auto rounded-lg shadow-md" preview v-if="imageUrl"/>
+                    <Button label="Download Image" @click="downloadImage" v-if="imageUrl" class="mt-4 bg-green-600 text-white py-3 px-6 rounded-md hover:bg-green-700 transition-colors" />
                 </div>
-                <div v-if="loading" class="loading-overlay">
-                    <div class="loading-content">
-                        <ProgressSpinner v-if="loading" style="width: 50px; height: 50px" strokeWidth="8" fill="transparent" animationDuration=".5s" aria-label="Custom ProgressSpinner"/>
-                        <p>Right now image is generating, please wait for 2-3 minutes</p>
+                
+                <div v-if="loading" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+                    <div class="bg-white p-8 rounded-lg shadow-xl text-center flex flex-col items-center gap-4">
+                        <ProgressSpinner style="width: 70px; height: 70px" strokeWidth="8" fill="transparent" animationDuration=".5s" aria-label="Custom ProgressSpinner"/>
+                        <p class="text-lg font-medium text-gray-700">Right now image is generating, please wait for 2-3 minutes</p>
                     </div>
                 </div>
             </section>
         </main>
-        <footer class="footerpage" style="height: 160px;" >
-            <div class="footerpage-container">
-                <h3>Room Visualizer</h3>
-                <div class="footerpage-column">
-                    <RouterLink to="/home">Home</RouterLink>
-                    <RouterLink to="/service/create">Create Room</RouterLink>
-                    <RouterLink to="/price">Pricing</RouterLink>
+        
+        <footer class="bg-gray-800 text-white p-8">
+            <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+                <h3 class="text-2xl font-semibold">Room Visualizer</h3>
+                <div class="flex flex-col md:flex-row gap-4 text-center md:text-left">
+                    <RouterLink to="/home" class="hover:text-blue-300 transition-colors">Home</RouterLink>
+                    <RouterLink to="/service/create" class="hover:text-blue-300 transition-colors">Create Room</RouterLink>
+                    <RouterLink to="/price" class="hover:text-blue-300 transition-colors">Pricing</RouterLink>
                 </div>
-                <div class="footerpage-legal">
+                <div class="text-sm text-gray-400">
                     <p>© 2025 Room Visualizer. All rights reserved.</p>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 
+import './assets/css/room-visuallizer-theme.css'
 import Toast from "vue-toastification";
 import PrimeVue from 'primevue/config'
 import ConfirmationService from 'primevue/confirmationservice';

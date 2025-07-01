@@ -16,16 +16,16 @@ const pricingPlans = [
     monthlyPrice: '$6.99',
     annualPrice: '$6.99',
     features: [
-        'Generate up to 35 Full HD images',
-        'Picture size up to 1920 X 1080 pixels',
-        'Access to Create Room Service',
-        'Access to Renovate Room Service'
+      'Generate up to 35 Full HD images',
+      'Picture size up to 1920 X 1080 pixels',
+      'Access to Create Room Service',
+      'Access to Renovate Room Service'
     ]
   },
   {
     name: 'Subscription',
     monthlyPrice: '$14.99 / month',
-    annualPrice: '$140.99 / year', 
+    annualPrice: '$140.99 / year',
     features: [
       'Generate up to 200 Full HD images per month',
       'Picture size up to 1920 X 1080 pixels',
@@ -50,62 +50,99 @@ const selectedPlans = computed(() => {
   }));
 });
 
+const purchasePlan = (planName, cycle) => {
+  handlePlanSelection(planName, cycle, router);
+};
 </script>
 
 <template>
-    <div class="wrapper">
-        <header>
-            <nav class="navbar">
-                <div class="logo">
-                    Room Visualizer
-                </div>
-                <ul class="nav-links">
-                    <RouterLink to="/home">Home</RouterLink>
-                    <RouterLink to="/service">Create Room</RouterLink>
-                    <RouterLink to="/price">Pricing</RouterLink>
-                    <Button asChild v-slot="slotProps">
-                        <RouterLink to="/login" :class="`${slotProps.class} login-button`">Login</RouterLink>
-                    </Button>
-                </ul>
-            </nav>
-        </header>
-        <main>
-            <section class="pricepage">
-                <SelectButton v-model="billingCycle" :options="options"/>
-                <div class="price-container">
-                    <div class="price-card" v-for="plan in selectedPlans" :key="plan.name">
-                        <h3>{{ plan.name }}</h3>
-                        <p class="price">{{ plan.currentPrice }}</p>
-                        <template v-if="plan.name !== 'Enterprise'">
-                            <p v-for="(feature, index) in plan.features" :key="index">
-                                {{ feature }}
-                            </p>
-                        </template>
-                        <p
-                        v-if="plan.name === 'Enterprise'"
-                        style="display: block; text-align: left; line-height: 1.8; padding-bottom: 46.5px;"
-                        >
-                        {{ plan.features[0] }}
-                        </p>
-                        <Button @click="handlePlanSelection(plan.name, billingCycle, router)" style="font-weight: 780;">
-                        {{ plan.name === 'Enterprise' ? 'Contact us' : 'Purchase' }}
-                        </Button>
-                    </div>
-                </div>
-            </section>
-        </main>
-        <footer class="footerpage">
-            <div class="footerpage-container">
-                <h3>Room Visualizer</h3>
-                <div class="footerpage-column">
-                    <RouterLink to="/home">Home</RouterLink>
-                    <RouterLink to="/service/create">Create Room</RouterLink>
-                    <RouterLink to="/price">Pricing</RouterLink>
-                </div>
-                <div class="footerpage-legal">
-                    <p>© 2025 Room Visualizer. All rights reserved.</p>
-                </div>
-            </div>
-        </footer>
-    </div>
+  <div class="min-h-screen flex flex-col">
+      <header class="bg-gray-800 text-white shadow-md">
+          <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+              <div class="text-2xl font-bold text-blue-400">
+                  Room Visualizer
+              </div>
+              <ul class="hidden md:flex space-x-6 items-center">
+                  <RouterLink to="/home" class="hover:text-blue-300 transition-colors duration-200">Home</RouterLink>
+                  <RouterLink to="/service/create" class="hover:text-blue-300 transition-colors duration-200">Create Room</RouterLink>
+                  <RouterLink to="/price" class="hover:text-blue-300 transition-colors duration-200">Pricing</RouterLink>
+                  <Button asChild v-slot="slotProps" class="!text-white"> <RouterLink to="/login" :class="`${slotProps.class} bg-blue-500 hover:bg-blue-600 focus:ring-blue-500`">Login</RouterLink>
+                  </Button>
+              </ul>
+
+              <button class="md:hidden text-white focus:outline-none">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                  </svg>
+              </button>
+          </nav>
+      </header>
+
+    <main class="flex-grow flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-purple-50">
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-8 text-center">Flexible Pricing Plans</h1>
+      <p class="text-lg text-gray-600 mb-10 text-center max-w-3xl">Choose the plan that best fits your needs, whether you're an individual or a large enterprise.</p>
+
+      <div class="mb-12">
+        <SelectButton v-model="billingCycle" :options="options"
+          :pt="{
+            button: { class: 'px-6 py-3 text-lg font-semibold transition-colors duration-200' },
+            root: 'rounded-lg shadow-md'
+          }"
+        />
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+        <div
+          v-for="plan in selectedPlans"
+          :key="plan.name"
+          class="price-card flex flex-col bg-white rounded-xl shadow-lg p-8 transform hover:scale-105 transition-transform duration-300 border-2 border-transparent"
+          :class="{ 'border-blue-500': plan.name === 'Subscription' }"
+        >
+          <h3 class="text-3xl font-bold text-gray-900 mb-4">{{ plan.name }}</h3>
+          <p class="text-5xl font-extrabold text-blue-600 mb-6">{{ plan.currentPrice }}</p>
+
+          <ul class="flex-grow space-y-3 mb-8 text-gray-700 text-lg">
+            <template v-if="plan.name !== 'Enterprise'">
+              <li v-for="(feature, index) in plan.features" :key="index" class="flex items-start">
+                <svg class="h-6 w-6 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                <span>{{ feature }}</span>
+              </li>
+            </template>
+            <template v-else>
+              <li class="flex items-start">
+                <svg class="h-6 w-6 text-gray-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span class="text-justify leading-relaxed">{{ plan.features[0] }}</span>
+              </li>
+            </template>
+          </ul>
+
+          <Button
+            @click="purchasePlan(plan.name, billingCycle)"
+            :label="plan.name === 'Enterprise' ? 'Contact us' : 'Purchase'"
+            severity="primary"
+            class="w-full mt-auto py-3 text-xl font-bold"
+            :class="{
+              'p-button-outlined': plan.name === 'Enterprise',
+              'bg-blue-600 hover:bg-blue-700 text-white': plan.name !== 'Enterprise',
+              'border-blue-600 text-blue-600 hover:bg-blue-50': plan.name === 'Enterprise'
+            }"
+          />
+        </div>
+      </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8 px-6 md:px-8 lg:px-12">
+      <div class="container mx-auto flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
+        <h3 class="text-2xl font-bold text-white">Room Visualizer</h3>
+        <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-8 text-lg">
+          <RouterLink to="/home" class="hover:text-blue-400 transition-colors duration-200">Home</RouterLink>
+          <RouterLink to="/service/create" class="hover:text-blue-400 transition-colors duration-200">Create Room</RouterLink>
+          <RouterLink to="/price" class="hover:text-blue-400 transition-colors duration-200">Pricing</RouterLink>
+        </div>
+        <div class="text-sm text-gray-400">
+          <p>© {{ new Date().getFullYear() }} Room Visualizer. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
 </template>
