@@ -4,26 +4,40 @@ import { onMounted, ref } from 'vue';
 
 import Button from 'primevue/button';
 import Image from 'primevue/image';
+import Sidebar from 'primevue/sidebar';
 
 const slider = ref(null);
-const images = [
-    'src/assets/picture/one.jpg',
-    'src/assets/picture/four.jpg',
-    'src/assets/picture/two.jpg',
-    'src/assets/picture/five.jpg',
-    'src/assets/picture/three.jpg',
-    'src/assets/picture/six.jpg',
-    'src/assets/picture/seven.jpg',
+const mobileVisible = ref(false);
+const createPng = new URL('../../assets/picture/create.png', import.meta.url).href;
+const renovatePng = new URL('../../assets/picture/renovate.png', import.meta.url).href;
+const imageNames = [
+    'one.jpg',
+    'four.jpg',
+    'two.jpg',
+    'five.jpg',
+    'three.jpg',
+    'six.jpg',
+    'seven.jpg',
 ];
-
+const images = ref([]);
 let currentIndex = 0;
 
+function getImageUrl(name) {
+  return new URL(`../../assets/picture/${name}`, import.meta.url).href;
+}
+
+function toggleMobileMenu() {
+    mobileVisible.value = !mobileVisible.value;
+}
+
 onMounted(() => {
+  images.value = imageNames.map(name => getImageUrl(name));
+
   setInterval(() => {
     const sliderEl = slider.value;
     if (!sliderEl) return;
 
-    currentIndex = (currentIndex + 1) % images.length;
+    currentIndex = (currentIndex + 1) % images.value.length;
     const scrollAmount = sliderEl.clientWidth * currentIndex;
     sliderEl.scrollTo({
       left: scrollAmount,
@@ -44,15 +58,29 @@ onMounted(() => {
                     <RouterLink to="/home" class="hover:text-green-600 transition-colors duration-200">Home</RouterLink>
                     <RouterLink to="/service/create" class="hover:text-green-600 transition-colors duration-200">Create Room</RouterLink>
                     <RouterLink to="/price" class="hover:text-green-600 transition-colors duration-200">Pricing</RouterLink>
+                    <RouterLink to="/contact" class="hover:text-green-600 transition-colors duration-200">Contact Us</RouterLink>
                     <Button asChild v-slot="slotProps" class="!text-white"> <RouterLink to="/login" :class="`${slotProps.class} bg-green-600 hover:bg-green-600 focus:ring-green-600`">Login</RouterLink>
                     </Button>
                 </ul>
 
-                <button class="md:hidden text-black focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
+                <div class="md:hidden"> <!-- NEW WRAPPER DIV -->
+                    <Button class="text-gray-700 focus:outline-none p-2" @click="toggleMobileMenu">
+                        <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </Button>
+                </div>
+                <Sidebar md:hidden v-model:visible="mobileVisible" position="right" class="w-72"> 
+                    <div class="flex flex-col gap-4 p-4 text-lg">
+                        <RouterLink to="/home" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors">Home</RouterLink>
+                        <RouterLink to="/service/create" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors">Create Room</RouterLink>
+                        <RouterLink to="/price" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors">Pricing</RouterLink>
+                        <RouterLink to="/contact" class="hover:text-white transition-colors duration-200">Contact Us</RouterLink>
+                        <div class="mt-4 border-t pt-4"> 
+                            <Button @click="$router.push('/login'); mobileVisible = false;" class="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition-colors">Login</Button>
+                        </div>
+                    </div>
+                </Sidebar>
             </nav>
         </header>
 
@@ -83,13 +111,13 @@ onMounted(() => {
                         </div>
                     </div>
 
-                    <div class="relative w-100 h-full overflow-hidden rounded-lg shadow-xl md:w-385 h-full" ref="slider">
+                    <div class="relative align-item-center w-85.5 h-full overflow-hidden rounded-lg shadow-xl md:w-258 xl:w-385" ref="slider">
                         <div class="flex" :style="{ width: `${images.length * 100}%` }">
-                            <img
+                            <Image
                                 v-for="(img, index) in images"
                                 :key="index"
                                 :src="img"
-                                class="w-100 h-full object-cover flex-shrink-0 md:w-385 h-full"
+                                class="w-85.5 h-full object-cover flex-shrink-0 md:w-258 xl:w-385"
                                 :alt="`Room Visualizer Image ${index + 1}`"
                             />
                         </div>
@@ -117,7 +145,7 @@ onMounted(() => {
                                 <p class="text-gray-600">Preview your new room and save or share your design.</p>
                             </div>
                         </div>
-                        <Image src="src/assets/picture/create.png" alt="createService" class="md:w-1/2 rounded-lg shadow-lg" />
+                        <Image :src="createPng" alt="createService" class="md:w-1/2 rounded-lg shadow-lg" />
                     </div>
 
                     <h2 class="text-2xl md:text-3xl font-semibold text-left mb-6 md:mb-8 text-black-600">Renovate Service</h2>
@@ -136,7 +164,7 @@ onMounted(() => {
                                 <p class="text-gray-600">Preview your new room and save or share your design.</p>
                             </div>
                         </div>
-                        <Image src="src/assets/picture/renovate.png" alt="renovateService" class="md:w-1/2 rounded-lg shadow-lg" />
+                        <Image :src="renovatePng" alt="renovateService" class="md:w-1/2 rounded-lg shadow-lg" />
                     </div>
                 </div>
             </section>
@@ -177,10 +205,11 @@ onMounted(() => {
         <footer class="bg-gray-800 text-gray-300 py-8 px-4 mt-auto">
             <div class="container mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
                 <h3 class="text-xl font-bold mb-4 md:mb-0 text-white">Room Visualizer</h3>
-                <div class="flex flex-col pl-30 md:flex-row space-y-2 md:space-y-0 md:space-x-6 mb-4 md:mb-0">
+                <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-6 mb-4 md:mb-0 md:pl-30">
                     <RouterLink to="/home" class="hover:text-white transition-colors duration-200">Home</RouterLink>
                     <RouterLink to="/service/create" class="hover:text-white transition-colors duration-200">Create Room</RouterLink>
                     <RouterLink to="/price" class="hover:text-white transition-colors duration-200">Pricing</RouterLink>
+                    <RouterLink to="/contact" class="hover:text-white transition-colors duration-200">Contact Us</RouterLink>
                 </div>
                 <div class="text-sm">
                     <p>© 2025 Room Visualizer. All rights reserved.</p>

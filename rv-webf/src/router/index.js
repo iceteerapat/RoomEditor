@@ -49,6 +49,11 @@ const routes = [
         path: '/service/creditAndSubscription',
         name: 'serviceCreditAndSubscription',
         component: () => import ('../views/service/PriceMenuPage.vue')
+    },
+    {
+        path: '/contact',
+        name: 'ContactUs',
+        component: () => import ('../views/contact/ContactPage.vue')
     }
 ]
 
