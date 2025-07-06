@@ -7,15 +7,15 @@ import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { handleWebhook } from './src/controllers/StripeController.js';
 
+const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 if (process.env.NODE_ENV === 'production') {
   dotenv.config({ path: path.resolve(__dirname, '../.env.production') });
 } else {
   dotenv.config({ path: path.resolve(__dirname, '../.env') });
 }
-
-const app = express();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 sequelize.authenticate()
   .then(() => console.log('Sequelize connection successful!'))
@@ -28,7 +28,7 @@ app.use(cors({
 
 app.use(express.static(path.join(__dirname, '../rv-webf/dist')));
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+  res.sendFile(path.join(__dirname, '../rv-webf/dist/index.html'));
 });
 
 app.post('/webhook', express.raw({ type: 'application/json' }), handleWebhook);

@@ -4,9 +4,11 @@ import jwt from 'jsonwebtoken';
 import Account from "../models/Account.js";
 import Service from "../models/Service.js";
 import { shrinkImage } from "../services/ShrinkImage.js";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
+const genai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const replicate = new Replicate({
     auth: process.env.REPLICATE_API_TOKEN
 });
@@ -109,9 +111,46 @@ export const genBasic = async (req, res) => {
       });
     }
     const upscaledImageUrl = upscaleResult.output;
-
     if (!upscaledImageUrl) {
       return res.status(500).json({ message: "Upscaling failed: no valid upscaled image URL found" });
+    }
+
+    const gemini = genai.getGenerativeModel({ model: "gemini-2.5-flash" });
+    let analysisText;
+
+    try{
+        const response = await fetch(upscaledImageUrl);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch upscaled image: ${response.statusText}`);
+        }
+
+        const arrayBuffer = await response.arrayBuffer();
+        const imageBuffer = Buffer.from(arrayBuffer);
+        const contentType = response.headers.get('content-type');
+
+        if (!contentType || !contentType.startsWith('image/')) {
+          throw new Error(`URL did not return an image: ${contentType || 'No Content-Type'}`);
+        }
+        const imagePart = {
+          inlineData: {
+            data: imageBuffer.toString("base64"),
+            mimeType: contentType,
+          },
+        };
+        const prompt = "based on the room's picture provided, give me the infomation of materials that have used in this room, also specific what kind of materials is that, if you don't know give a suggestion";
+        const result = await gemini.generateContent([
+          prompt, // if you have a text component to your prompt
+          imagePart
+        ]);
+        const geminiResponse = result.response;
+        analysisText = geminiResponse.text();
+        console.log("Gemini Analysis:", analysisText);
+    }catch(error){
+      console.error("Error during Gemini analysis:", error);
+      return res.status(500).json({
+        message: "Failed to analyze the upscaled image with Gemini.",
+        details: error.message
+      });
     }
 
     const payload = {
@@ -129,7 +168,7 @@ export const genBasic = async (req, res) => {
     );
 
     console.log("image generate successfully: ", customerId, service.credits)
-    res.status(200).json({ image: upscaledImageUrl, token: newAccessToken });
+    res.status(200).json({ image: upscaledImageUrl, analysis: analysisText, token: newAccessToken });
 
   } catch (error) {
     console.error("API call failed in try-catch block:", error);
@@ -237,9 +276,45 @@ export const renovateBasic = async (req, res) => {
       });
     }
     const upscaledImageUrl = upscaleResult.output;
-
     if (!upscaledImageUrl) {
       return res.status(500).json({ message: "Upscaling failed: no valid upscaled image URL found" });
+    }
+    
+    const gemini = genai.getGenerativeModel({ model: "gemini-2.5-flash" });
+    let analysisText;
+
+    try{
+        const response = await fetch(upscaledImageUrl);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch upscaled image: ${response.statusText}`);
+        }
+
+        const arrayBuffer = await response.arrayBuffer();
+        const imageBuffer = Buffer.from(arrayBuffer);
+        const contentType = response.headers.get('content-type');
+
+        if (!contentType || !contentType.startsWith('image/')) {
+          throw new Error(`URL did not return an image: ${contentType || 'No Content-Type'}`);
+        }
+        const imagePart = {
+          inlineData: {
+            data: imageBuffer.toString("base64"),
+            mimeType: contentType,
+          },
+        };
+        const prompt = "based on the room's picture provided, give me the infomation of materials that have used in this room, also specific what kind of materials is that, if you don't know give a suggestion";
+        const result = await gemini.generateContent([
+          prompt, // if you have a text component to your prompt
+          imagePart
+        ]);
+        const geminiResponse = result.response;
+        analysisText = geminiResponse.text();
+    }catch(error){
+      console.error("Error during Gemini analysis:", error);
+      return res.status(500).json({
+        message: "Failed to analyze the upscaled image with Gemini.",
+        details: error.message
+      });
     }
 
     const payload = {
@@ -257,7 +332,7 @@ export const renovateBasic = async (req, res) => {
     );
 
     console.log("image generate successfully: ", customerId, service.credits)
-    res.status(200).json({ image: upscaledImageUrl, token: newAccessToken });
+    res.status(200).json({ image: upscaledImageUrl, analysis: analysisText, token: newAccessToken });
 
   } catch (error) {
     console.error("API call failed in try-catch block:", error);
