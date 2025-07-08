@@ -43,7 +43,6 @@ export const purchased = async(req, res) => {
             mode: checkoutMode,
             success_url: `${process.env.BASE_URL}/service/create`,
             cancel_url: `${process.env.BASE_URL}/service/create`,
-            customer_email: userEmail,
             customer: service.stripeCustomerId,
             metadata: {
                 internalCustomerId: customerId,
