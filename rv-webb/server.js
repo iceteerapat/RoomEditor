@@ -11,11 +11,11 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-if (process.env.NODE_ENV === 'production') {
-  dotenv.config({ path: path.resolve(__dirname, '../.env.production') });
-} else {
-  dotenv.config({ path: path.resolve(__dirname, '../.env') });
-}
+// if (process.env.NODE_ENV === 'production') {
+//   dotenv.config({ path: path.resolve(__dirname, '../.env.production') });
+// } else {
+//   dotenv.config({ path: path.resolve(__dirname, '../.env') });
+// }
 
 sequelize.authenticate()
   .then(() => console.log('Sequelize connection successful!'))
@@ -36,7 +36,7 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use('/api', route);
 
-const PORT = process.env.PORT_URL || 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+const PORT_URL = process.env.PORT_URL || 3000;
+app.listen(PORT_URL, () => {
+  console.log(`🚀 Server running at ${PORT_URL}`);
 });
