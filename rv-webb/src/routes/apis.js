@@ -1,6 +1,6 @@
 import express from 'express';
 import { create, verify } from '../controllers/CreateAccountController.js';
-import { login, logout, refresh } from '../controllers/AuthController.js';
+import { login, logout, refresh, reset, verifyReset } from '../controllers/AuthController.js';
 import { genBasic, renovateBasic} from '../controllers/ServiceController.js';
 import { purchased, managed } from '../controllers/StripeController.js';
 
@@ -14,6 +14,8 @@ route.get('/createAccount/verify/:token', verify);
 route.post('/login/', login);
 route.post('/login/refresh', refresh);
 route.post('/login/logout', logout);
+route.post('/login/reset', reset);
+route.get('/login/reset/:token', verifyReset);
 
 //AI Service
 route.post('/service/create', genBasic);

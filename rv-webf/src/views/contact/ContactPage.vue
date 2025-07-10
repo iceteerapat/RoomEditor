@@ -19,9 +19,9 @@ function toggleMobileMenu() {
     <div class="min-h-screen bg-gray-100 flex flex-col font-inter">
         <header class="bg-white text-black shadow-md">
             <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
-                <div class="text-2xl font-bold text-gray-800">
+                <RouterLink to="/home" class="text-2xl font-bold text-white-800">
                     Room Visualizer
-                </div>
+                </RouterLink>
 
                 <ul class="hidden md:flex space-x-6 items-center">
                     <RouterLink to="/home" class="hover:text-green-600 transition-colors duration-200">Home</RouterLink>

@@ -11,5 +11,11 @@ export default {
     },
     logout(){
         return Client.post(`${resource}/logout`);
+    },
+    reset(){
+        return Client.post(`${resource}/reset`);
+    },
+    verifyReset(token){
+        return Client.get(`${resource}/reset/${token}`);
     }
 };

@@ -97,3 +97,42 @@ export const refresh = async (req, res) =>{
     res.status(403).json({ message: 'Invalid or expired refresh token' });
   }
 };
+
+export const reset = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: 'Email is required' });
+    }
+    const account = await Account.findOne({ where: { email: email } });
+    if (!account) {
+      return res.status(404).json({ message: 'Account not found' });
+    }
+
+    await sendResetEmail(account.email);
+
+    res.status(200).json({ message: 'Reset successful', resetToken });
+  } catch (error) {
+    console.error('Reset error:', error);
+    res.status(500).json({ message: 'Reset failed' });
+  }
+};
+
+export const verifyReset = async (req, res) => {
+  const { token } = req.params;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const email = decoded.email;
+
+    const account = await Account.findOne({ where: { email } });
+    if (!account) {
+      return res.status(404).json({ message: 'Account not found' });
+    }
+
+    res.status(200).json({ message: 'Email verified successfully' });
+  } catch (error) {
+    console.error('Verification error:', error);
+    res.status(500).json({ message: 'Verification failed' });
+  }
+}
