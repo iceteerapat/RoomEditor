@@ -26,35 +26,53 @@ const items = reactive({
   password: '',
   verifyPassword: '',
   phone: '',
-  privacyFlag: ''
+  privacyFlag: false
 })
 
 const resolver = ({ values }) => {
-    const errors = {};
+  const errors = {};
 
-    if (!values.email) {
-        errors.email = [{ message: 'Email is required.' }];
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
-      errors.email = [{ message: 'Invalid email format.' }];
-    }
+  // Email validation
+  if (!values.email) {
+    errors.email = [{ message: 'Email is required.' }];
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
+    errors.email = [{ message: 'Invalid email format.' }];
+  }
 
-    if (!values.username) {
-        errors.username = [{ message: 'Username is required.' }];
-    }
-    if (!values.password) {
-        errors.password = [{ message: 'Password is required.' }];
-    } else if (values.password.length < 6) {
-      errors.password = [{ message: 'Password must be at least 6 characters.' }];
-    }
-    if (!values.verifyPassword) {
-        errors.verifyPassword = [{ message: 'Verify Password is required.' }];
-    }
-    if (!values.phone) {
-        errors.phone = [{ message: 'Phone is required.' }];
-    }else if (!/^\d+$/.test(values.phone)) {
-      errors.phone = [{ message: 'Phone number must contain only digits.' }];
-    }
-    return {values, errors};
+  // Username validation
+  if (!values.username) {
+    errors.username = [{ message: 'Username is required.' }];
+  }
+
+  // Password validation
+  if (!values.password) {
+    errors.password = [{ message: 'Password is required.' }];
+  } else if (values.password.length < 6) {
+    errors.password = [{ message: 'Password must be at least 6 characters.' }];
+  }
+
+  // Verify Password validation
+  if (!values.verifyPassword) {
+    errors.verifyPassword = [{ message: 'Verify Password is required.' }];
+  } else if (values.password !== values.verifyPassword) {
+    errors.verifyPassword = [{ message: 'Passwords do not match.' }];
+  }
+
+  // Phone validation
+  if (!values.phone) {
+    errors.phone = [{ message: 'Phone is required.' }];
+  } else if (!/^\d+$/.test(values.phone)) {
+    errors.phone = [{ message: 'Phone number must contain only digits.' }];
+  } else if (values.phone < 10 && values.phone > 13) {
+    errors.phone = [{ message: 'Phone number must have minimum 10 digits and less than 13 digits.' }];
+  }
+
+  // Privacy Flag validation (assuming it's required for account creation)
+  if (!values.privacyFlag) { // Check if the boolean is false
+    errors.privacyFlag = [{ message: 'You must accept the Privacy Terms.' }];
+  }
+
+  return { values, errors };
 };
 
 async function onSubmit({ valid }) {
@@ -119,7 +137,7 @@ async function onSubmit({ valid }) {
                         inputId="password"
                         variant="filled"
                         toggleMask
-                        :input-class="['w-full', { 'p-invalid': $form.password?.invalid }]"
+                        :class="['w-full', { 'p-invalid': $form.password?.invalid }]"
                         aria-describedby="password-error"
                     />
                     <label for="password">Password:</label>
@@ -133,7 +151,7 @@ async function onSubmit({ valid }) {
                         inputId="verifyPassword"
                         variant="filled"
                         toggleMask
-                        :input-class="['w-full', { 'p-invalid': $form.verifyPassword?.invalid }]"
+                        :class="['w-full', { 'p-invalid': $form.verifyPassword?.invalid }]"
                         aria-describedby="verify-password-error"
                     />
                     <label for="verifyPassword">Verify Password:</label>

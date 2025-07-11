@@ -1,4 +1,149 @@
 @import "tailwindcss";
+.p-inputtext {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #9CA3AF !important; /* Tailwind gray-400 */
+}
+
+.dark .p-inputtext {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #9CA3AF !important; /* Tailwind gray-400 */
+}
+
+/* Autofill fix for InputText */
+.p-inputtext:-webkit-autofill,
+.p-inputtext:-webkit-autofill:hover,
+.p-inputtext:-webkit-autofill:focus,
+.p-inputtext:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: black !important;
+}
+
+.dark .p-inputtext:-webkit-autofill,
+.dark .p-inputtext:-webkit-autofill:hover,
+.dark .p-inputtext:-webkit-autofill:focus,
+.dark .p-inputtext:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: black !important;
+}
+
+/* Focus state for InputText */
+.p-inputtext:focus {
+  outline: none !important;
+  border-color: #10B981 !important; /* Tailwind emerald-500 */
+  box-shadow: 0 0 0 1px #10B981, 0 0 0 4px rgba(16, 185, 129, 0.2) !important;
+}
+
+.dark .p-inputtext:focus {
+  border-color: #10B981 !important;
+  box-shadow: 0 0 0 1px #10B981, 0 0 0 4px rgba(16, 185, 129, 0.2) !important;
+}
+
+/* Invalid state for InputText */
+.p-inputtext.p-invalid {
+    border-color: #EF4444 !important; /* Tailwind red-500 */
+}
+.dark .p-inputtext.p-invalid {
+    border-color: #EF4444 !important;
+}
+.p-inputtext.p-invalid:focus {
+    box-shadow: 0 0 0 1px #EF4444, 0 0 0 4px rgba(239, 68, 68, 0.2) !important;
+}
+.dark .p-inputtext.p-invalid:focus {
+    box-shadow: 0 0 0 1px #EF4444, 0 0 0 4px rgba(239, 68, 68, 0.2) !important;
+}
+
+/* --- NEW: Styles for PrimeVue Password component --- */
+
+/* Target the wrapper element of Password to ensure it has no conflicting background/border */
+.p-password.p-component.p-inputwrapper {
+  background: none !important; /* Remove any default filled background */
+  border: none !important; /* Remove any default wrapper border */
+  box-shadow: none !important; /* Remove any default wrapper shadow */
+}
+
+/* Target the actual input field within the Password component */
+.p-password .p-inputtext {
+  /* Inherit/reapply the same styles as regular InputText */
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #9CA3AF !important; /* Default border color: gray-400 */
+  width: 100% !important; /* Ensure it takes full width */
+  padding: 1rem 1rem !important; /* Standard PrimeVue input padding if needed */
+  /* Remove any PrimeVue-specific filled variant padding/margin */
+  margin: 0 !important;
+}
+
+/* Specific overrides for the Password input when variant="filled" is active */
+.p-password.p-inputwrapper-filled .p-inputtext {
+    /* Ensure no extra padding or border from the filled variant */
+    background-color: white !important;
+    color: black !important;
+    border: 1px solid #9CA3AF !important; /* Default border color: gray-400 */
+    /* You might need to adjust padding or height to match exactly */
+}
+
+
+/* Dark mode specific for Password input */
+.dark .p-password .p-inputtext {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #9CA3AF !important;
+}
+
+/* Autofill fix for Password input */
+.p-password .p-inputtext:-webkit-autofill,
+.p-password .p-inputtext:-webkit-autofill:hover,
+.p-password .p-inputtext:-webkit-autofill:focus,
+.p-password .p-inputtext:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: black !important;
+}
+
+.dark .p-password .p-inputtext:-webkit-autofill,
+.dark .p-password .p-inputtext:-webkit-autofill:hover,
+.dark .p-password .p-inputtext:-webkit-autofill:focus,
+.dark .p-password .p-inputtext:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: black !important;
+}
+
+/* Focus state for Password input */
+.p-password .p-inputtext:focus {
+  outline: none !important;
+  border-color: #10B981 !important; /* Tailwind emerald-500 */
+  box-shadow: 0 0 0 1px #10B981, 0 0 0 4px rgba(16, 185, 129, 0.2) !important;
+}
+
+.dark .p-password .p-inputtext:focus {
+  border-color: #10B981 !important;
+  box-shadow: 0 0 0 1px #10B981, 0 0 0 4px rgba(16, 185, 129, 0.2) !important;
+}
+
+/* Invalid state for Password input */
+.p-password .p-inputtext.p-invalid {
+    border-color: #EF4444 !important; /* Tailwind red-500 */
+}
+.dark .p-password .p-inputtext.p-invalid {
+    border-color: #EF4444 !important;
+}
+.p-password .p-inputtext.p-invalid:focus {
+    box-shadow: 0 0 0 1px #EF4444, 0 0 0 4px rgba(239, 68, 68, 0.2) !important;
+}
+.dark .p-password .p-inputtext.p-invalid:focus {
+    box-shadow: 0 0 0 1px #EF4444, 0 0 0 4px rgba(239, 68, 68, 0.2) !important;
+}
+
+/* Adjust the eye icon position if needed, PrimeVue default might adjust for filled variant */
+/* You might need to inspect the icon element to fine-tune its position */
+.p-password .p-input-icon-right > .p-inputtext {
+  padding-right: 2.5rem !important; /* Make space for the icon if it overlaps */
+}
 
 @keyframes fade-in-up {
   from {

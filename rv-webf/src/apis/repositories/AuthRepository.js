@@ -12,10 +12,14 @@ export default {
     logout(){
         return Client.post(`${resource}/logout`);
     },
-    reset(){
-        return Client.post(`${resource}/reset`);
+    reset(payload){
+        return Client.post(`${resource}/reset`, payload);
     },
-    verifyReset(token){
+    verifyReset(payload){
+        return Client.get(`${resource}/verifyReset`, payload);
+    },
+    verifyResetToken(token){
         return Client.get(`${resource}/reset/${token}`);
-    }
+    },
+    
 };

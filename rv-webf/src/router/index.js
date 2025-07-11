@@ -21,7 +21,7 @@ const routes = [
         component: () => import('../views/login/VerifyEmailPage.vue')
     },
     {
-        path: '/forgetPassword', 
+        path: '/login/reset', 
         name: 'forgetPassword',
         component: () => import('../views/login/ForgotPassword.vue')
     },

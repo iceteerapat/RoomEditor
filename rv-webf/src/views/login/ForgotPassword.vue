@@ -28,7 +28,7 @@ const handleForgotPassword = async () => {
   isLoading.value = true;
 
   try {
-    const response = await repository.reset(email);
+    const response = await repository.reset({ email: email.value });
     if (response.status === 200) {
       messageDialog.show("Email reset link has been sent to your email", 'success');
     } else {
@@ -38,8 +38,7 @@ const handleForgotPassword = async () => {
 
   } catch (error) {
     console.error("Forgot password error:", error);
-    const errorMessage = error.response?.data?.message || 'Failed to send reset link. Please try again.';
-    messageDialog.show(errorMessage, 'error');
+    messageDialog.show(error.message, 'error');
   } finally {
     isLoading.value = false;
   }
@@ -48,21 +47,25 @@ const handleForgotPassword = async () => {
 
 <template>
   <div class="flex flex-col min-h-screen bg-gray-50 font-sans antialiased">
-    <header class="bg-white-800 text-black shadow-md">
+    <header class="bg-white text-black shadow-md">
         <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
             <RouterLink to="/home" class="text-2xl font-bold text-white-800">
                 Room Visualizer
             </RouterLink>
+
             <ul class="hidden md:flex space-x-6 items-center">
                 <RouterLink to="/home" class="hover:text-green-600 transition-colors duration-200">Home</RouterLink>
                 <RouterLink to="/service/create" class="hover:text-green-600 transition-colors duration-200">Create Room</RouterLink>
                 <RouterLink to="/price" class="hover:text-green-600 transition-colors duration-200">Pricing</RouterLink>
                 <RouterLink to="/contact" class="hover:text-green-600 transition-colors duration-200">Contact Us</RouterLink>
-                <Button asChild v-slot="slotProps" class="!text-white"> <RouterLink to="/login" :class="`${slotProps.class} bg-green-600 hover:bg-green-600 focus:ring-green-600`">Login</RouterLink>
-                </Button>
+              <Button v-slot="slotProps" asChild>
+                  <button v-bind="slotProps.a11yAttrs" class="rounded-md px-3 py-1.5 bg-emerald-600 hover:bg-emerald-400">
+                      <RouterLink to="/login" class="text-white font-bold hover:text-gray-800">Login</RouterLink>
+                  </button>
+              </Button>
             </ul>
 
-            <div class="md:hidden"> <!-- NEW WRAPPER DIV -->
+            <div class="md:hidden">
                 <Button class="text-gray-700 focus:outline-none p-2" @click="toggleMobileMenu">
                     <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -71,12 +74,12 @@ const handleForgotPassword = async () => {
             </div>
             <Sidebar md:hidden v-model:visible="mobileVisible" position="right" class="w-72"> 
                 <div class="flex flex-col gap-4 p-4 text-lg">
-                    <RouterLink to="/home" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors">Home</RouterLink>
-                    <RouterLink to="/service/create" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors">Create Room</RouterLink>
-                    <RouterLink to="/price" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors">Pricing</RouterLink>
-                    <RouterLink to="/contact" class="hover:text-white transition-colors duration-200">Contact Us</RouterLink>
+                    <RouterLink to="/home" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Home</RouterLink>
+                    <RouterLink to="/service/create" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Create Room</RouterLink>
+                    <RouterLink to="/price" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Pricing</RouterLink>
+                    <RouterLink to="/contact" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Contact Us</RouterLink>
                     <div class="mt-4 border-t pt-4"> 
-                        <Button @click="$router.push('/login'); mobileVisible = false;" class="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition-colors">Login</Button>
+                        <Button @click="$router.push('/login'); mobileVisible = false;" class="w-full bg-green-600 text-white font-bold py-2 rounded-md hover:bg-green-700 transition-colors dark:text-white dark:font-bold">Login</Button>
                     </div>
                 </div>
             </Sidebar>
@@ -132,6 +135,5 @@ const handleForgotPassword = async () => {
         </div>
       </div>
     </footer>
-    <GlobalMessageDialog />
   </div>
 </template>

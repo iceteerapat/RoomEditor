@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import Account from "../models/Account.js";
 import Service from "../models/Service.js";
+import { sendResetEmail } from "../services/EmailService.js";
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
@@ -112,7 +113,7 @@ export const reset = async (req, res) => {
 
     await sendResetEmail(account.email);
 
-    res.status(200).json({ message: 'Reset successful', resetToken });
+    res.status(200).json({ message: 'Email reset link sent successful'});
   } catch (error) {
     console.error('Reset error:', error);
     res.status(500).json({ message: 'Reset failed' });
@@ -120,19 +121,89 @@ export const reset = async (req, res) => {
 };
 
 export const verifyReset = async (req, res) => {
-  const { token } = req.params;
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const email = decoded.email;
+    try {
+    const { token, newPassword } = req.body; // Expect token and newPassword from the request body
 
-    const account = await Account.findOne({ where: { email } });
-    if (!account) {
-      return res.status(404).json({ message: 'Account not found' });
+    // 1. Basic input validation
+    if (!token || !newPassword) {
+      return res.status(400).json({ message: 'Token and new password are required.' });
+    }
+    if (newPassword.length < 6) { // Example: minimum password length
+      return res.status(400).json({ message: 'New password must be at least 6 characters long.' });
     }
 
-    res.status(200).json({ message: 'Email verified successfully' });
+    // 2. Re-verify the token for security (important for POST requests)
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      // If token is invalid or expired, return error
+      if (err.name === 'TokenExpiredError') {
+        return res.status(401).json({ message: 'Reset link has expired. Please request a new one.' });
+      }
+      return res.status(401).json({ message: 'Invalid token.' });
+    }
+
+    const email = decoded.email; // Get email from the decoded token
+
+    // 3. Find the user account
+    const account = await Account.findOne({ where: { email } });
+    if (!account) {
+      return res.status(404).json({ message: 'Account not found.' });
+    }
+
+    // Optional: If you implement token invalidation (e.g., a 'used' flag in DB)
+    // if (account.resetTokenUsed) {
+    //   return res.status(401).json({ message: 'This reset link has already been used.' });
+    // }
+
+    // 4. Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10); // 10 is a good salt rounds value
+
+    // 5. Update the account's password in the database
+    account.password = hashedPassword;
+    // Optional: Invalidate the token in your database if you store them (e.g., set account.resetToken = null, account.resetTokenUsed = true)
+    // This prevents the same token from being used multiple times.
+    await account.save();
+
+    res.status(200).json({ message: 'Password has been successfully reset.' });
+
   } catch (error) {
-    console.error('Verification error:', error);
-    res.status(500).json({ message: 'Verification failed' });
+    console.error('Set new password error:', error);
+    res.status(500).json({ message: 'Failed to set new password.' });
   }
-}
+};
+
+export const verifyResetToken = async (req, res) => {
+  const { token } = req.params; // Token comes from URL parameters
+
+  if (!token) {
+    return res.status(400).json({ message: 'Token is required.' });
+  }
+
+  try {
+    // Verify the token using your JWT secret
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const email = decoded.email; // Assuming your token payload includes the email
+
+    // Find the account to ensure it exists and is active
+    const account = await Account.findOne({ where: { email } });
+    if (!account) {
+      return res.status(404).json({ message: 'Account not found or token invalid.' });
+    }
+
+    // Optional: You could add a check here if the token has been used/blacklisted
+    // if (account.resetTokenUsed) { return res.status(401).json({ message: 'Token already used.' }); }
+
+    // If verification is successful, send a success response.
+    // The frontend will then display the new password input fields.
+    res.status(200).json({ message: 'Token verified successfully. Please set your new password.' });
+  } catch (error) {
+    console.error('Token verification error:', error);
+    // Handle different JWT errors specifically if needed (e.g., TokenExpiredError)
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: 'Reset link has expired. Please request a new one.' });
+    }
+    return res.status(401).json({ message: 'Invalid or malformed token.' });
+  }
+};

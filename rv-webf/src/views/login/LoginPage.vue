@@ -4,6 +4,7 @@ import { RouterLink, useRouter  } from 'vue-router';
 import { useAuthStore } from '@/store/AuthStore';
 import { Form } from '@primevue/forms';
 
+import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import IftaLabel from 'primevue/iftalabel';
 import { useMessageDialog } from '../../components/MessageDialog.js'; 
@@ -58,7 +59,7 @@ const onSubmit = async ({ valid }) => {
     }
   } catch (error) {
     console.error("Login error:", error);
-    messageDialog.show('An unexpected error occurred during login. Please try again.', 'error');
+    messageDialog.show(error.message, 'error');
   }
 };
 
@@ -75,48 +76,42 @@ onMounted(() => {
       </div>
 
       <Form v-slot="$form" :value="loginForm" :resolver="resolver" @submit="onSubmit" class="space-y-6">
+        <IftaLabel class="block">
+          <InputText
+            id="email"
+            v-model="loginForm.email"
+            :class="['w-full', { 'p-invalid': $form.email?.invalid }]"
+            aria-describedby="email-error"
+            :pt="{
+              root: { class: 'bg-white text-black dark:bg-white dark:text-black' },
+              input: { class: 'bg-white text-black dark:bg-white dark:text-black' }
+            }"
+          />
+          <label for="email">Email:</label>
+          <Message v-if="$form.email?.invalid" severity="error" :pt="{ root: { class: 'mt-2' }, text: { class: 'text-sm' } }">{{ $form.email.error.message }}</Message>
+        </IftaLabel>
 
-        <div>
-          <IftaLabel>
-            <input
-              id="email"
-              v-model="loginForm.email"
-              type="email"
-              placeholder="Enter your email"
-              class="w-full h-17 px-4 mt-2 pt-3 rounded-md border border-gray-300
-                     bg-white text-black placeholder-gray-500
-                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                     transition-all duration-200"
-              :class="{ 'border-red-500 focus:ring-red-500': $form.email?.invalid }"
-            />
-            <label for="email" class="mt-2">Email:</label>
-            <Message v-if="$form.email?.invalid" severity="error" :pt="{ root: { class: 'mt-2' }, text: { class: 'text-sm' } }">{{ $form.email.error.message }}</Message>
-          </IftaLabel>
-        </div>
-
-        <div>
-          <IftaLabel>
-            <input
-              id="password"
-              v-model="loginForm.password"
-              type="password"
-              placeholder="Enter your password"
-              class="w-full h-17 px-4 mt-2 pt-3 rounded-md border border-gray-300
-                     bg-white text-black placeholder-gray-500
-                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                     transition-all duration-200"
-              :class="{ 'border-red-500 focus:ring-red-500': $form.password?.invalid }"
-            />
-            <label for="password" class="mt-1.5">Password:</label>
-            <Message v-if="$form.password?.invalid" severity="error" :pt="{ root: { class: 'mt-2' }, text: { class: 'text-sm' } }">{{ $form.password.error.message }}</Message>
-          </IftaLabel>
-        </div>
+        <IftaLabel class="block">
+          <InputText
+            id="password"
+            type="password"
+            v-model="loginForm.password"
+            :class="['w-full', { 'p-invalid': $form.password?.invalid }]"
+            aria-describedby="password-error"
+            :pt="{
+              root: { class: 'bg-white text-black dark:bg-white dark:text-black' },
+              input: { class: 'bg-white text-black dark:bg-white dark:text-black' }
+            }"
+          />
+          <label for="password">Password:</label>
+          <Message v-if="$form.password?.invalid" severity="error" :pt="{ root: { class: 'mt-2' }, text: { class: 'text-sm' } }">{{ $form.password.error.message }}</Message>
+        </IftaLabel>
 
         <div class="text-right text-sm">
-          <RouterLink to="/forgetpassword" class="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200">Forget password?</RouterLink>
+          <RouterLink to="/login/reset" class="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200">Forget password?</RouterLink>
         </div>
 
-        <Button type="submit" label="Log in" severity="primary" class="w-full mt-6 text-white" />
+        <Button type="submit" label="Log in" severity="primary" class="w-full mt-6" />
       </Form>
 
       <div class="text-center text-gray-700 mt-6">
