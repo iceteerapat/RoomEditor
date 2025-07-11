@@ -81,7 +81,7 @@ async function onSubmit({ valid }) {
 </script>
 
 <template>
-    <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100 p-4 sm:p-6">
+    <div class="min-h-screen flex items-center justify-center bg-gray-50 p-4 sm:p-6">
         <section class="w-full max-w-md mx-auto bg-white rounded-lg shadow-xl p-6 sm:p-8 md:p-10">
             <div class="text-center mb-8">
                 <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">Create an account to visualize dream rooms</h1>

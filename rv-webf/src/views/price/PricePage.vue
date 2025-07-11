@@ -62,17 +62,20 @@ const purchasePlan = (planName, cycle) => {
 
 <template>
   <div class="min-h-screen flex flex-col">
-    <header class="bg-white-800 text-black shadow-md">
+    <header class="bg-white text-black shadow-md">
         <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <RouterLink to="/home" class="text-2xl font-bold text-white-800">
+            <RouterLink to="/home" class="text-2xl font-bold text-black">
                 Room Visualizer
             </RouterLink>
             <ul class="hidden md:flex space-x-6 items-center">
-                <RouterLink to="/home" class="hover:text-green-600 transition-colors duration-200">Home</RouterLink>
+                <RouterLink to="/home" class="hover:text-green-600 transition-colors duration-200 dark:text-white-800">Home</RouterLink>
                 <RouterLink to="/service/create" class="hover:text-green-600 transition-colors duration-200">Create Room</RouterLink>
                 <RouterLink to="/price" class="hover:text-green-600 transition-colors duration-200">Pricing</RouterLink>
                 <RouterLink to="/contact" class="hover:text-green-600 transition-colors duration-200">Contact Us</RouterLink>
-                <Button asChild v-slot="slotProps" class="!text-white"> <RouterLink to="/login" :class="`${slotProps.class} bg-green-600 hover:bg-green-600 focus:ring-green-600`">Login</RouterLink>
+                <Button v-slot="slotProps" asChild>
+                    <button v-bind="slotProps.a11yAttrs" class="rounded-md px-3 py-1.5 bg-emerald-600 hover:bg-emerald-400">
+                        <RouterLink to="/login" class="text-white font-bold hover:text-gray-800">Login</RouterLink>
+                    </button>
                 </Button>
             </ul>
 
@@ -83,22 +86,21 @@ const purchasePlan = (planName, cycle) => {
                     </svg>
                 </Button>
             </div>
+            <Sidebar md:hidden v-model:visible="mobileVisible" position="right" class="w-72"> 
+                <div class="flex flex-col gap-4 p-4 text-lg">
+                    <RouterLink to="/home" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Home</RouterLink>
+                    <RouterLink to="/service/create" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Create Room</RouterLink>
+                    <RouterLink to="/price" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Pricing</RouterLink>
+                    <RouterLink to="/contact" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Contact Us</RouterLink>
+                    <div class="mt-4 border-t pt-4"> 
+                        <Button @click="$router.push('/login'); mobileVisible = false;" class="w-full bg-green-600 text-white font-bold py-2 rounded-md hover:bg-green-700 transition-colors dark:text-white dark:font-bold">Login</Button>
+                    </div>
+                </div>
+            </Sidebar>
         </nav>
     </header>
 
-    <Sidebar v-model:visible="mobileVisible" position="right" class="w-72"> 
-        <div class="flex flex-col gap-4 p-4 text-lg">
-            <RouterLink to="/home" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors">Home</RouterLink>
-            <RouterLink to="/service/create" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors">Create Room</RouterLink>
-            <RouterLink to="/price" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors">Pricing</RouterLink>
-            <RouterLink to="/contact" class="hover:text-white transition-colors duration-200">Contact Us</RouterLink>
-            <div class="mt-4 border-t pt-4"> 
-                <Button @click="$router.push('/login'); mobileVisible = false;" class="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition-colors">Login</Button>
-            </div>
-        </div>
-    </Sidebar>
-
-    <main class="flex-grow flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-purple-50">
+    <main class="flex-grow flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
       <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-8 text-center">Flexible Pricing Plans</h1>
       <p class="text-lg text-gray-600 mb-10 text-center max-w-3xl">Choose the plan that best fits your needs, whether you're an individual or a large enterprise.</p>
 

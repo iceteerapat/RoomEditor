@@ -143,9 +143,9 @@ async function onManage(){
     <div class="min-h-screen bg-gray-100 flex flex-col"> 
         <div v-if="!isLoggedIn" class="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50">
             <div class="bg-white p-8 rounded-lg shadow-xl text-center">
-                <h2 class="text-2xl font-semibold mb-4">Please log in to access this feature</h2>
+                <h2 class="text-2xl font-semibold mb-4 dark:text-black">Please log in to access this feature</h2>
                 <RouterLink to="/login">
-                    <Button class="mt-4 px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">Go to Login</Button>
+                    <button class="mt-4 px-6 py-3 bg-emerald-600 text-white rounded-md hover:bg-emerald-500 transition-colors">Go to Login</Button>
                 </RouterLink>
             </div>
         </div> 
