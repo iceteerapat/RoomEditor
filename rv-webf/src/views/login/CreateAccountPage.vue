@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, ref } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import { Form } from '@primevue/forms';
 import { useMessageDialog } from '../../components/MessageDialog.js'; 
 
@@ -14,11 +14,13 @@ import Message from 'primevue/message';
 
 import RepositoriesFactory from '../../apis/repositories/RepositoriesFactory';
 
+const router = useRouter();
 const messageDialog = useMessageDialog();
 const respository = RepositoriesFactory.get('CreateAccountRepository');
 
 const dialogPrivacyPolicy = ref(false);
 const dialogSuccess = ref(false);
+const isLoading = ref(false);
 
 const items = reactive({
   username: '',
@@ -85,15 +87,18 @@ async function onSubmit({ valid }) {
   } else {
     items.privacyFlag = 'N';
   }
-  
+  isLoading.value = true;
   try {
     const response = await respository.create(items);
     if(response.status === 200){
       dialogSuccess.value = true;
+      // router.push('/login');
     }
   } catch (error) {
     console.error("Error: "+ error);
     messageDialog.show(error.response.data?.message, 'error');
+  } finally {
+    isLoading.value = false;
   }
 }
 </script>
@@ -264,7 +269,7 @@ async function onSubmit({ valid }) {
                     <p class="text-sm font-semibold pr-10 pb-2 flex justify-end">Room Visualizer Creater</p>
                 </Dialog>
 
-                <Button type="submit" label="Create Account" severity="primary" class="w-full mt-6" />
+                <Button type="submit" label="Create Account" severity="primary" class="w-full mt-6" :loading="isLoading"/>
 
                 <Dialog v-model:visible="dialogSuccess" modal header="Success"
                     :style="{ width: '90vw', maxWidth: '600px' }"
