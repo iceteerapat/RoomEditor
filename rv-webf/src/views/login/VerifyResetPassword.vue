@@ -37,8 +37,8 @@ const resolver = ({ values }) => {
 
   if (!newPassword) {
     errors.newPassword = [{ message: 'New password is required.' }];
-  } else if (newPassword.length < 6) {
-    errors.newPassword = [{ message: 'Password must be at least 6 characters.' }];
+  } else if (newPassword.length < 8) {
+    errors.newPassword = [{ message: 'Password must be at least 8 characters.' }];
   }
 
   if (!confirmPassword) {
@@ -93,7 +93,7 @@ const onSubmit = async ({ valid }) => {
 
     if (response.status === 200) {
       messageDialog.show("Your password has been successfully reset! You can now log in.", 'success');
-      router.push('/login');
+      // router.push('/login');
     } else {
       messageDialog.show(response?.data?.message || "Failed to set new password. Please try again.", 'error');
     }

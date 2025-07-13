@@ -16,7 +16,7 @@ export default {
         return Client.post(`${resource}/reset`, payload);
     },
     verifyReset(payload){
-        return Client.get(`${resource}/verifyReset`, payload);
+        return Client.post(`${resource}/verifyReset`, payload);
     },
     verifyResetToken(token){
         return Client.get(`${resource}/reset/${token}`);

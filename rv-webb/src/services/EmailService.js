@@ -59,7 +59,7 @@ export async function sendResetEmail(email) {
       `
     };
     const info = await transporter.sendMail(mailOptions);
-    console.log('Email sent:', info.response);
+    console.log('Email reset sent:', info.response);
     return { success: true };
   } catch (error) {
     console.error('Error sending reset email:', error);
