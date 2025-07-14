@@ -1,5 +1,5 @@
 import { decodeJwt } from './DecodeJwt.js';
-
+import { useMessageDialog } from './MessageDialog.js'; 
 import RepositoriesFactory from '@/apis/repositories/RepositoriesFactory.js';
 
 const repository = RepositoriesFactory.get('PurchaseRepository');
@@ -7,6 +7,7 @@ const repository = RepositoriesFactory.get('PurchaseRepository');
 const priceOneAtATimeId = 'price_1Rbm2FGbnW1BWWOPK94CLqcK';
 const priceSubscribeMonthlyId = 'price_1RVD30GbnW1BWWOPKd9A3usu';
 const priceSubscribeAnnuallyId = 'price_1RVD30GbnW1BWWOPvZGgp2LN';
+const messageDialog = useMessageDialog();
 
 export async function handlePlanSelection(planName, billingCycle, router) {
   const token = localStorage.getItem('token');
@@ -42,12 +43,12 @@ export async function handlePlanSelection(planName, billingCycle, router) {
         window.location.href = session.url;
       } else {
         console.error("Backend did not return a valid Stripe Checkout Session URL.", session);
-        alert("Failed to initiate checkout. Please try again.");
+        messageDialog.show("Failed to initiate checkout. Please try again.", 'error');
       }
     }catch(error){
       console.error("Error creating Stripe Checkout Session:", error.response?.data || error.message);
-      alert("Please login or sign-up to access our service.");
-      router.push('/login');
+      messageDialog.show("Please login or sign-up to access our service.", 'error');
+      // router.push('/login');
     }
   }
 }

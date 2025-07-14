@@ -200,7 +200,10 @@ async function onManage(){
                 <p>Subscription: <span class="font-medium">{{ authStore.getProductName }}</span></p>
                 <p>Credits: <span class="font-medium">{{ serviceStore.getCreditsCount }}</span></p>
             </div>
-            <div class="md:hidden">
+            <div class="md:hidden"> 
+                <Button icon="fa-solid fa-bars" @click="visibleLeft = true" class="p-button-rounded p-button-text" />
+            </div>
+            <div class="translate-x-30 md:hidden dark:text-black">
                 <p>Credits: <span class="font-medium">{{ serviceStore.getCreditsCount }}</span></p>
             </div>
             <div class="flex-grow text-center">
@@ -213,8 +216,6 @@ async function onManage(){
         </header>
 
         <main class="flex-grow flex flex-col md:flex-row p-4 gap-6">
-            <div class="md:hidden flex justify-start mb-4"> <Button icon="fa-solid fa-arrow-right" @click="visibleLeft = true" class="p-button-rounded p-button-text" />
-            </div>
             <Drawer v-model:visible="visibleLeft" header="Menu" position="left" class="md:hidden">
                 <div class="flex flex-col gap-4 p-4">
                     <RouterLink to="/service/create" class="text-lg text-green-600 hover:text-green-800 transition-colors">Create Room</RouterLink>
@@ -283,15 +284,16 @@ async function onManage(){
             </section>
         </main>
         
-        <footer class="bg-gray-800 text-white p-8">
-            <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-                <h3 class="text-2xl font-semibold">Room Visualizer</h3>
-                <div class="flex flex-col md:flex-row gap-4 text-center md:text-left">
-                    <RouterLink to="/home" class="hover:text-blue-300 transition-colors">Home</RouterLink>
-                    <RouterLink to="/service/create" class="hover:text-blue-300 transition-colors">Create Room</RouterLink>
-                    <RouterLink to="/price" class="hover:text-blue-300 transition-colors">Pricing</RouterLink>
+        <footer class="bg-gray-800 text-gray-300 py-8 px-4 mt-auto">
+            <div class="container mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+                <h3 class="text-xl font-bold mb-4 md:mb-0 text-white">Room Visualizer</h3>
+                <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-6 mb-4 md:mb-0 md:pl-30">
+                    <RouterLink to="/home" class="hover:text-white transition-colors duration-200">Home</RouterLink>
+                    <RouterLink to="/service/create" class="hover:text-white transition-colors duration-200">Create Room</RouterLink>
+                    <RouterLink to="/price" class="hover:text-white transition-colors duration-200">Pricing</RouterLink>
+                    <RouterLink to="/contact" class="hover:text-white transition-colors duration-200">Contact Us</RouterLink>
                 </div>
-                <div class="text-sm text-gray-400">
+                <div class="text-sm">
                     <p>© 2025 Room Visualizer. All rights reserved.</p>
                 </div>
             </div>

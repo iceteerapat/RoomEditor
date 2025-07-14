@@ -110,16 +110,16 @@ export const handleWebhook = async(req, res) => {
 
                     if(purchasedPrice.recurring.interval === 'year'){
                         const product = await Product.findOne({ where :{ recId: 4}});
-                        userService.serviceName = product.productName;
-                        userService.serviceAccess = 'Y';
-                        userService.serviceId = product.recId;
+                        userService.productName = product.productName;
+                        userService.productAccess = 'Y';
+                        userService.productId = product.recId;
                         userService.credits = userService.credits + product.creditGrant;
                         await userService.save();
                     }else {
                         const product = await Product.findOne({ where :{ recId: 3}});
-                        userService.serviceName = product.productName;
-                        userService.serviceAccess = 'Y';
-                        userService.serviceId = product.recId;
+                        userService.productName = product.productName;
+                        userService.productAccess = 'Y';
+                        userService.productId = product.recId;
                         userService.credits = userService.credits + product.creditGrant;
                         await userService.save();
                     }
@@ -127,9 +127,9 @@ export const handleWebhook = async(req, res) => {
 
                 } else if (session.mode === 'payment') {
                     const product = await Product.findOne({ where :{ recId: 2 }});
-                    userService.serviceName = product.productName;
-                    userService.serviceAccess = 'Y';
-                    userService.serviceId = product.recId;
+                    userService.productName = product.productName;
+                    userService.productAccess = 'Y';
+                    userService.productId = product.recId;
                     await Service.increment('credits', { by: 35, where: { customerId: internalCustomerId } });
                     console.log(`User ${internalCustomerId} granted credits.`);
                     await userService.save();

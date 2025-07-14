@@ -92,13 +92,13 @@ async function onSubmit({ valid }) {
     const response = await respository.create(items);
     if(response.status === 200){
       dialogSuccess.value = true;
-      // router.push('/login');
     }
   } catch (error) {
     console.error("Error: "+ error);
     messageDialog.show(error.response.data?.message, 'error');
   } finally {
     isLoading.value = false;
+    router.push('/login');
   }
 }
 </script>
