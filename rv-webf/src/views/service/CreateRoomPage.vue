@@ -235,7 +235,7 @@ async function onManage(){
                     </div>
                 </section>
             </div> 
-            <section class="w-full bg-white p-6 rounded-lg shadow-md">
+            <section v-if="materialAnalysisHtml" class="w-full bg-white p-6 rounded-lg shadow-md">
                 <div v-if="materialAnalysisHtml" class="w-full border-t pt-6 mt-6 border-gray-200">
                     <h2 class="text-3xl font-bold text-gray-800 text-center mb-6">Material Analysis</h2>
                     <div class="prose max-w-none text-gray-700 leading-relaxed material-analysis-content">

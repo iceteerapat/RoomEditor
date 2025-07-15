@@ -137,7 +137,7 @@ export const genBasic = async (req, res) => {
             mimeType: contentType,
           },
         };
-        const prompt = "based on the room's picture provided, give me the infomation of materials that have used in this room, also specific what kind of materials is that, if you don't know give a suggestion";
+        const prompt = "based on the room's picture provided, give me the infomation of materials that have used in this room, also specific what kind of materials is that, keep focus on on furniture/Floor/Celling/Light and excaptional for decoration,if you don't know give a suggestion";
         const result = await gemini.generateContent([
           prompt, // if you have a text component to your prompt
           imagePart
@@ -302,7 +302,7 @@ export const renovateBasic = async (req, res) => {
             mimeType: contentType,
           },
         };
-        const prompt = "based on the room's picture provided, give me the infomation of materials that have used in this room, also specific what kind of materials is that, if you don't know give a suggestion";
+        const prompt = "based on the room's picture provided, give me the infomation of materials that have used in this room, also specific what kind of materials is that, keep focus on on furniture/Floor/Celling/Light and excaptional for decoration,if you don't know give a suggestion";
         const result = await gemini.generateContent([
           prompt, // if you have a text component to your prompt
           imagePart

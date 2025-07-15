@@ -6,6 +6,7 @@ import { formatDateToYMD } from '../../components/DateFormat';
 import { useServiceStore } from '../../store/ServiceStore';
 import { useAuthStore } from '../../store/AuthStore';
 import { useMessageDialog } from '../../components/MessageDialog.js'; 
+import { marked } from 'marked';
 
 import Repositories from '../../apis/repositories/RepositoriesFactory.js';
 import Menu from 'primevue/menu';
@@ -44,6 +45,8 @@ const size = ref([
 ])
 const etc = ref('');
 const imageUrl = ref('');
+const material = ref('');
+const materialAnalysisHtml = ref('');
 
 function onFileSelect(event) {
     const file = event.files[0];
@@ -103,6 +106,8 @@ async function onSubmit() {
         const response = await serviceStore.renovateImage({prompt, imageProps, ratio});
         if (response.status === 200) {
             imageUrl.value = response.data.image;
+            material.value = response.data.analysis;
+            materialAnalysisHtml.value = marked.parse(material.value);
         } 
         else {
             await messageDialog.show(response.data.message, 'error');
@@ -215,71 +220,76 @@ async function onManage(){
             </div>
         </header>
 
-        <main class="flex-grow flex flex-col md:flex-row p-4 gap-6">
-            <Drawer v-model:visible="visibleLeft" header="Menu" position="left" class="md:hidden">
-                <div class="flex flex-col gap-4 p-4">
-                    <RouterLink to="/service/create" class="text-lg text-green-600 hover:text-green-800 transition-colors">Create Room</RouterLink>
-                    <RouterLink to="/service/renovate" class="text-lg text-green-600 hover:text-green-800 transition-colors">Renovate Room</RouterLink>
-                    <RouterLink to="/service/creditAndSubscription" class="text-lg text-green-600 hover:text-green-800 transition-colors">Credits & Subscription</RouterLink>
-                </div>
-            </Drawer>
+        <main class="flex-grow flex flex-col p-4 gap-6">
+            <div class="flex flex-col md:flex-row gap-6 flex-grow"> 
+                <aside class="hidden md:block w-64 bg-white p-4 rounded-lg shadow-md">
+                    <nav class="flex flex-col gap-4">
+                        <RouterLink to="/service/create" class="text-lg font-medium text-gray-700 hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">Create Room</RouterLink>
+                        <RouterLink to="/service/renovate" class="text-lg font-medium text-green-600 hover:text-green-600 transition-colors py-2 px-3 rounded-md bg-green-50">Renovate Room</RouterLink>
+                        <RouterLink to="/service/creditAndSubscription" class="text-lg font-medium text-gray-700 hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">Credits & Subscription</RouterLink>
+                    </nav>
+                </aside>
 
-            <aside class="hidden md:block w-64 bg-white p-4 rounded-lg shadow-md">
-                <nav class="flex flex-col gap-4">
-                    <RouterLink to="/service/create" class="text-lg font-medium text-gray-700 hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">Create Room</RouterLink>
-                    <RouterLink to="/service/renovate" class="text-lg font-medium text-green-600 hover:text-green-600 transition-colors py-2 px-3 rounded-md bg-green-50">Renovate Room</RouterLink>
-                    <RouterLink to="/service/creditAndSubscription" class="text-lg font-medium text-gray-700 hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">Credits & Subscription</RouterLink>
-                </nav>
-            </aside>
-
-            <section class="flex-grow flex flex-col lg:flex-row gap-6 bg-white p-6 rounded-lg shadow-md">
-                <div class="flex-1 space-y-6 max-w-md">
-                    <h2 class="text-2xl font-bold text-gray-800 border-b pb-2 mb-4">Input Properties</h2>
-                    
-                    <div class="flex flex-col gap-2">
-                        <label for="roomPhoto" class="text-gray-700 font-medium">Room Photo</label>
-                        <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary" 
-                                    class="w-full flex justify-center !p-0 !m-0" /> <img v-if="samplePhoto" :src="samplePhoto" alt="Uploaded room image preview" 
-                             class="mt-4 rounded-md object-cover h-28 w-48 mx-auto" /> <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Upload your room's photo.</Message>
+                <section class="flex-grow flex flex-col lg:flex-row gap-6 bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex-1 space-y-6 max-w-md">
+                        <h2 class="text-2xl font-bold text-gray-800 border-b pb-2 mb-4">Input Properties</h2>
+                        
+                        <div class="flex flex-col gap-2">
+                            <label for="roomPhoto" class="text-gray-700 font-medium">Room Photo</label>
+                            <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary" 
+                                        class="w-full flex justify-center !p-0 !m-0" /> <img v-if="samplePhoto" :src="samplePhoto" alt="Uploaded room image preview" 
+                                class="mt-4 rounded-md object-cover h-28 w-48 mx-auto" /> <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Upload your room's photo.</Message>
+                        </div>
+                        
+                        <div class="flex flex-col gap-2">
+                            <label for="roomstyle" class="text-gray-700 font-medium">Room Styles</label>
+                            <InputText id="roomstyle" v-model="roomStyle" aria-describedby="roomstyle-help" class="w-full" />
+                            <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Enter your room style such as Italian-American style.</Message>
+                        </div>
+                        
+                        <div class="flex flex-col gap-2">
+                            <label for="roomtype" class="text-gray-700 font-medium">Room Type</label>
+                            <InputText id="roomtype" v-model="roomType" aria-describedby="roomtype-help" class="w-full" />
+                            <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Enter your room type such as Living room, Kitchen, etc.</Message>
+                        </div>
+                        
+                        <div class="flex flex-col gap-2">
+                            <label for="picturesize" class="text-gray-700 font-medium">Picture Size</label>
+                            <Select v-model="pictureSize" :options="size" optionLabel="name" placeholder="Select picture size" class="w-full" />
+                        </div>
+                        
+                        <div class="flex flex-col gap-2">
+                            <label for="description" class="text-gray-700 font-medium">Description</label>
+                            <Textarea id="description" v-model="etc" rows="5" cols="30" class="w-full resize-none" />
+                            <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Describe your room more such as TV on the left or Couch attached to the wall.</Message>
+                        </div>
+                        
+                        <Button label="Renovate Room" @click="onSubmit" class="w-full mt-4 bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors" />
                     </div>
                     
-                    <div class="flex flex-col gap-2">
-                        <label for="roomstyle" class="text-gray-700 font-medium">Room Styles</label>
-                        <InputText id="roomstyle" v-model="roomStyle" aria-describedby="roomstyle-help" class="w-full" />
-                        <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Enter your room style such as Italian-American style.</Message>
+                    <div class="flex-1 space-y-6 flex flex-col items-center justify-center border-t lg:border-t-0 lg:border-l pt-6 lg:pt-0 lg:pl-6 border-gray-200">
+                        <h2 class="text-2xl font-bold text-gray-800">Image Result</h2>
+                        <PrimeVueImage :src="imageUrl" alt="Generated room" class="max-w-full h-auto rounded-lg shadow-md" preview v-if="imageUrl"/>
+                        <Button label="Download Image" @click="downloadImage" v-if="imageUrl" class="mt-4 bg-green-600 text-white py-3 px-6 rounded-md hover:bg-green-700 transition-colors" />
                     </div>
                     
-                    <div class="flex flex-col gap-2">
-                        <label for="roomtype" class="text-gray-700 font-medium">Room Type</label>
-                        <InputText id="roomtype" v-model="roomType" aria-describedby="roomtype-help" class="w-full" />
-                        <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Enter your room type such as Living room, Kitchen, etc.</Message>
+                    <div v-if="loading" class="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50">
+                        <div class="bg-white p-8 rounded-lg shadow-xl text-center flex flex-col items-center gap-4">
+                            <ProgressSpinner style="width: 70px; height: 70px" strokeWidth="8" fill="transparent" animationDuration=".5s" aria-label="Custom ProgressSpinner"/>
+                            <p class="text-lg font-medium text-gray-700">Right now image is generating, please wait for 2-3 minutes</p>
+                        </div>
                     </div>
-                    
-                    <div class="flex flex-col gap-2">
-                        <label for="picturesize" class="text-gray-700 font-medium">Picture Size</label>
-                        <Select v-model="pictureSize" :options="size" optionLabel="name" placeholder="Select picture size" class="w-full" />
+                </section>
+            </div>    
+            <section v-if="materialAnalysisHtml" class="w-full bg-white p-6 rounded-lg shadow-md">
+                <div v-if="materialAnalysisHtml" class="w-full border-t pt-6 mt-6 border-gray-200">
+                    <h2 class="text-3xl font-bold text-gray-800 text-center mb-6">Material Analysis</h2>
+                    <div class="prose max-w-none text-gray-700 leading-relaxed material-analysis-content">
+                        <div v-html="materialAnalysisHtml"></div>
                     </div>
-                    
-                    <div class="flex flex-col gap-2">
-                        <label for="description" class="text-gray-700 font-medium">Description</label>
-                        <Textarea id="description" v-model="etc" rows="5" cols="30" class="w-full resize-none" />
-                        <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Describe your room more such as TV on the left or Couch attached to the wall.</Message>
-                    </div>
-                    
-                    <Button label="Renovate Room" @click="onSubmit" class="w-full mt-4 bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors" />
                 </div>
-                
-                <div class="flex-1 space-y-6 flex flex-col items-center justify-center border-t lg:border-t-0 lg:border-l pt-6 lg:pt-0 lg:pl-6 border-gray-200">
-                    <h2 class="text-2xl font-bold text-gray-800">Image Result</h2>
-                    <PrimeVueImage :src="imageUrl" alt="Generated room" class="max-w-full h-auto rounded-lg shadow-md" preview v-if="imageUrl"/>
-                    <Button label="Download Image" @click="downloadImage" v-if="imageUrl" class="mt-4 bg-green-600 text-white py-3 px-6 rounded-md hover:bg-green-700 transition-colors" />
-                </div>
-                
-                <div v-if="loading" class="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50">
-                    <div class="bg-white p-8 rounded-lg shadow-xl text-center flex flex-col items-center gap-4">
-                        <ProgressSpinner style="width: 70px; height: 70px" strokeWidth="8" fill="transparent" animationDuration=".5s" aria-label="Custom ProgressSpinner"/>
-                        <p class="text-lg font-medium text-gray-700">Right now image is generating, please wait for 2-3 minutes</p>
-                    </div>
+                <div v-else-if="!loading && imageUrl" class="w-full border-t pt-6 mt-6 border-gray-200 text-center text-gray-500">
+                    <p>No material analysis available for this generation.</p>
                 </div>
             </section>
         </main>
