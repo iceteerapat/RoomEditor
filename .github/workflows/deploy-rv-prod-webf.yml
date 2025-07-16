@@ -23,7 +23,7 @@ jobs:
           username: ${{ secrets.USERNAME_RV }}
           key: ${{ secrets.SSH_PRIVATE_KEY_RV }}
           script: |
-            cd RoomVisulizer/rv-webf && git pull
+            cd RoomEditor/rv-webf && git pull
             rm -rf .env
             cat > .env << EOF
             ${{ vars.WEBF_ENV }}
