@@ -23,9 +23,17 @@ jobs:
           username: ${{ secrets.USERNAME_RV }}
           key: ${{ secrets.SSH_PRIVATE_KEY_RV }}
           script: |
-            cd RoomEditor/rv-webb && git pull
-            rm -rf .env
-            cat > .env << EOF
+            set -e 
+            cd RoomEditor/rv-webb
+            git pull
+            rm -f .env
+            cat > .env << 'EOF'
             ${{ vars.WEBB_ENV }}
             EOF
-            node server.js
+            npm install
+            pm2 describe rv-webb > /dev/null 2>&1 \
+              && pm2 reload rv-webb \
+              || pm2 start server.js --name rv-webb
+
+            pm2 save
+            echo "Deployment complete." 

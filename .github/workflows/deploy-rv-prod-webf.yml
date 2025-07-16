@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - "**"
-      - ".github/workflows/deploy-rv-prod-webb.yml"
+      - ".github/workflows/deploy-rv-prod-webf.yml"
 
 jobs:
   deploy:
@@ -23,9 +23,13 @@ jobs:
           username: ${{ secrets.USERNAME_RV }}
           key: ${{ secrets.SSH_PRIVATE_KEY_RV }}
           script: |
-            cd RoomEditor/rv-webf && git pull
-            rm -rf .env
-            cat > .env << EOF
-            ${{ vars.WEBF_ENV }}
+            set -e 
+            cd RoomEditor/rv-webf
+            git pull
+            rm -f .env
+            cat > .env << 'EOF'
+            ${{ vars.WEBB_ENV }}
             EOF
+            npm install
             npm run build
+            echo "Build complete." 
