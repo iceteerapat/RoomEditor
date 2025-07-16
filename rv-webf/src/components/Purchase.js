@@ -4,9 +4,9 @@ import RepositoriesFactory from '@/apis/repositories/RepositoriesFactory.js';
 
 const repository = RepositoriesFactory.get('PurchaseRepository');
 
-const priceOneAtATimeId = 'price_1Rbm2FGbnW1BWWOPK94CLqcK';
-const priceSubscribeMonthlyId = 'price_1RVD30GbnW1BWWOPKd9A3usu';
-const priceSubscribeAnnuallyId = 'price_1RVD30GbnW1BWWOPvZGgp2LN';
+const priceOneAtATimeId = 'price_1RlTryGbnW1BWWOPg14TrN5d';
+const priceSubscribeMonthlyId = 'price_1RlTryGbnW1BWWOPuDtA2xkg';
+const priceSubscribeAnnuallyId = 'price_1RlTryGbnW1BWWOPV3nxeIJN';
 const messageDialog = useMessageDialog();
 
 export async function handlePlanSelection(planName, billingCycle, router) {

@@ -1,23 +1,23 @@
 {
   "development": {
-    "username": "ice",
+    "username": "admin",
     "password": "@Gamericeza01",
     "database": "rv",
-    "host": "192.168.56.102",
+    "host": "3.1.189.124",
     "dialect": "postgres"
   },
   "test": {
-    "username": "ice",
+    "username": "admin",
     "password": "@Gamericeza01",
     "database": "rv",
-    "host": "192.168.56.102",
+    "host": "3.1.189.124",
     "dialect": "postgres"
   },
   "production": {
-    "username": "ice",
+    "username": "admin",
     "password": "@Gamericeza01",
     "database": "rv",
-    "host": "192.168.56.102",
+    "host": "3.1.189.124",
     "dialect": "postgres"
   }
 }

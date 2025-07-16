@@ -18,8 +18,8 @@ const router = useRouter();
 const pricingPlans = [
   {
     name: 'One at a time',
-    monthlyPrice: '$6.99',
-    annualPrice: '$6.99',
+    monthlyPrice: '$7.99',
+    annualPrice: '$7.99',
     features: [
       'Generate up to 35 Full HD images',
       'Picture size up to 1920 X 1080 pixels',
@@ -29,8 +29,8 @@ const pricingPlans = [
   },
   {
     name: 'Subscription',
-    monthlyPrice: '$14.99 / month',
-    annualPrice: '$140.99 / year',
+    monthlyPrice: '$16.99 / month',
+    annualPrice: '$160.99 / year',
     features: [
       'Generate up to 200 Full HD images per month',
       'Picture size up to 1920 X 1080 pixels',
