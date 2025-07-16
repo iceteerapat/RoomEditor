@@ -1,0 +1,31 @@
+name: deploy-rv-prod
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**"
+      - ".github/workflows/deploy-rv-prod-webb.yml"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy Website RoomVisulizer
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_RV }}
+          username: ${{ secrets.USERNAME_RV }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_RV }}
+          script: |
+            cd RoomVisulizer/rv-webb && git pull
+            rm -rf .env
+            cat > .env << EOF
+            ${{ vars.WEBB_ENV }}
+            EOF
+            node server.js

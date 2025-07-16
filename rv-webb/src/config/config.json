@@ -3,21 +3,21 @@
     "username": "ice",
     "password": "@Gamericeza01",
     "database": "rv",
-    "host": "127.0.0.1",
+    "host": "192.168.56.102",
     "dialect": "postgres"
   },
   "test": {
     "username": "ice",
     "password": "@Gamericeza01",
     "database": "rv",
-    "host": "127.0.0.1",
+    "host": "192.168.56.102",
     "dialect": "postgres"
   },
   "production": {
     "username": "ice",
     "password": "@Gamericeza01",
     "database": "rv",
-    "host": "127.0.0.1",
+    "host": "192.168.56.102",
     "dialect": "postgres"
   }
 }
