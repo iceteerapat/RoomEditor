@@ -28,7 +28,7 @@ jobs:
             git pull
             rm -f .env
             cat > .env << 'EOF'
-            ${{ vars.WEBB_ENV }}
+            ${{ vars.WEBF_ENV }}
             EOF
             npm install
             npm run build
