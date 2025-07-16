@@ -144,7 +144,6 @@ export const genBasic = async (req, res) => {
         ]);
         const geminiResponse = result.response;
         analysisText = geminiResponse.text();
-        console.log("Gemini Analysis:", analysisText);
     }catch(error){
       console.error("Error during Gemini analysis:", error);
       return res.status(500).json({

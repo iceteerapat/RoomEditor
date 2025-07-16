@@ -14,7 +14,6 @@ onMounted(async () => {
   if (authStore.isAuthenticated) { 
     try {
       await authStore.refresh();
-      console.log('Token refreshed successfully on app startup.');
     } catch (error) {
       console.error('Failed to refresh token on app startup:', error);
     }

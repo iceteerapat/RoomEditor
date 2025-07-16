@@ -18,7 +18,6 @@ export const create = async(req, res) => {
         const items = req.body;
         const { username, email, password, verifyPassword, phone, privacyFlag } = items;
         if(!req.body){
-          console.log("req.body: ", req.body)
           return res.status(500).json({ message: 'Request body empty' });
         }
         if (!items.username || !items.email || !items.password || !items.verifyPassword || !items.phone || !items.privacyFlag) {
@@ -86,14 +85,11 @@ export const create = async(req, res) => {
 
 export const verify = async(req, res) => {
 
-  console.log('*** VERIFY FUNCTION INVOKED ***');
   const { token } = req.params;
-  console.log('Received token:', token);
   try {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const email = decoded.email;
-    console.log("email :", email);
 
     const account = await Account.findOne({ where: { email } });
 
@@ -133,7 +129,6 @@ export const verify = async(req, res) => {
 
    } catch (error) {
       console.error('Verification email error:', error);
-      console.log('Full error object details:', error);
       return res.status(500).json({ message: 'Verification email error' });
    }
 }

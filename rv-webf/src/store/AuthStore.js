@@ -21,11 +21,8 @@ export const useAuthStore = defineStore('auth', {
     setToken(newToken) {
       this.token = newToken;
       localStorage.setItem('token', newToken);
-      console.log('AuthStore: New token received and set in localStorage.');
       try {
         this.userDecodedData = jwtDecode(newToken);
-        console.log('AuthStore: Token decoded, userDecodedData updated:', this.userDecodedData);
-        console.log('AuthStore: Decoded username:', this.userDecodedData?.username); // Specific check for username
         
         const serviceStore = useServiceStore();
         serviceStore.updateCredits(this.userDecodedData.credits);

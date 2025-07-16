@@ -142,7 +142,6 @@ export const verifyReset = async (req, res) => {
     }
 
     const email = decoded.email;
-    console.log("email: ", email);
 
     const account = await Account.findOne({ where: { email: email } });
     if (!account) {
@@ -153,7 +152,6 @@ export const verifyReset = async (req, res) => {
 
     account.password = hashedPassword;
     account.verifyPassword = hashedPassword;
-    console.log("account.password: ", hashedPassword);
     await account.save();
 
     res.status(200).json({ message: 'Password has been successfully reset.' });
