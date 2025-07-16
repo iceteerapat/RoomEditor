@@ -156,7 +156,7 @@ export const genBasic = async (req, res) => {
       email: account.email,
       username: account.username,
       customerId: service.customerId,
-      serviceName: service.serviceName,
+      serviceName: service.productName,
       credits: service.credits
     }
 
@@ -320,7 +320,7 @@ export const renovateBasic = async (req, res) => {
       email: account.email,
       username: account.username,
       customerId: service.customerId,
-      serviceName: service.serviceName,
+      serviceName: service.productName,
       credits: service.credits
     }
 

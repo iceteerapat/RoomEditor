@@ -145,7 +145,7 @@ export const handleWebhook = async(req, res) => {
 
                 if (userService) {
                     const product = await Product.findOne({ where :{ recId: 1 }});
-                    userService.serviceName = product.serviceName;
+                    userService.productName = product.productName;
                     userService.serviceAccess = 'N';
                     userService.serviceId = product.recId;
                     userService.credits = 0;
