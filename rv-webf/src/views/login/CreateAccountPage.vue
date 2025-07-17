@@ -260,10 +260,10 @@ async function onSubmit({ valid }) {
                     </p>
                     <p class="text-base font-semibold pb-1">9. Contact Us</p>
                     <p class="text-sm pb-2 pl-5">
-                        If you have any questions or concerns about this Privacy Policy, please contact us at:
+                        If you have any questions or concerns about this Privacy Policy, please contact us at: support@room-visualizer.com
                     </p>
                     <p class="text-sm pt-10 pr-10 pb-2 flex justify-end">Sincerely,</p>
-                    <p class="text-sm pr-10 flex justify-end">Teerapat Kongrit</p>
+                    <p class="text-sm pr-10 flex justify-end">T.K.</p>
                     <p class="text-sm font-semibold pr-10 pb-2 flex justify-end">Room Visualizer Creater</p>
                 </Dialog>
 

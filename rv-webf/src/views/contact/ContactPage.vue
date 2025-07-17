@@ -69,15 +69,7 @@ function toggleMobileMenu() {
                         <h2 class="text-2xl font-semibold text-gray-800 mb-4 pb-2">Our Details</h2>
                         <div class="flex items-center gap-3 text-gray-700">
                             <i class="fas fa-envelope text-xl text-green-600"></i>
-                            <p><span class="font-medium">Email:</span> support@roomvisualizer.com</p>
-                        </div>
-                        <div class="flex items-center gap-3 text-gray-700">
-                            <i class="fas fa-phone-alt text-xl text-green-600"></i>
-                            <p><span class="font-medium">Phone:</span> +66 82-219-5643</p>
-                        </div>
-                        <div class="flex items-start gap-3 text-gray-700">
-                            <i class="fas fa-map-marker-alt text-xl text-green-600 pt-1"></i>
-                            <p><span class="font-medium">Address:</span> 18/244 Floor 22 Bangkok Thailand</p>
+                            <p><span class="font-medium">Email:</span> support@room-visualizer.com</p>
                         </div>
                         <div class="flex items-start gap-3 text-gray-700">
                             <i class="fas fa-clock text-xl text-green-600 pt-1"></i>
