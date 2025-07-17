@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, ref } from 'vue';
-import { RouterLink, useRouter } from 'vue-router';
+import { RouterLink } from 'vue-router';
 import { Form } from '@primevue/forms';
 import { useMessageDialog } from '../../components/MessageDialog.js'; 
 
@@ -14,7 +14,6 @@ import Message from 'primevue/message';
 
 import RepositoriesFactory from '../../apis/repositories/RepositoriesFactory';
 
-const router = useRouter();
 const messageDialog = useMessageDialog();
 const respository = RepositoriesFactory.get('CreateAccountRepository');
 
@@ -82,7 +81,7 @@ async function onSubmit({ valid }) {
     return console.log("Please fill required fields");
   }
   
-  if(items.privacyFlag == true){
+  if(items.privacyFlag === true){
     items.privacyFlag = 'Y';
   } else {
     items.privacyFlag = 'N';
@@ -98,7 +97,6 @@ async function onSubmit({ valid }) {
     messageDialog.show(error.response.data?.message, 'error');
   } finally {
     isLoading.value = false;
-    router.push('/login');
   }
 }
 </script>
