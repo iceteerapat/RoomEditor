@@ -222,6 +222,13 @@ async function onManage(){
 
         <main class="flex-grow flex flex-col p-4 gap-6">
             <div class="flex flex-col md:flex-row gap-6 flex-grow"> 
+                <Drawer v-model:visible="visibleLeft" header="Menu" position="left" class="md:hidden">
+                    <div class="flex flex-col gap-4 p-4">
+                        <RouterLink to="/service/create" class="text-lg text-green-600 hover:text-green-800 transition-colors" @click="visibleLeft = false">Create Room</RouterLink>
+                        <RouterLink to="/service/renovate" class="text-lg text-green-600 hover:text-green-800 transition-colors" @click="visibleLeft = false">Renovate Room</RouterLink>
+                        <RouterLink to="/service/creditAndSubscription" class="text-lg text-green-600 hover:text-green-800 transition-colors" @click="visibleLeft = false">Credits & Subscription</RouterLink>
+                    </div>
+                </Drawer>
                 <aside class="hidden md:block w-64 bg-white p-4 rounded-lg shadow-md">
                     <nav class="flex flex-col gap-4">
                         <RouterLink to="/service/create" class="text-lg font-medium text-gray-700 hover:text-green-600 transition-colors py-2 px-3 rounded-md hover:bg-green-50">Create Room</RouterLink>
