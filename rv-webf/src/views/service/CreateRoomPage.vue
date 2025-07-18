@@ -1,13 +1,16 @@
 <script setup>
 import { RouterLink, useRouter } from 'vue-router';
-import { ref } from "vue";
+import { ref, defineAsyncComponent } from "vue";
 import { computed } from 'vue';
 import { formatDateToYMD } from '../../components/DateFormat';
 import { useServiceStore } from '../../store/ServiceStore';
 import { useAuthStore } from '../../store/AuthStore';
 import { useMessageDialog } from '../../components/MessageDialog.js'; 
 import { marked } from 'marked';
+import { useDialog } from 'primevue/usedialog';
+import { useToast } from 'primevue/usetoast';
 
+import Toast from 'primevue/toast';
 import Repositories from '../../apis/repositories/RepositoriesFactory.js';
 import Menu from 'primevue/menu';
 import Button from 'primevue/button';
@@ -24,12 +27,18 @@ const messageDialog = useMessageDialog();
 const visibleLeft = ref(false);
 const serviceStore = useServiceStore();
 const authStore = useAuthStore();
+const RoomStyleSelector = defineAsyncComponent(() => import('../../components/RoomStyleSelector.vue'));
+const RoomTypeSelector = defineAsyncComponent(() => import('../../components/RoomTypeSelector.vue'));
+
+const dialog = useDialog();
+const toast = useToast();
 
 const repository = Repositories.get('PurchaseRepository');
 const now = new Date();
 const loading = ref(false);
 const roomSizeWidth = ref('');
 const roomSizeHeight = ref('');
+const roomSizeLength = ref('');
 const roomStyle = ref('');
 const roomType = ref('');
 const pictureSize = ref('');
@@ -47,10 +56,86 @@ const imageUrl = ref('');
 const material = ref('');
 const materialAnalysisHtml = ref('');
 
+const showRoomStyleDialog = () => {
+  dialog.open(RoomStyleSelector, {
+    props: {
+      header: 'Select Room Style',
+      style: {
+        width: '60vw',
+      },
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw',
+      },
+      modal: true,
+    },
+    data: {
+      initialSelection: roomStyle.value
+    },
+    onClose: (options) => {
+      const selectedValue = options.data;
+      if (selectedValue) {
+        roomStyle.value = selectedValue;
+        toast.add({
+          severity: 'success',
+          summary: 'Style Selected',
+          detail: `Room style set to: ${selectedValue}`,
+          life: 3000,
+        });
+      } else {
+        toast.add({
+          severity: 'info',
+          summary: 'Selection Cancelled',
+          detail: 'No room style selected.',
+          life: 3000,
+        });
+      }
+    },
+  });
+};
+
+const showRoomTypeDialog = () => {
+  dialog.open(RoomTypeSelector, {
+    props: {
+      header: 'Select Room Type',
+      style: {
+        width: '60vw',
+      },
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw',
+      },
+      modal: true,
+    },
+    data: {
+      initialSelection: roomType.value
+    },
+    onClose: (options) => {
+      const selectedValue = options.data;
+      if (selectedValue) {
+        roomType.value = selectedValue;
+        toast.add({
+          severity: 'success',
+          summary: 'Type Selected',
+          detail: `Room type set to: ${selectedValue}`,
+          life: 3000,
+        });
+      } else {
+        toast.add({
+          severity: 'info',
+          summary: 'Selection Cancelled',
+          detail: 'No room type selected.',
+          life: 3000,
+        });
+      }
+    },
+  });
+};
+
 async function onSubmit() {
     loading.value = true;
     try {
-        let prompt = `Create ${roomType.value.toLowerCase()} with ${roomSizeWidth.value} square metre of width and ${roomSizeHeight.value} square metre of height and having the style of ${roomStyle.value.toLowerCase()}`;
+        let prompt = `Create ${roomType.value.toLowerCase()} with ${roomSizeWidth.value} metre of width, ${roomSizeHeight.value} metre of height, ${roomSizeLength.value} metre of length and having the style of ${roomStyle.value.toLowerCase()}`;
         if (etc.value !== '') {
             prompt += ` and include ${etc.value.toLowerCase()}`;
         }
@@ -197,24 +282,29 @@ async function onManage(){
                     <div class="flex-1 space-y-6 max-w-md">
                         <h2 class="text-2xl font-bold text-gray-800 border-b pb-2 mb-4">Input Properties</h2>
                         <div class="flex flex-col gap-2">
-                            <label for="roomSizeWidth" class="text-gray-700 font-medium">Room Width (m²)</label>
+                            <label for="roomSizeWidth" class="text-gray-700 font-medium">Room Width (m)</label>
                             <InputNumber inputId="roomSizeWidth" v-model="roomSizeWidth" aria-describedby="roomSizeWidth-help" :minFractionDigits="2" :maxFractionDigits="2" :min="0" :max="500" class="w-full" />
-                            <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Enter your room width in square meters (m²).</Message>
+                            <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Enter your room width in square meters (m).</Message>
                         </div>
                         <div class="flex flex-col gap-2">
-                            <label for="roomSizeHeight" class="text-gray-700 font-medium">Room Height (m²)</label>
+                            <label for="roomSizeLength" class="text-gray-700 font-medium">Room Height (m)</label>
+                            <InputNumber inputId="roomSizeLength" v-model="roomSizeLength" aria-describedby="roomSizeLength-help" :minFractionDigits="2" :maxFractionDigits="2" :min="0" :max="500" class="w-full" />
+                            <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Enter your room length in square meters (m).</Message>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label for="roomSizeHeight" class="text-gray-700 font-medium">Room Height (m)</label>
                             <InputNumber inputId="roomSizeHeight" v-model="roomSizeHeight" aria-describedby="roomSizeHeight-help" :minFractionDigits="2" :maxFractionDigits="2" :min="0" :max="500" class="w-full" />
-                            <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Enter your room height in square meters (m²).</Message>
+                            <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Enter your room height in square meters (m).</Message>
                         </div>
                         <div class="flex flex-col gap-2">
-                            <label for="roomstyle" class="text-gray-700 font-medium">Room Styles</label>
-                            <InputText id="roomstyle" v-model="roomStyle" aria-describedby="roomstyle-help" class="w-full" />
-                            <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Enter your room style such as Italian-American style.</Message>
+                            <label for="selectedRoomStyle" class="text-gray-700 font-medium">Selected Room Style</label>
+                            <InputText v-if="roomStyle" placeholder="Room Style" id="selectedRoomStyle" v-model="roomStyle" readonly class="w-full cursor-pointer" @click="showRoomStyleDialog"/>
+                            <Button label="Select Room Style" icon="pi pi-image" @click="showRoomStyleDialog" />
                         </div>
                         <div class="flex flex-col gap-2">
-                            <label for="roomtype" class="text-gray-700 font-medium">Room Type</label>
-                            <InputText id="roomtype" v-model="roomType" aria-describedby="roomtype-help" class="w-full" />
-                            <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Enter your room type such as Living room, Kitchen, etc.</Message>
+                            <label for="selectedRoomType" class="text-gray-700 font-medium">Selected Room Type</label>
+                            <InputText v-if="roomType" placeholder="Room Type" id="selectedRoomType" v-model="roomType" readonly class="w-full cursor-pointer" @click="showRoomTypeDialog" />
+                            <Button label="Select Room Type" icon="pi pi-home" @click="showRoomTypeDialog" />
                         </div>
                         <div class="flex flex-col gap-2">
                             <label for="picturesize" class="text-gray-700 font-medium">Picture Size</label>
@@ -242,7 +332,10 @@ async function onManage(){
                     </div>
                 </section>
             </div> 
-            <section v-if="materialAnalysisHtml" class="w-full bg-white p-6 rounded-lg shadow-md">
+            <section class="w-full bg-white p-6 rounded-lg shadow-md">
+                <div class="flex items-center justify-center">
+                    <h2 class="text-2xl font-bold text-gray-800 ">Material Analysis</h2>
+                </div>
                 <div v-if="materialAnalysisHtml" class="w-full border-t pt-6 mt-6 border-gray-200">
                     <h2 class="text-3xl font-bold text-gray-800 text-center mb-6">Material Analysis</h2>
                     <div class="prose max-w-none text-gray-700 leading-relaxed material-analysis-content">
@@ -269,5 +362,6 @@ async function onManage(){
                 </div>
             </div>
         </footer>
+        <Toast />
     </div>
 </template>

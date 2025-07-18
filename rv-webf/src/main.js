@@ -9,6 +9,7 @@ import DialogService from 'primevue/dialogservice';
 import App from '@/App.vue';
 import Router from '@/router';
 import Aura from '@primeuix/themes/aura';
+import ToastService from 'primevue/toastservice';
 
 const pinia = createPinia();
 const app = createApp(App);
@@ -18,10 +19,12 @@ app.use(Router);
 app.use(Toast);
 app.use(ConfirmationService);
 app.use(DialogService);
+app.use(ToastService);
 app.use(PrimeVue, {
   theme: {
       preset: Aura
-  }
+  },
+  ripple: true
 });
 
 app.config.globalProperties.$filters = {
