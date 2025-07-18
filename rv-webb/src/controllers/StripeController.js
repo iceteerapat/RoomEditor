@@ -154,7 +154,8 @@ export const handleWebhook = async(req, res) => {
                 }
                 break;
             }
-        }        
+        }      
+        res.status(200);  
     }catch(error){
         console.log("Internal Error: ", error);
         res.status(200).json({ message: 'Internal Error'})
