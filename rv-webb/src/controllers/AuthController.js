@@ -15,21 +15,21 @@ export const login = async (req, res) => {
 
     const account = await Account.findOne({ where: { email: email } });
     if (!account) {
-    return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: `User ${email} not found` });
     }
 
     if (account.verifyEmail !== 'Y') {
-      return res.status(404).json({ message: 'Unverified account' });
+      return res.status(404).json({ message: `Account ${account.email} is not verifeid, please check your email to verify it.` });
     }
 
     const isMatch = await bcrypt.compare(password, account.password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Incorrect password, please try again' });
     }
 
     const service = await Service.findOne({ where: {customerId: account.customerId } });
     if (!service) {
-    return res.status(404).json({ message: 'Account Service not found' });
+    return res.status(404).json({ message: `Account ${account.email} is not verifeid, please check your email to verify it.` });
     }
 
     const token = jwt.sign({
@@ -73,11 +73,11 @@ export const refresh = async (req, res) =>{
 
     const service = await Service.findOne({ where: {customerId: decoded.customerId } });
     if (!service) {
-    return res.status(404).json({ message: 'Account Service not found' });
+    return res.status(404).json({ message: `Account ${account.email} not founded, please check your email to verify your account first.` });
     }
     const account = await Account.findOne({ where: { email: decoded.email } });
     if (!account) {
-    return res.status(404).json({ message: 'Account not found' });
+    return res.status(404).json({ message: `Account ${decoded.email} not found, please create one.` });
     }
 
     const newAccessToken = jwt.sign(
@@ -94,7 +94,7 @@ export const refresh = async (req, res) =>{
 
     res.json({ token: newAccessToken });
   } catch (error) {
-    console.error('Refresh token error:', error);
+    console.error(`Refresh token error`);
     res.status(403).json({ message: 'Invalid or expired refresh token' });
   }
 };
@@ -108,12 +108,12 @@ export const reset = async (req, res) => {
     }
     const account = await Account.findOne({ where: { email: email } });
     if (!account) {
-      return res.status(404).json({ message: 'Account not found' });
+      return res.status(404).json({ message: `Account not found for email ${email}` });
     }
 
     await sendResetEmail(account.email);
 
-    res.status(200).json({ message: 'Email reset link sent successful'});
+    res.status(200).json({ message: `Email reset link sent to ${account.email} successful`});
   } catch (error) {
     console.error('Reset error:', error);
     res.status(500).json({ message: 'Reset failed' });
@@ -128,7 +128,7 @@ export const verifyReset = async (req, res) => {
       return res.status(400).json({ message: 'Token and new password are required.' });
     }
     if (newPassword.length < 8) { 
-      return res.status(400).json({ message: 'New password must be at least 6 characters long.' });
+      return res.status(400).json({ message: 'New password must be at least 8 characters long.' });
     }
 
     let decoded;
@@ -145,7 +145,7 @@ export const verifyReset = async (req, res) => {
 
     const account = await Account.findOne({ where: { email: email } });
     if (!account) {
-      return res.status(404).json({ message: 'Account not found.' });
+      return res.status(404).json({ message: `Account ${email} not found.` });
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -154,10 +154,10 @@ export const verifyReset = async (req, res) => {
     account.verifyPassword = hashedPassword;
     await account.save();
 
-    res.status(200).json({ message: 'Password has been successfully reset.' });
+    res.status(200).json({ message: 'Password has been reset successfully.' });
 
   } catch (error) {
-    console.error('Set new password error:', error);
+    console.error('Failed to set new password:', error);
     res.status(500).json({ message: 'Failed to set new password.' });
   }
 };
@@ -175,7 +175,8 @@ export const verifyResetToken = async (req, res) => {
 
     const account = await Account.findOne({ where: { email } });
     if (!account) {
-      return res.status(404).json({ message: 'Account not found or token invalid.' });
+      console.log(`Account ${email} not found or token invalid.`);
+      return res.status(404).json({ message: `Account ${email} not found or token invalid.` });
     }
 
     res.status(200).json({ message: 'Token verified successfully. Please set your new password.' });

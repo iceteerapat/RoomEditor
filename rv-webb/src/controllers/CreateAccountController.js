@@ -92,19 +92,23 @@ export const verify = async(req, res) => {
     const email = decoded.email;
 
     const account = await Account.findOne({ where: { email } });
-
     if (!account) {
       return res.status(404).json({ message: 'Account not found' });
     }
     account.verifyEmail = 'Y';
     account.active = 'Y';
 
-    const product = await Product.findOne({ where: { recId: 1 }});
+    const checkService = await Service.findOne({ where: { customerId: account.customerId }});
+    if(checkService){
+      console.log("Already create service for account: ", checkService.customerId);
+      return;
+    }
 
+    const product = await Product.findOne({ where: { recId: 1 }});
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
     }
-    
+
     const productName = product.productName;
     const productAccess = 'T';
     const productId = product.recId;
@@ -112,7 +116,7 @@ export const verify = async(req, res) => {
     const customerId = account.customerId;
     const customer = await stripe.customers.create({ email: email, metadata: {customerId} });
     const stripeCustomerId = customer.id;
-    
+
     await Service.create({
       customerId,
       stripeCustomerId,
@@ -122,8 +126,7 @@ export const verify = async(req, res) => {
       credits,
       createDate
     })
-    console.log("Service created");
-
+    console.log(`Service created for account ${account.email}`);
     await account.save();
     return res.status(200).json({ message: 'Email verified successfully' });
 

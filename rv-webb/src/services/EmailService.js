@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 export async function emailVerification(email, username){
   try {
-      const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '15m' });
+      const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
       const transporter = nodemailer.createTransport({
           service: 'Gmail',
@@ -21,7 +21,7 @@ export async function emailVerification(email, username){
           <p>Hi ${username},</p>
           <p>Thank you for registering. Please click the link below to verify your email:</p>
           <a href="${process.env.BASE_URL}/createAccount/verify/${token}">Verify Email</a>
-          <p>This link will expire in 15 minutes.</p>
+          <p>This link will expire in 24 hours.</p>
           <p>Room Visualizer</p>
         `
      };
@@ -36,7 +36,7 @@ export async function emailVerification(email, username){
 
 export async function sendResetEmail(email) {
   try {
-    const resetToken = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '15m' });
+    const resetToken = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
     const transporter = nodemailer.createTransport({
       service: 'Gmail',

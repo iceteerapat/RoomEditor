@@ -29,7 +29,7 @@ export const genBasic = async (req, res) => {
     
     const service = await Service.findOne({ where: {customerId: customerId}});
     if(!service){
-      console.log("Cannot find Service in database.")
+      console.log(`Cannot find Service for customer ${customerId} in database.`)
       return res.status(500).json({ message: 'Internal Server Error'});
     } 
     if(service.credits === 0){
@@ -39,12 +39,9 @@ export const genBasic = async (req, res) => {
       return res.status(401).json({ message: 'Customer is not allowed to access the service, please re-subscription or paid one at a time'});
     }
 
-    service.credits = service.credits - 1;
-    await service.save();
-
     const account = await Account.findOne({ where: {email: email}})
     if(!account){
-      console.log("Cannot find Account in database.")
+      console.log(`Cannot find Account ${email} in database.`)
       return res.status(500).json({ message: 'Internal Server Error'});
     } 
 
@@ -72,16 +69,17 @@ export const genBasic = async (req, res) => {
     }
 
     if (result.status !== "succeeded" || !Array.isArray(result.output) || result.output.length === 0) {
+      console.log(`Error on genBasic on Replicate section for customer : ${service.customerId}: `, result.error);
       return res.status(500).json({
-        message: "Base image generation failed or produced no output.",
-        details: result.error || `Prediction status: ${result.status}`
+        message: "Base image generation failed or produced no output."
       });
     }
 
     const baseImageUrl = result.output[0];
 
     if (!baseImageUrl) {
-        return res.status(500).json({ message: "Base image URL is null or undefined after generation." });
+      console.log(`Base image URL is null or undefined after generation on genBasic for customer ${service.customerId}.`);
+      return res.status(500).json({ message: "Base image URL is null or undefined after generation." });
     }
 
     const upscalePrediction = await replicate.predictions.create({
@@ -105,13 +103,14 @@ export const genBasic = async (req, res) => {
     }
 
     if (upscaleResult.status !== "succeeded" || typeof upscaleResult.output !== 'string' || !upscaleResult.output) {
+      console.log(`Error genBasic on Replicate upscale section for customer ${service.customerId}: `, upscaleResult.error);
       return res.status(500).json({
-        message: "Upscaling failed or produced no valid URL output.",
-        details: upscaleResult.error || `Prediction status: ${upscaleResult.status}`
+        message: "Upscaling failed or produced no valid URL output."
       });
     }
     const upscaledImageUrl = upscaleResult.output;
     if (!upscaledImageUrl) {
+      console.log(`Upscaling failed on genBasic: no valid upscaled image URL found for customer ${service.customerId} `);
       return res.status(500).json({ message: "Upscaling failed: no valid upscaled image URL found" });
     }
 
@@ -121,7 +120,8 @@ export const genBasic = async (req, res) => {
     try{
         const response = await fetch(upscaledImageUrl);
         if (!response.ok) {
-          throw new Error(`Failed to fetch upscaled image: ${response.statusText}`);
+          console.log(`Failed to fetch upscaled image on genBasic for customer ${service.customerId}: ${response.statusText}`)
+          throw new Error(`AI Failed to fetch image, please re-try again`);
         }
 
         const arrayBuffer = await response.arrayBuffer();
@@ -129,6 +129,7 @@ export const genBasic = async (req, res) => {
         const contentType = response.headers.get('content-type');
 
         if (!contentType || !contentType.startsWith('image/')) {
+          console.log(`URL did not return an image on genBasic for customer ${service.customerId}: ${contentType || 'No Content-Type'}`)
           throw new Error(`URL did not return an image: ${contentType || 'No Content-Type'}`);
         }
         const imagePart = {
@@ -145,12 +146,14 @@ export const genBasic = async (req, res) => {
         const geminiResponse = result.response;
         analysisText = geminiResponse.text();
     }catch(error){
-      console.error("Error during Gemini analysis:", error);
+      console.error(`Error during Gemini analysis on genBasic for customer ${service.customerId}:`, error);
       return res.status(500).json({
-        message: "Failed to analyze the upscaled image with Gemini.",
-        details: error.message
+        message: "Failed to analyze the image with AI."
       });
     }
+
+    service.credits = service.credits - 1;
+    await service.save();
 
     const payload = {
       email: account.email,
@@ -191,7 +194,7 @@ export const renovateBasic = async (req, res) => {
 
     const service = await Service.findOne({ where: {customerId: customerId}});
     if(!service){
-      console.log("Cannot find Service in database.")
+      console.log(`Cannot find Service for customer ${customerId} in database.`)
       return res.status(500).json({ message: 'Internal Server Error'});
     } 
     if(service.credits === 0){
@@ -201,12 +204,9 @@ export const renovateBasic = async (req, res) => {
       return res.status(401).json({ message: 'Customer is not allowed to access the service, please re-subscription or paid one at a time'});
     }
 
-    service.credits = service.credits - 1;
-    await service.save();
-
     const account = await Account.findOne({ where: {email: email}})
     if(!account){
-      console.log("Cannot find Account in database.")
+      console.log(`Cannot find Account ${email} in database.`)
       return res.status(500).json({ message: 'Internal Server Error'});
     } 
 
@@ -236,16 +236,17 @@ export const renovateBasic = async (req, res) => {
     }
 
     if (result.status !== "succeeded" || !Array.isArray(result.output) || result.output.length === 0) {
+      console.log(`Base image generation on renovateBasic failed or produced no output for customer ${service.customerId}: `, result.error);
       return res.status(500).json({
-        message: "Base image generation failed or produced no output.",
-        details: result.error || `Prediction status: ${result.status}`
+        message: "Base image generation failed or produced no output."
       });
     }
 
     const baseImageUrl = result.output[0];
 
     if (!baseImageUrl) {
-        return res.status(500).json({ error: "Base image URL is null or undefined after generation." });
+      console.log(`Base image URL on renovateBasic is null or undefined after generation for customer ${service.customerId}`);    
+      return res.status(500).json({ error: "Base image URL is null or undefined after generation." });
     }
 
     const upscalePrediction = await replicate.predictions.create({
@@ -269,13 +270,14 @@ export const renovateBasic = async (req, res) => {
     }
 
     if (upscaleResult.status !== "succeeded" || typeof upscaleResult.output !== 'string' || !upscaleResult.output) {
+      console.log(`Upscaling failed on renovateBasic or produced no valid URL output for customer ${service.customerId} : `, upscaleResult.error);
       return res.status(500).json({
-        message: "Upscaling failed or produced no valid URL output.",
-        details: upscaleResult.error || `Prediction status: ${upscaleResult.status}`
+        message: "Upscaling failed or produced no valid URL output."
       });
     }
     const upscaledImageUrl = upscaleResult.output;
     if (!upscaledImageUrl) {
+      console.log(`Upscaling Failed on renovateBasic: no valid upscaled image URL found for customer ${service.customerId}`);
       return res.status(500).json({ message: "Upscaling failed: no valid upscaled image URL found" });
     }
     
@@ -285,7 +287,8 @@ export const renovateBasic = async (req, res) => {
     try{
         const response = await fetch(upscaledImageUrl);
         if (!response.ok) {
-          throw new Error(`Failed to fetch upscaled image: ${response.statusText}`);
+          console.log(`Failed to fetch upscaled image on renovateBasic for customer ${service.customerId} : `, response.statusText);
+          throw new Error(`AI Failed to fetch image`);
         }
 
         const arrayBuffer = await response.arrayBuffer();
@@ -293,6 +296,7 @@ export const renovateBasic = async (req, res) => {
         const contentType = response.headers.get('content-type');
 
         if (!contentType || !contentType.startsWith('image/')) {
+          console.log(`URL did not return an image on renovateBasic for customer ${service.customerId}: ${contentType || 'No Content-Type'}`);
           throw new Error(`URL did not return an image: ${contentType || 'No Content-Type'}`);
         }
         const imagePart = {
@@ -309,12 +313,15 @@ export const renovateBasic = async (req, res) => {
         const geminiResponse = result.response;
         analysisText = geminiResponse.text();
     }catch(error){
-      console.error("Error during Gemini analysis:", error);
+      console.error(`Error during Gemini analysis on renovateBasic for customer ${service.customerId}:`, error);
       return res.status(500).json({
-        message: "Failed to analyze the upscaled image with Gemini.",
+        message: "Failed to analyze the image with AI.",
         details: error.message
       });
     }
+
+    service.credits = service.credits - 1;
+    await service.save();
 
     const payload = {
       email: account.email,

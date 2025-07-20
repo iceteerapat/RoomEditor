@@ -7,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const endpointSecret = process.env.WEBHOOK_SECRET_KEY;
 
 export const purchased = async(req, res) => {
-    const { priceId, userEmail, checkoutMode } = req.body;
+    const { priceId, checkoutMode } = req.body;
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.status(401).json({ message: 'Authorization token required' });
@@ -131,7 +131,7 @@ export const handleWebhook = async(req, res) => {
                     userService.productAccess = 'Y';
                     userService.productId = product.recId;
                     await Service.increment('credits', { by: 35, where: { customerId: internalCustomerId } });
-                    console.log(`User ${internalCustomerId} granted credits.`);
+                    console.log(`User ${internalCustomerId} granted credits for 35.`);
                     await userService.save();
                 }
 
@@ -181,11 +181,11 @@ export const managed = async(req, res) => {
     }
     
     const customerId = decodedToken.customerId;
-    const email = decodedToken.email;
+    // const email = decodedToken.email;
     try{
         const userService = await Service.findOne({ where: {customerId: customerId}});
         if (!userService) {
-            return res.status(404).json({ message: 'User account not found.' });
+            return res.status(404).json({ message: `User ${customerId} account not found.` });
         }
         
         // let stripeCustomerId = userService.stripeCustomerId;
