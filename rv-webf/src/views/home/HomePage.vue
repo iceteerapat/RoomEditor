@@ -117,13 +117,13 @@ onMounted(() => {
                         </div>
                     </div>
 
-                    <div class="relative align-item-center w-85.5 h-full overflow-hidden rounded-lg shadow-xl translate-x-7.5 md:w-258 md:translate-x-0 xl:w-385" ref="slider">
+                    <div class="relative align-item-center w-85.5 h-full overflow-hidden rounded-lg shadow-xl translate-x-7.5 md:w-256.5 md:translate-x-0 xl:w-384.5" ref="slider">
                         <div class="flex" :style="{ width: `${images.length * 100}%` }">
                             <Image
                                 v-for="(img, index) in images"
                                 :key="index"
                                 :src="img"
-                                class="w-85.5 h-full object-cover flex-shrink-0 md:w-258 xl:w-385"
+                                class="w-85.5 h-full object-cover flex-shrink-0 md:w-256.5 xl:w-384.5"
                                 :alt="`Room Visualizer Example - Design Style ${index + 1}`"
                             />
                         </div>
@@ -181,17 +181,17 @@ onMounted(() => {
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300">
                             <img src="/src/assets/picture/homeowner.jpg" alt="Homeowners planning renovations" class="w-24 h-24 rounded-full mb-4 object-cover" />
-                            <h3 class="text-xl font-semibold mb-2 text-black-600">Homeowners</h3>
+                            <h3 class="text-xl font-semibold mb-2 text-black">Homeowners</h3>
                             <p class="text-gray-600">Visualize your home renovation ideas and decor changes with confidence before making any investments.</p>
                         </div>
                         <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300">
                             <img src="/src/assets/picture/interior-designer.jpg" alt="Interior Designers using a room design tool" class="w-24 h-24 rounded-full mb-4 object-cover" />
-                            <h3 class="text-xl font-semibold mb-2 text-black-600">Interior Designers</h3>
+                            <h3 class="text-xl font-semibold mb-2 text-black">Interior Designers</h3>
                             <p class="text-gray-600">Rapidly create realistic mockups and professional presentations to impress your clients.</p>
                         </div>
                         <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300">
                             <img src="/src/assets/picture/real-estate.jpg" alt="Real Estate Agents showing property potential" class="w-24 h-24 rounded-full mb-4 object-cover" />
-                            <h3 class="text-xl font-semibold mb-2 text-black-600">Real Estate Agents</h3>
+                            <h3 class="text-xl font-semibold mb-2 text-black">Real Estate Agents</h3>
                             <p class="text-gray-600">Help prospective buyers envision the full potential of a property with interactive and stunning visuals.</p>
                         </div>
                     </div>
