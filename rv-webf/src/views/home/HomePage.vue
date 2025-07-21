@@ -45,19 +45,20 @@ onMounted(() => {
     });
   }, 6000);
 });
+
 </script>
 
 <template>
     <div class="min-h-screen flex flex-col">
         <header class="bg-white text-black shadow-md">
             <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
-                <RouterLink to="/home" class="text-2xl font-bold text-black">
+                <RouterLink to="/" class="text-2xl font-bold text-black" aria-label="Room Visualizer - Home">
                     Room Visualizer
                 </RouterLink>
                 <ul class="hidden md:flex space-x-6 items-center">
-                    <RouterLink to="/home" class="hover:text-green-600 transition-colors duration-200 dark:text-white-800">Home</RouterLink>
-                    <RouterLink to="/service/create" class="hover:text-green-600 transition-colors duration-200">Create Room</RouterLink>
-                    <RouterLink to="/price" class="hover:text-green-600 transition-colors duration-200">Pricing</RouterLink>
+                    <RouterLink to="/" class="hover:text-green-600 transition-colors duration-200 dark:text-white-800">Home</RouterLink>
+                    <RouterLink to="/service/create" class="hover:text-green-600 transition-colors duration-200">Create Your Room Design</RouterLink>
+                    <RouterLink to="/price" class="hover:text-green-600 transition-colors duration-200">Pricing Plans</RouterLink>
                     <RouterLink to="/contact" class="hover:text-green-600 transition-colors duration-200">Contact Us</RouterLink>
                     <Button v-slot="slotProps" asChild>
                         <button v-bind="slotProps.a11yAttrs" class="rounded-md px-3 py-1.5 bg-emerald-600 hover:bg-emerald-400">
@@ -67,7 +68,7 @@ onMounted(() => {
                 </ul>
 
                 <div class="md:hidden">
-                    <Button class="text-gray-700 focus:outline-none p-2" @click="toggleMobileMenu">
+                    <Button class="text-gray-700 focus:outline-none p-2" @click="toggleMobileMenu" aria-label="Toggle Mobile Menu">
                         <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
@@ -75,7 +76,7 @@ onMounted(() => {
                 </div>
                 <Sidebar md:hidden v-model:visible="mobileVisible" position="right" class="w-72"> 
                     <div class="flex flex-col gap-4 p-4 text-lg">
-                        <RouterLink to="/home" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Home</RouterLink>
+                        <RouterLink to="/" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Home</RouterLink>
                         <RouterLink to="/service/create" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Create Room</RouterLink>
                         <RouterLink to="/price" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Pricing</RouterLink>
                         <RouterLink to="/contact" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Contact Us</RouterLink>
@@ -89,41 +90,41 @@ onMounted(() => {
 
         <main class="flex-grow">
             <section class="bg-gradient-to-r from-gray-900 to-green-800 text-white text-center py-20 px-4">
-                <h1 class="text-4xl md:text-6xl font-extrabold mb-4">Room Visualizer</h1>
-                <h2 class="text-xl md:text-2xl font-light mb-8">Turn your imagination into reality with our simple room visualizer.</h2>
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4">Room Visualizer: Design & Renovate Your Space</h1>
+                <h2 class="text-xl md:text-2xl font-light mb-8">Turn your imagination into reality with our simple online room visualizer and design tools.</h2>
                 <Button v-slot="slotProps" asChild>
                     <button v-bind="slotProps.a11yAttrs" class="rounded-md px-3 py-3 bg-emerald-600 hover:bg-emerald-400">
-                        <RouterLink to="/login" class="text-white font-bold hover:text-gray-600">Get Started</RouterLink>
+                        <RouterLink to="/login" class="text-white font-bold hover:text-gray-600">Start Designing Now!</RouterLink>
                     </button>
                 </Button>
             </section>
 
             <section class="py-16 px-4 bg-gray-50">
                 <div class="container mx-auto">
-                    <h1 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">Why Choose Room Visualizer?</h1>
+                    <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">Why Choose Our Room Visualizer?</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
                         <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
-                            <h3 class="text-xl font-semibold mb-2 text-black-600 dark:text-black">Easy to Use</h3>
-                            <p class="text-gray-600">No experience needed & start designing in seconds.</p>
+                            <h3 class="text-xl font-semibold mb-2 text-black-600 dark:text-black">Easy to Use Design Interface</h3>
+                            <p class="text-gray-600">No design experience needed! Start visualizing and designing your room in seconds with our intuitive tools.</p>
                         </div>
                         <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
-                            <h3 class="text-xl font-semibold mb-2 text-black-600 dark:text-black">Realistic Previews</h3>
-                            <p class="text-gray-600">Visualize your room in stunning detail and 3D.</p>
+                            <h3 class="text-xl font-semibold mb-2 text-black-600 dark:text-black">Realistic 3D Room Previews</h3>
+                            <p class="text-gray-600">Visualize your room with stunning detail and realistic 3D renderings before you commit to changes.</p>
                         </div>
                         <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
-                            <h3 class="text-xl font-semibold mb-2 text-black-600 dark:text-black">Save & Share</h3>
-                            <p class="text-gray-600">Download and share your room designs easily.</p>
+                            <h3 class="text-xl font-semibold mb-2 text-black-600 dark:text-black">Save & Share Your Designs</h3>
+                            <p class="text-gray-600">Easily download, save, and share your unique room designs with friends, family, or clients.</p>
                         </div>
                     </div>
 
-                    <div class="relative align-item-center w-85.5 h-full overflow-hidden rounded-lg shadow-xl md:w-258 xl:w-385" ref="slider">
+                    <div class="relative align-item-center w-85.5 h-full overflow-hidden rounded-lg shadow-xl translate-x-7.5 md:w-258 md:translate-x-0 xl:w-385" ref="slider">
                         <div class="flex" :style="{ width: `${images.length * 100}%` }">
                             <Image
                                 v-for="(img, index) in images"
                                 :key="index"
                                 :src="img"
                                 class="w-85.5 h-full object-cover flex-shrink-0 md:w-258 xl:w-385"
-                                :alt="`Room Visualizer Image ${index + 1}`"
+                                :alt="`Room Visualizer Example - Design Style ${index + 1}`"
                             />
                         </div>
                     </div>
@@ -132,77 +133,77 @@ onMounted(() => {
 
             <section class="py-16 px-4 bg-gray-50">
                 <div class="container mx-auto text-center">
-                    <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-12">How Does It Work?</h1>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-12">How Our Room Visualizer Works</h2>
 
-                    <h2 class="text-2xl md:text-3xl font-semibold text-left mb-6 md:mb-8 text-black">Create Service</h2>
+                    <h3 class="text-2xl md:text-3xl font-semibold text-left mb-6 md:mb-8 text-black">Create a New Room Design</h3>
                     <div class="flex flex-col md:flex-row items-center justify-between mb-16 md:space-x-12">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:w-1/2 mb-8 md:mb-0">
                             <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
-                                <h3 class="text-xl font-semibold mb-1 text-gray-800">Imagine your room</h3>
-                                <p class="text-gray-600">Fill the box with desired.</p>
+                                <h4 class="text-xl font-semibold mb-1 text-gray-800">Imagine Your Ideal Room</h4>
+                                <p class="text-gray-600">Simply describe your desired room layout and elements in the input box.</p>
                             </div>
                             <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
-                                <h3 class="text-xl font-semibold mb-1 text-gray-800">Customize Style</h3>
-                                <p class="text-gray-600">Try different styles such as Luxury, Minimal, etc..</p>
+                                <h4 class="text-xl font-semibold mb-1 text-gray-800">Customize Your Design Style</h4>
+                                <p class="text-gray-600">Experiment with various interior design styles such as Luxury, Minimalist, Modern, and more.</p>
                             </div>
                             <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
-                                <h3 class="text-xl font-semibold mb-1 text-gray-800">Visualize & Save</h3>
-                                <p class="text-gray-600">Preview your new room and save or share your design.</p>
+                                <h4 class="text-xl font-semibold mb-1 text-gray-800">Visualize & Save Your Creation</h4>
+                                <p class="text-gray-600">Instantly preview your newly designed room in 3D, then save or share your unique creation.</p>
                             </div>
                         </div>
-                        <Image :src="createPng" alt="createService" class="md:w-1/2 rounded-lg shadow-lg" />
+                        <Image :src="createPng" alt="How to create a new room design with Room Visualizer" class="md:w-1/2 rounded-lg shadow-lg" />
                     </div>
 
-                    <h2 class="text-2xl md:text-3xl font-semibold text-left mb-6 md:mb-8 text-black">Renovate Service</h2>
+                    <h3 class="text-2xl md:text-3xl font-semibold text-left mb-6 md:mb-8 text-black">Renovate Your Existing Room</h3>
                     <div class="flex flex-col md:flex-row-reverse items-center justify-between md:space-x-reverse md:space-x-12">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:w-1/2 mb-8 md:mb-0">
                             <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
-                                <h3 class="text-xl font-semibold mb-1 text-gray-800">Upload Your Room</h3>
-                                <p class="text-gray-600">Take a photo or upload a floor plan to get started.</p>
+                                <h4 class="text-xl font-semibold mb-1 text-gray-800">Upload Your Room Photo</h4>
+                                <p class="text-gray-600">Easily upload a photo of your current room or a floor plan to begin the renovation process.</p>
                             </div>
                             <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
-                                <h3 class="text-xl font-semibold mb-1 text-gray-800">Customize Style</h3>
-                                <p class="text-gray-600">Tell the system what your desired</p>
+                                <h4 class="text-xl font-semibold mb-1 text-gray-800">Specify Your Desired Renovation</h4>
+                                <p class="text-gray-600">Tell our system exactly what changes you desire for your existing space.</p>
                             </div>
                             <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
-                                <h3 class="text-xl font-semibold mb-1 text-gray-800">Visualize & Save</h3>
-                                <p class="text-gray-600">Preview your new room and save or share your design.</p>
+                                <h4 class="text-xl font-semibold mb-1 text-gray-800">Visualize & Apply Renovations</h4>
+                                <p class="text-gray-600">See your renovated room come to life in 3D, then save or share your updated design.</p>
                             </div>
                         </div>
-                        <Image :src="renovatePng" alt="renovateService" class="md:w-1/2 rounded-lg shadow-lg" />
+                        <Image :src="renovatePng" alt="How to renovate an existing room with Room Visualizer" class="md:w-1/2 rounded-lg shadow-lg" />
                     </div>
                 </div>
             </section>
 
             <section class="py-16 px-4 bg-gray-50">
                 <div class="container mx-auto text-center">
-                    <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-12">Who It's For</h1>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-12">Who Can Benefit from Room Visualizer?</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300">
-                            <img src="/src/assets/picture/homeowner.jpg" alt="Homeowners Icon" class="w-24 h-24 rounded-full mb-4 object-cover" />
+                            <img src="/src/assets/picture/homeowner.jpg" alt="Homeowners planning renovations" class="w-24 h-24 rounded-full mb-4 object-cover" />
                             <h3 class="text-xl font-semibold mb-2 text-black-600">Homeowners</h3>
-                            <p class="text-gray-600">Visualize your renovation ideas before spending a dime.</p>
+                            <p class="text-gray-600">Visualize your home renovation ideas and decor changes with confidence before making any investments.</p>
                         </div>
                         <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300">
-                            <img src="/src/assets/picture/interior-designer.jpg" alt="Interior Designers Icon" class="w-24 h-24 rounded-full mb-4 object-cover" />
+                            <img src="/src/assets/picture/interior-designer.jpg" alt="Interior Designers using a room design tool" class="w-24 h-24 rounded-full mb-4 object-cover" />
                             <h3 class="text-xl font-semibold mb-2 text-black-600">Interior Designers</h3>
-                            <p class="text-gray-600">Create mockups quickly to present your vision to clients.</p>
+                            <p class="text-gray-600">Rapidly create realistic mockups and professional presentations to impress your clients.</p>
                         </div>
                         <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300">
-                            <img src="/src/assets/picture/real-estate.jpg" alt="Real Estate Agents Icon" class="w-24 h-24 rounded-full mb-4 object-cover" />
+                            <img src="/src/assets/picture/real-estate.jpg" alt="Real Estate Agents showing property potential" class="w-24 h-24 rounded-full mb-4 object-cover" />
                             <h3 class="text-xl font-semibold mb-2 text-black-600">Real Estate Agents</h3>
-                            <p class="text-gray-600">Help clients see the potential of a space with interactive visuals.</p>
+                            <p class="text-gray-600">Help prospective buyers envision the full potential of a property with interactive and stunning visuals.</p>
                         </div>
                     </div>
                 </div>
             </section>
 
             <section class="bg-gradient-to-r from-green-800 to-gray-900 text-white text-center py-16 px-4">
-                <h1 class="text-3xl md:text-4xl font-bold mb-8">Ready to Design Your Dream Room?</h1>
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">Ready to Design Your Dream Room Today?</h2>
                 <div>
                     <Button v-slot="slotProps" asChild>
                         <button v-bind="slotProps.a11yAttrs" class="rounded-md px-3 py-3 bg-red-500 hover:bg-red-300">
-                            <RouterLink to="/login" class="text-white font-bold hover:text-gray-600">Try Now!</RouterLink>
+                            <RouterLink to="/login" class="text-white font-bold hover:text-gray-600">Try Our Room Visualizer Now!</RouterLink>
                         </button>
                     </Button>
                 </div>
@@ -213,8 +214,8 @@ onMounted(() => {
             <div class="container mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
                 <h3 class="text-xl font-bold mb-4 md:mb-0 text-white">Room Visualizer</h3>
                 <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-6 mb-4 md:mb-0 md:pl-30">
-                    <RouterLink to="/home" class="hover:text-white transition-colors duration-200">Home</RouterLink>
-                    <RouterLink to="/service/create" class="hover:text-white transition-colors duration-200">Create Room</RouterLink>
+                    <RouterLink to="/" class="hover:text-white transition-colors duration-200">Home</RouterLink>
+                    <RouterLink to="/service/create" class="hover:text-white transition-colors duration-200">Create Room Design</RouterLink>
                     <RouterLink to="/price" class="hover:text-white transition-colors duration-200">Pricing</RouterLink>
                     <RouterLink to="/contact" class="hover:text-white transition-colors duration-200">Contact Us</RouterLink>
                 </div>

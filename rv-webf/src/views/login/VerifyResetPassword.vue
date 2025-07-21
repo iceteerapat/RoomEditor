@@ -110,12 +110,12 @@ const onSubmit = async ({ valid }) => {
   <div class="flex flex-col min-h-screen bg-gray-50 font-sans antialiased dark:bg-gray-50">
     <header class="bg-white text-black shadow-md">
         <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <RouterLink to="/home" class="text-2xl font-bold text-white-800">
+            <RouterLink to="/" class="text-2xl font-bold text-white-800">
                 Room Visualizer
             </RouterLink>
 
             <ul class="hidden md:flex space-x-6 items-center">
-                <RouterLink to="/home" class="hover:text-green-600 transition-colors duration-200">Home</RouterLink>
+                <RouterLink to="/" class="hover:text-green-600 transition-colors duration-200">Home</RouterLink>
                 <RouterLink to="/service/create" class="hover:text-green-600 transition-colors duration-200">Create Room</RouterLink>
                 <RouterLink to="/price" class="hover:text-green-600 transition-colors duration-200">Pricing</RouterLink>
                 <RouterLink to="/contact" class="hover:text-green-600 transition-colors duration-200">Contact Us</RouterLink>
@@ -135,7 +135,7 @@ const onSubmit = async ({ valid }) => {
             </div>
             <Sidebar md:hidden v-model:visible="mobileVisible" position="right" class="w-72"> 
                 <div class="flex flex-col gap-4 p-4 text-lg">
-                    <RouterLink to="/home" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Home</RouterLink>
+                    <RouterLink to="/" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Home</RouterLink>
                     <RouterLink to="/service/create" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Create Room</RouterLink>
                     <RouterLink to="/price" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Pricing</RouterLink>
                     <RouterLink to="/contact" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Contact Us</RouterLink>
@@ -196,7 +196,7 @@ const onSubmit = async ({ valid }) => {
       <div class="container mx-auto flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
         <h3 class="text-2xl font-bold text-white">Room Visualizer</h3>
         <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-8 text-lg text-gray-300">
-          <RouterLink to="/home" class="hover:text-blue-400 transition-colors duration-200">Home</RouterLink>
+          <RouterLink to="/" class="hover:text-blue-400 transition-colors duration-200">Home</RouterLink>
           <RouterLink to="/service/create" class="hover:text-blue-400 transition-colors duration-200">Create Room</RouterLink>
           <RouterLink to="/price" class="hover:text-blue-400 transition-colors duration-200">Pricing</RouterLink>
         </div>

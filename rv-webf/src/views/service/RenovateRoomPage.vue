@@ -253,7 +253,7 @@ const items = computed(() => [
                 label: 'Logout',
                 command: () => {
                     authStore.logout();
-                    router.push('/home');
+                    router.push('/');
                 }
             }
         ]
@@ -391,7 +391,7 @@ async function onManage(){
             <div class="container mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
                 <h3 class="text-xl font-bold mb-4 md:mb-0 text-white">Room Visualizer</h3>
                 <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-6 mb-4 md:mb-0 md:pl-30">
-                    <RouterLink to="/home" class="hover:text-white transition-colors duration-200">Home</RouterLink>
+                    <RouterLink to="/" class="hover:text-white transition-colors duration-200">Home</RouterLink>
                     <RouterLink to="/service/create" class="hover:text-white transition-colors duration-200">Create Room</RouterLink>
                     <RouterLink to="/price" class="hover:text-white transition-colors duration-200">Pricing</RouterLink>
                     <RouterLink to="/contact" class="hover:text-white transition-colors duration-200">Contact Us</RouterLink>

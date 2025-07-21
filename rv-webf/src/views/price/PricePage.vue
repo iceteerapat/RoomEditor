@@ -64,11 +64,11 @@ const purchasePlan = (planName, cycle) => {
   <div class="min-h-screen flex flex-col">
     <header class="bg-white text-black shadow-md">
         <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <RouterLink to="/home" class="text-2xl font-bold text-black">
+            <RouterLink to="/" class="text-2xl font-bold text-black">
                 Room Visualizer
             </RouterLink>
             <ul class="hidden md:flex space-x-6 items-center">
-                <RouterLink to="/home" class="hover:text-green-600 transition-colors duration-200 dark:text-white-800">Home</RouterLink>
+                <RouterLink to="/" class="hover:text-green-600 transition-colors duration-200 dark:text-white-800">Home</RouterLink>
                 <RouterLink to="/service/create" class="hover:text-green-600 transition-colors duration-200">Create Room</RouterLink>
                 <RouterLink to="/price" class="hover:text-green-600 transition-colors duration-200">Pricing</RouterLink>
                 <RouterLink to="/contact" class="hover:text-green-600 transition-colors duration-200">Contact Us</RouterLink>
@@ -88,7 +88,7 @@ const purchasePlan = (planName, cycle) => {
             </div>
             <Sidebar md:hidden v-model:visible="mobileVisible" position="right" class="w-72"> 
                 <div class="flex flex-col gap-4 p-4 text-lg">
-                    <RouterLink to="/home" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Home</RouterLink>
+                    <RouterLink to="/" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Home</RouterLink>
                     <RouterLink to="/service/create" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Create Room</RouterLink>
                     <RouterLink to="/price" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Pricing</RouterLink>
                     <RouterLink to="/contact" @click="mobileVisible = false" class="text-gray-700 hover:text-green-600 transition-colors dark:text-white">Contact Us</RouterLink>
@@ -157,7 +157,7 @@ const purchasePlan = (planName, cycle) => {
         <div class="container mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
             <h3 class="text-xl font-bold mb-4 md:mb-0 text-white">Room Visualizer</h3>
             <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-6 mb-4 md:mb-0 md:pl-30">
-                <RouterLink to="/home" class="hover:text-white transition-colors duration-200">Home</RouterLink>
+                <RouterLink to="/" class="hover:text-white transition-colors duration-200">Home</RouterLink>
                 <RouterLink to="/service/create" class="hover:text-white transition-colors duration-200">Create Room</RouterLink>
                 <RouterLink to="/price" class="hover:text-white transition-colors duration-200">Pricing</RouterLink>
                 <RouterLink to="/contact" class="hover:text-white transition-colors duration-200">Contact Us</RouterLink>

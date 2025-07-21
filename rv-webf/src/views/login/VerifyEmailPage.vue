@@ -17,7 +17,7 @@ onMounted(async () => {
   if (!token) {
     console.error("No verification token found in URL.");
     messageDialog.show("Verification failed: No token provided.", 'error');
-    router.push('/home');
+    router.push('/');
     return;
   }
 
@@ -39,11 +39,11 @@ onMounted(async () => {
   <div class="flex flex-col min-h-screen bg-gray-50 font-sans antialiased">
     <header class="bg-white shadow-md py-4 px-6 md:px-8 lg:px-12">
       <nav class="flex items-center justify-between flex-wrap">
-        <RouterLink to="/home" class="text-2xl font-bold text-gray-800 tracking-tight">
+        <RouterLink to="/" class="text-2xl font-bold text-gray-800 tracking-tight">
           Room Visualizer
         </RouterLink>
         <ul class="flex items-center space-x-4 md:space-x-6 lg:space-x-8 text-gray-600 font-medium text-lg">
-          <RouterLink to="/home" class="hover:text-blue-600 transition-colors duration-200">Home</RouterLink>
+          <RouterLink to="/" class="hover:text-blue-600 transition-colors duration-200">Home</RouterLink>
           <RouterLink to="/service" class="hover:text-blue-600 transition-colors duration-200">Create Room</RouterLink>
           <RouterLink to="/price" class="hover:text-blue-600 transition-colors duration-200">Pricing</RouterLink>
           <Button asChild v-slot="{ class: btnClass }" severity="primary" class="!p-0 !bg-transparent !border-none !shadow-none">
@@ -67,7 +67,7 @@ onMounted(async () => {
       <div class="container mx-auto flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
         <h3 class="text-2xl font-bold text-white">Room Visualizer</h3>
         <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-8 text-lg">
-          <RouterLink to="/home" class="hover:text-blue-400 transition-colors duration-200">Home</RouterLink>
+          <RouterLink to="/" class="hover:text-blue-400 transition-colors duration-200">Home</RouterLink>
           <RouterLink to="/service/create" class="hover:text-blue-400 transition-colors duration-200">Create Room</RouterLink>
           <RouterLink to="/price" class="hover:text-blue-400 transition-colors duration-200">Pricing</RouterLink>
         </div>
