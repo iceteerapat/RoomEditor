@@ -34,7 +34,7 @@ const Account = sequelize.define('rv_account', {
       field: 'verify_password'
     },
     phone: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.STRING(20),
       allowNull: false,
       field: 'phone'
     },
