@@ -287,7 +287,7 @@ async function onManage(){
                             <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Enter your room width in square meters (m).</Message>
                         </div>
                         <div class="flex flex-col gap-2">
-                            <label for="roomSizeLength" class="text-gray-700 font-medium">Room Height (m)</label>
+                            <label for="roomSizeLength" class="text-gray-700 font-medium">Room Length (m)</label>
                             <InputNumber inputId="roomSizeLength" v-model="roomSizeLength" aria-describedby="roomSizeLength-help" :minFractionDigits="2" :maxFractionDigits="2" :min="0" :max="500" class="w-full" />
                             <Message size="small" severity="secondary" variant="simple" class="text-sm text-gray-500">Enter your room length in square meters (m).</Message>
                         </div>
