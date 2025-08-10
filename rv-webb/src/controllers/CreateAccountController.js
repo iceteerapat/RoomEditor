@@ -110,7 +110,7 @@ export const verify = async(req, res) => {
     }
 
     const productName = product.productName;
-    const productAccess = 'T';
+    const productAccess = 'Y';
     const productId = product.recId;
     const credits = product.creditGrant;
     const customerId = account.customerId;

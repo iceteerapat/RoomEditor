@@ -201,7 +201,7 @@ export const managed = async(req, res) => {
         
         const session = await stripe.billingPortal.sessions.create({
         customer: userService.stripeCustomerId,
-        return_url: `${process.env.BASE_URL}/service/create`
+        return_url: `${process.env.BASE_URL}/service/creditAndSubscription`
         });
 
         res.json({ url: session.url });
