@@ -10,6 +10,7 @@ const slider = ref(null);
 const mobileVisible = ref(false);
 const createPng = new URL('../../assets/picture/create.png', import.meta.url).href;
 const renovatePng = new URL('../../assets/picture/renovate.png', import.meta.url).href;
+const materialPng = new URL('../../assets/picture/material.png', import.meta.url).href;
 const imageNames = [
     'one.jpg',
     'four.jpg',
@@ -155,7 +156,7 @@ onMounted(() => {
                     </div>
 
                     <h3 class="text-2xl md:text-3xl font-semibold text-left mb-6 md:mb-8 text-black">Renovate Your Existing Room</h3>
-                    <div class="flex flex-col md:flex-row-reverse items-center justify-between md:space-x-reverse md:space-x-12">
+                    <div class="flex flex-col md:flex-row-reverse items-center justify-between md:space-x-reverse md:space-x-12 mb-16">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:w-1/2 mb-8 md:mb-0">
                             <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
                                 <h4 class="text-xl font-semibold mb-1 text-gray-800">Upload Your Room Photo</h4>
@@ -171,6 +172,25 @@ onMounted(() => {
                             </div>
                         </div>
                         <Image :src="renovatePng" alt="How to renovate an existing room with Room Visualizer" class="md:w-1/2 rounded-lg shadow-lg" />
+                    </div>
+
+                    <h3 class="text-2xl flex item-center justify-center md:text-3xl font-semibold text-left mb-6 md:mb-8 text-black">Material Analysis</h3>
+                    <div class="flex flex-col md:flex-col-reverse items-center justify-between md:space-y-reverse md:space-y-12">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 space-x-6 md:w-1/2 mb-8 md:mb-0">
+                            <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                                <h4 class="text-xl font-semibold mb-1 text-gray-800">Analyze</h4>
+                                <p class="text-gray-600">Analyze the material which your room need to use.</p>
+                            </div>
+                            <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                                <h4 class="text-xl font-semibold mb-1 text-gray-800">Suggestion</h4>
+                                <p class="text-gray-600">Suggestion which material is suitable for your room.</p>
+                            </div>
+                            <div class="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                                <h4 class="text-xl font-semibold mb-1 text-gray-800">Don't wast your time</h4>
+                                <p class="text-gray-600">As our Material Analysis function, it summarize what material that you need to use for your room.</p>
+                            </div>
+                        </div>
+                        <Image :src="materialPng" alt="How to renovate an existing room with Room Visualizer" class="md:w-1/2 rounded-lg shadow-lg" />
                     </div>
                 </div>
             </section>
